@@ -1,4 +1,4 @@
-package edu.pucp.sisdvac.config;
+package edu.pucp.sisdvac.security.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

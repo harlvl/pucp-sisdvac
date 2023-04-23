@@ -1,9 +1,9 @@
-package edu.pucp.sisdvac.auth;
+package edu.pucp.sisdvac.security.auth;
 
-import edu.pucp.sisdvac.config.JwtService;
-import edu.pucp.sisdvac.user.Role;
-import edu.pucp.sisdvac.user.User;
-import edu.pucp.sisdvac.user.UserRepository;
+import edu.pucp.sisdvac.security.config.JwtService;
+import edu.pucp.sisdvac.domain.user.Role;
+import edu.pucp.sisdvac.domain.user.User;
+import edu.pucp.sisdvac.dao.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

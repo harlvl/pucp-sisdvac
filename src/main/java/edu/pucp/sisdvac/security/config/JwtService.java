@@ -1,4 +1,4 @@
-package edu.pucp.sisdvac.config;
+package edu.pucp.sisdvac.security.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

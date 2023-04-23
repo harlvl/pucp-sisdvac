@@ -1,5 +1,6 @@
-package edu.pucp.sisdvac.user;
+package edu.pucp.sisdvac.dao;
 
+import edu.pucp.sisdvac.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

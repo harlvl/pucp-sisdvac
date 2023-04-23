@@ -1,6 +1,6 @@
-package edu.pucp.sisdvac.config;
+package edu.pucp.sisdvac.security.config;
 
-import edu.pucp.sisdvac.user.UserRepository;
+import edu.pucp.sisdvac.dao.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

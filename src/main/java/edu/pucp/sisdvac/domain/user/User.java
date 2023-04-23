@@ -1,4 +1,4 @@
-package edu.pucp.sisdvac.user;
+package edu.pucp.sisdvac.domain.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

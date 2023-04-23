@@ -1,4 +1,4 @@
-package edu.pucp.sisdvac.user;
+package edu.pucp.sisdvac.domain.user;
 
 public enum Role {
     USER,

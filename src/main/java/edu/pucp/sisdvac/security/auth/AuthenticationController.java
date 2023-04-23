@@ -1,4 +1,4 @@
-package edu.pucp.sisdvac.auth;
+package edu.pucp.sisdvac.security.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

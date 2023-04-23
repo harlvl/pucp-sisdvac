@@ -1,4 +1,4 @@
-package edu.pucp.sisdvac.auth;
+package edu.pucp.sisdvac.security.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
