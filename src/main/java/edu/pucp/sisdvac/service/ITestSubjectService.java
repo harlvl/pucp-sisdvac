@@ -9,7 +9,7 @@ public interface ITestSubjectService {
 
     TestSubjectDto findById(Integer id);
 
-    TestSubjectDto save(TestSubjectDto testSubjectDto);
+    TestSubjectDto save(TestSubjectDto dto);
 
-    TestSubjectDto update(TestSubjectDto testSubjectDto);
+    TestSubjectDto update(TestSubjectDto dto);
 }
