@@ -1,7 +1,6 @@
 package edu.pucp.sisdvac;
 
 import edu.pucp.sisdvac.controller.dto.VolunteerDto;
-import edu.pucp.sisdvac.domain.TestVolunteer;
 import edu.pucp.sisdvac.domain.enums.DocumentType;
 import edu.pucp.sisdvac.service.impl.VolunteerServiceImpl;
 import org.springframework.boot.CommandLineRunner;

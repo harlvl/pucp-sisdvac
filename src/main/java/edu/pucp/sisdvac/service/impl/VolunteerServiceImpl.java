@@ -1,7 +1,9 @@
 package edu.pucp.sisdvac.service.impl;
 
 import edu.pucp.sisdvac.controller.dto.VolunteerDto;
+import edu.pucp.sisdvac.controller.exception.NotFoundException;
 import edu.pucp.sisdvac.dao.VolunteerRepository;
+import edu.pucp.sisdvac.dao.parser.BaseParser;
 import edu.pucp.sisdvac.dao.parser.VolunteerParser;
 import edu.pucp.sisdvac.domain.TestVolunteer;
 import edu.pucp.sisdvac.service.IVolunteerService;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,14 +48,25 @@ public class VolunteerServiceImpl implements IVolunteerService {
     @Override
     public VolunteerDto saveVolunteer(VolunteerDto volunteerDto){
         LOGGER.info("Saving volunteer...");
-        VolunteerDto response = new VolunteerDto();
-        try {
-            TestVolunteer savedVolunteer = volunteerRepository.save(VolunteerParser.fromDto(volunteerDto));
-            response = VolunteerParser.toDto(savedVolunteer);
-        } catch (Exception e) {
-            LOGGER.error("Error saving volunteer");
-        }
+        TestVolunteer savedVolunteer = volunteerRepository.save(VolunteerParser.fromDto(volunteerDto));
+        return VolunteerParser.toDto(savedVolunteer);
+    }
 
-        return response;
+    @Override
+    public VolunteerDto updateVolunteer(VolunteerDto volunteerDto) {
+        LOGGER.info("Updating volunteer");
+
+        TestVolunteer testVolunteer = volunteerRepository.findById(volunteerDto.getId()).orElseThrow(() -> new NotFoundException("Volunteer not found."));
+        LOGGER.info(String.format("Found volunteer: %d) %s|%s %s", testVolunteer.getId(), testVolunteer.getDocumentNumber(), testVolunteer.getFirstName(), testVolunteer.getLastName()));
+
+        TestVolunteer updatedVolunteer = BaseParser.copyProperties(volunteerDto, testVolunteer);
+
+//        testVolunteer.setDocumentNumber(volunteerDto.getDocumentNumber());
+//        testVolunteer.setEmail(volunteerDto.getEmail());
+//        testVolunteer.setContactNumber(volunteerDto.getContactNumber());
+//        testVolunteer.setFirstName(volunteerDto.getFirstName());
+//        testVolunteer.setLastName(volunteerDto.getLastName());
+
+        return VolunteerParser.toDto(volunteerRepository.save(updatedVolunteer));
     }
 }

@@ -1,6 +1,7 @@
 package edu.pucp.sisdvac.domain;
 
 import edu.pucp.sisdvac.domain.enums.DocumentType;
+import edu.pucp.sisdvac.domain.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,9 +20,12 @@ public class TestVolunteer {
     private Integer id;
     @Enumerated(EnumType.STRING)
     private DocumentType documentType;
+    @Column(unique = true)
     private String documentNumber;
     private String firstName;
     private String lastName;
     private String email;
     private String contactNumber;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 }

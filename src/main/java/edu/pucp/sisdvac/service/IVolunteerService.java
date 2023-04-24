@@ -9,5 +9,7 @@ public interface IVolunteerService {
     String testing();
     List<VolunteerDto> getVolunteers();
 
-    VolunteerDto saveVolunteer(VolunteerDto volunteerDto) ;
+    VolunteerDto saveVolunteer(VolunteerDto volunteerDto);
+
+    VolunteerDto updateVolunteer(VolunteerDto volunteerDto);
 }

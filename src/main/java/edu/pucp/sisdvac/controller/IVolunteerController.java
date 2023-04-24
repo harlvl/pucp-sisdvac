@@ -6,4 +6,5 @@ import org.springframework.http.ResponseEntity;
 public interface IVolunteerController {
     ResponseEntity<?> getVolunteers();
     ResponseEntity<?> saveVolunteer(VolunteerDto volunteerDto);
+    ResponseEntity<?> updateVolunteer(VolunteerDto volunteerDto);
 }

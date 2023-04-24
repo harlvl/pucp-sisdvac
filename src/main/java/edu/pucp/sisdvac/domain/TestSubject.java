@@ -1,6 +1,7 @@
 package edu.pucp.sisdvac.domain;
 
 import edu.pucp.sisdvac.domain.enums.DocumentType;
+import edu.pucp.sisdvac.domain.enums.Status;
 import edu.pucp.sisdvac.domain.enums.SubjectType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,4 +22,6 @@ public class TestSubject {
     @Enumerated(EnumType.STRING)
     private SubjectType subjectType;
     private String codeName;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 }

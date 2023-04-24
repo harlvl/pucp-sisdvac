@@ -1,5 +1,6 @@
 package edu.pucp.sisdvac.dao.parser;
 
+import edu.pucp.sisdvac.controller.exception.GenericException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -26,8 +27,18 @@ public class BaseParser {
         return emptyNames.toArray(result);
     }
 
-    public static <In, Out> Out parse(In src, Class<Out> clazz) throws IllegalAccessException, InstantiationException {
-        Out target = clazz.newInstance();
+    public static <In, Out> Out parse(In src, Class<Out> clazz){
+        try {
+            Out target = clazz.newInstance();
+            BeanUtils.copyProperties(src, target, getNullPropertyNames(src));
+            return target;
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+            throw new GenericException(e.getMessage());
+        }
+    }
+
+    public static <In, Out> Out copyProperties(In src, Out target) {
         BeanUtils.copyProperties(src, target, getNullPropertyNames(src));
         return target;
     }

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,6 +30,15 @@ public class VolunteerControllerImpl implements IVolunteerController {
         return ResponseEntity.ok().body(RestResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .payload(volunteerService.saveVolunteer(volunteerDto))
+                .build());
+    }
+
+    @Override
+    @PutMapping
+    public ResponseEntity<?> updateVolunteer(@RequestBody @Valid VolunteerDto volunteerDto) {
+        return ResponseEntity.ok().body(RestResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .payload(volunteerService.updateVolunteer(volunteerDto))
                 .build());
     }
 }
