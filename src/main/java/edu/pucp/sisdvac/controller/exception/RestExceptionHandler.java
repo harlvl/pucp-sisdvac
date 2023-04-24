@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.LocalDateTime;
+
 @RestControllerAdvice
 public class RestExceptionHandler {
     @ExceptionHandler(GenericException.class)
@@ -13,6 +15,7 @@ public class RestExceptionHandler {
         RestResponse restResponse = RestResponse.builder()
                 .status(HttpStatus.FAILED_DEPENDENCY)
                 .message(exception.getMessage())
+                .timestamp(LocalDateTime.now())
                 .build();
         return ResponseEntity
                 .status(restResponse.getStatus())
@@ -23,6 +26,8 @@ public class RestExceptionHandler {
         RestResponse restResponse = RestResponse.builder()
                 .status(HttpStatus.NOT_FOUND)
                 .message(exception.getMessage())
+                .timestamp(LocalDateTime.now())
+                .hits(0)
                 .build();
         return ResponseEntity
                 .status(restResponse.getStatus())
@@ -34,6 +39,7 @@ public class RestExceptionHandler {
         RestResponse restResponse = RestResponse.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .message(exception.getMessage())
+                .timestamp(LocalDateTime.now())
                 .build();
         return ResponseEntity
                 .status(restResponse.getStatus())
@@ -45,6 +51,7 @@ public class RestExceptionHandler {
         RestResponse restResponse = RestResponse.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .message(exception.getMessage())
+                .timestamp(LocalDateTime.now())
                 .build();
         return ResponseEntity
                 .status(restResponse.getStatus())
