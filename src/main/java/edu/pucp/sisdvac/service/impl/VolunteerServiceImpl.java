@@ -34,7 +34,7 @@ public class VolunteerServiceImpl implements IVolunteerService {
 
     @Override
     public VolunteerDto save(VolunteerDto volunteerDto){
-        LOGGER.info("Saving volunteer...");
+        LOGGER.info("Creating new volunteer...");
         return VolunteerParser.toDto(
                 volunteerRepository.save(
                         VolunteerParser.fromDto(volunteerDto)
@@ -44,7 +44,7 @@ public class VolunteerServiceImpl implements IVolunteerService {
 
     @Override
     public VolunteerDto update(VolunteerDto dto) {
-        LOGGER.info("Updating volunteer");
+        LOGGER.info("Updating existing volunteer...");
 
         TestVolunteer dbItem = volunteerRepository.findById(dto.getId())
                 .orElseThrow(() -> new NotFoundException(String.format(

@@ -11,6 +11,8 @@ import edu.pucp.sisdvac.security.token.TokenType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +24,7 @@ import java.io.IOException;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class);
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -29,12 +32,15 @@ public class AuthenticationService {
     private final TokenRepository tokenRepository;
 
     public AuthenticationResponse register(RegisterRequest request) {
+        LOGGER.info(String.format("Creating new user %s %s (%s) with role %s",
+                request.getFirstName(), request.getLastName(), request.getEmail(), request.getRole())
+        );
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
+                .role(request.getRole())
                 .build();
 
         var savedUser = repository.save(user);

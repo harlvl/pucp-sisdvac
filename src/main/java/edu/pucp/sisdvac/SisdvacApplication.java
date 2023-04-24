@@ -5,6 +5,9 @@ import edu.pucp.sisdvac.controller.dto.VolunteerDto;
 import edu.pucp.sisdvac.domain.enums.DocumentType;
 import edu.pucp.sisdvac.domain.enums.Status;
 import edu.pucp.sisdvac.domain.enums.SubjectType;
+import edu.pucp.sisdvac.domain.user.Role;
+import edu.pucp.sisdvac.security.auth.AuthenticationService;
+import edu.pucp.sisdvac.security.auth.RegisterRequest;
 import edu.pucp.sisdvac.service.impl.TestSubjectServiceImpl;
 import edu.pucp.sisdvac.service.impl.VolunteerServiceImpl;
 import org.springframework.boot.CommandLineRunner;
@@ -20,8 +23,18 @@ public class SisdvacApplication {
     }
 
     @Bean
-    CommandLineRunner run(VolunteerServiceImpl volunteerService, TestSubjectServiceImpl testSubjectService) {
+    CommandLineRunner run(VolunteerServiceImpl volunteerService, TestSubjectServiceImpl testSubjectService, AuthenticationService authenticationService) {
         return args -> {
+            authenticationService.register(
+                    RegisterRequest.builder()
+                            .email("luis.viguria@pucp.pe")
+                            .password("1234")
+                            .firstName("Luis")
+                            .lastName("Viguria")
+                            .role(Role.ADMIN)
+                            .build()
+            );
+
             volunteerService.save(
                     VolunteerDto.builder()
                             .email("email@email.com")

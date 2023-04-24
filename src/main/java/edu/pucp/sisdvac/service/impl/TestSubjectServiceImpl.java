@@ -23,7 +23,6 @@ public class TestSubjectServiceImpl implements ITestSubjectService {
 
     @Override
     public List<TestSubjectDto> findAll() {
-        LOGGER.error("PRUEBA DE LOG LEVEL ERROR");
         List<TestSubject> items = repository.findAll();
         List<TestSubjectDto> response = new ArrayList<>();
         for (TestSubject item :
@@ -43,6 +42,7 @@ public class TestSubjectServiceImpl implements ITestSubjectService {
 
     @Override
     public TestSubjectDto save(TestSubjectDto dto) {
+        LOGGER.info("Creating new test subject...");
         return TestSubjectParser.toDto(
                 repository.save(
                         TestSubjectParser.fromDto(dto)
@@ -52,6 +52,7 @@ public class TestSubjectServiceImpl implements ITestSubjectService {
 
     @Override
     public TestSubjectDto update(TestSubjectDto dto) {
+        LOGGER.info("Updating existing test subject...");
         TestSubject dbItem = repository.findById(dto.getId())
                 .orElseThrow(() -> new NotFoundException(String.format(
                                 "Test subject %d not found", dto.getId()))

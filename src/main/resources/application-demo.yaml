@@ -17,6 +17,7 @@ spring:
 server:
   servlet:
     context-path: /sisdvac
+  port: 5000
 
 application:
   security:
