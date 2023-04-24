@@ -6,9 +6,7 @@ import edu.pucp.sisdvac.controller.response.RestResponse;
 import edu.pucp.sisdvac.service.IVolunteerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,5 +21,14 @@ public class VolunteerControllerImpl implements IVolunteerController {
     public ResponseEntity<?> getVolunteers() {
         List<VolunteerDto> volunteerDtos = volunteerService.getVolunteers();
         return ResponseEntity.ok().body(RestResponse.builder().timestamp(LocalDateTime.now()).payload(volunteerDtos).build());
+    }
+
+    @Override
+    @PostMapping
+    public ResponseEntity<?> saveVolunteer(@RequestBody VolunteerDto volunteerDto) {
+        return ResponseEntity.ok().body(RestResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .payload(volunteerService.saveVolunteer(volunteerDto))
+                .build());
     }
 }

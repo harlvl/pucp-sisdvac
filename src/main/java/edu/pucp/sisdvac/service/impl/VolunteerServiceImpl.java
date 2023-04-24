@@ -43,13 +43,16 @@ public class VolunteerServiceImpl implements IVolunteerService {
     }
 
     @Override
-    public VolunteerDto saveVolunteer(TestVolunteer testVolunteer) throws Exception{
+    public VolunteerDto saveVolunteer(VolunteerDto volunteerDto){
         LOGGER.info("Saving volunteer...");
+        VolunteerDto response = new VolunteerDto();
         try {
-            TestVolunteer savedVolunteer = volunteerRepository.save(testVolunteer);
-            return VolunteerParser.toDto(savedVolunteer);
+            TestVolunteer savedVolunteer = volunteerRepository.save(VolunteerParser.fromDto(volunteerDto));
+            response = VolunteerParser.toDto(savedVolunteer);
         } catch (Exception e) {
-            throw new Exception("Error saving volunteer");
+            LOGGER.error("Error saving volunteer");
         }
+
+        return response;
     }
 }

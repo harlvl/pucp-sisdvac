@@ -8,4 +8,8 @@ public class VolunteerParser {
     public static VolunteerDto toDto(TestVolunteer testVolunteer) throws IllegalAccessException, InstantiationException {
         return BaseParser.parse(testVolunteer, VolunteerDto.class);
     }
+
+    public static TestVolunteer fromDto(VolunteerDto volunteerDto) throws IllegalAccessException, InstantiationException {
+        return BaseParser.parse(volunteerDto, TestVolunteer.class);
+    }
 }

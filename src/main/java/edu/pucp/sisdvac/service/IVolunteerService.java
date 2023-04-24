@@ -9,5 +9,5 @@ public interface IVolunteerService {
     String testing();
     List<VolunteerDto> getVolunteers();
 
-    VolunteerDto saveVolunteer(TestVolunteer testVolunteer) throws Exception;
+    VolunteerDto saveVolunteer(VolunteerDto volunteerDto) ;
 }

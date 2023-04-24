@@ -1,5 +1,6 @@
 package edu.pucp.sisdvac;
 
+import edu.pucp.sisdvac.controller.dto.VolunteerDto;
 import edu.pucp.sisdvac.domain.TestVolunteer;
 import edu.pucp.sisdvac.domain.enums.DocumentType;
 import edu.pucp.sisdvac.service.impl.VolunteerServiceImpl;
@@ -19,8 +20,8 @@ public class SisdvacApplication {
     CommandLineRunner run(VolunteerServiceImpl volunteerService) {
         return args -> {
             volunteerService.saveVolunteer(
-                    TestVolunteer.builder()
-                            .email("email")
+                    VolunteerDto.builder()
+                            .email("email@email.com")
                             .firstName("Juan")
                             .lastName("Perez")
                             .documentType(DocumentType.DNI)
