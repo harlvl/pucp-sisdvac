@@ -1,9 +1,11 @@
 package edu.pucp.sisdvac.controller.impl;
 
-import edu.pucp.sisdvac.controller.ITestSubjectController;
-import edu.pucp.sisdvac.controller.dto.TestSubjectDto;
+import edu.pucp.sisdvac.controller.ITrialController;
+import edu.pucp.sisdvac.controller.dto.InfectiousDiseaseDto;
+import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.controller.response.RestResponse;
-import edu.pucp.sisdvac.service.ITestSubjectService;
+import edu.pucp.sisdvac.service.ITrialService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +16,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/test-subject")
+@RequestMapping("/api/v1/infectious-disease")
 @RequiredArgsConstructor
-public class TestSubjectControllerImpl implements ITestSubjectController {
-    private final ITestSubjectService service;
+public class TrialController implements ITrialController {
+    private final ITrialService service;
     @Override
     @GetMapping
     public ResponseEntity<?> findAll() {
-        List<TestSubjectDto> dtos = service.findAll();
+        List<TrialDto> dtos = service.findAll();
         return ResponseEntity.ok().body(
                 RestResponse.builder()
                         .timestamp(LocalDateTime.now())
@@ -33,7 +35,7 @@ public class TestSubjectControllerImpl implements ITestSubjectController {
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable(value = "id") final Integer id) {
+    public ResponseEntity<?> findById(@PathVariable(name = "id") final Integer id) {
         return ResponseEntity.ok().body(
                 RestResponse.builder()
                         .timestamp(LocalDateTime.now())
@@ -45,7 +47,7 @@ public class TestSubjectControllerImpl implements ITestSubjectController {
 
     @Override
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody final TestSubjectDto dto) {
+    public ResponseEntity<?> save(@Valid @RequestBody TrialDto dto) {
         return ResponseEntity.ok().body(
                 RestResponse.builder()
                         .timestamp(LocalDateTime.now())
@@ -56,12 +58,12 @@ public class TestSubjectControllerImpl implements ITestSubjectController {
     }
 
     @Override
-    @PutMapping
-    public ResponseEntity<?> update(@Valid @RequestBody final TestSubjectDto dto) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable(name = "id") final Integer id, @Valid @RequestBody TrialDto dto) {
         return ResponseEntity.ok().body(
                 RestResponse.builder()
                         .timestamp(LocalDateTime.now())
-                        .payload(service.update(dto))
+                        .payload(service.update(id, dto))
                         .status(HttpStatus.OK)
                         .build()
         );

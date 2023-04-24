@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class CandidateVaccineControllerImpl implements ICandidateVaccineControll
 
     @Override
     @PostMapping
-    public ResponseEntity<?> save(CandidateVaccineDto dto) {
+    public ResponseEntity<?> save(@Valid @RequestBody CandidateVaccineDto dto) {
         return ResponseEntity.ok().body(
                 RestResponse.builder()
                         .timestamp(LocalDateTime.now())
@@ -58,7 +59,7 @@ public class CandidateVaccineControllerImpl implements ICandidateVaccineControll
 
     @Override
     @PutMapping
-    public ResponseEntity<?> update(CandidateVaccineDto dto) {
+    public ResponseEntity<?> update(@Valid @RequestBody CandidateVaccineDto dto) {
         return ResponseEntity.ok().body(
                 RestResponse.builder()
                         .timestamp(LocalDateTime.now())

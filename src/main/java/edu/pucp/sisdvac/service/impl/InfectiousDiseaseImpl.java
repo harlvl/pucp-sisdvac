@@ -11,6 +11,7 @@ import edu.pucp.sisdvac.domain.CandidateVaccine;
 import edu.pucp.sisdvac.domain.InfectiousDisease;
 import edu.pucp.sisdvac.service.IInfectiousDiseaseService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class InfectiousDiseaseImpl implements IInfectiousDiseaseService {
     private static final Logger LOGGER = LoggerFactory.getLogger(InfectiousDiseaseImpl.class);
     private final InfectiousDiseaseRepository repository;

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class InfectiousDiseaseControllerImpl implements IInfectiousDiseaseContro
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(Integer id) {
+    public ResponseEntity<?> findById(@PathVariable(name = "id") final Integer id) {
         return ResponseEntity.ok().body(
                 RestResponse.builder()
                         .timestamp(LocalDateTime.now())
@@ -45,7 +46,7 @@ public class InfectiousDiseaseControllerImpl implements IInfectiousDiseaseContro
 
     @Override
     @PostMapping
-    public ResponseEntity<?> save(InfectiousDiseaseDto dto) {
+    public ResponseEntity<?> save(@Valid @RequestBody InfectiousDiseaseDto dto) {
         return ResponseEntity.ok().body(
                 RestResponse.builder()
                         .timestamp(LocalDateTime.now())
@@ -57,7 +58,7 @@ public class InfectiousDiseaseControllerImpl implements IInfectiousDiseaseContro
 
     @Override
     @PutMapping
-    public ResponseEntity<?> update(InfectiousDiseaseDto dto) {
+    public ResponseEntity<?> update(@Valid @RequestBody InfectiousDiseaseDto dto) {
         return ResponseEntity.ok().body(
                 RestResponse.builder()
                         .timestamp(LocalDateTime.now())

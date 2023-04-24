@@ -26,7 +26,7 @@ public class VolunteerControllerImpl implements IVolunteerController {
 
     @Override
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody VolunteerDto volunteerDto) {
+    public ResponseEntity<?> save(@Valid @RequestBody VolunteerDto volunteerDto) {
         return ResponseEntity.ok().body(RestResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .payload(volunteerService.save(volunteerDto))
@@ -35,7 +35,7 @@ public class VolunteerControllerImpl implements IVolunteerController {
 
     @Override
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody @Valid VolunteerDto volunteerDto) {
+    public ResponseEntity<?> update(@Valid @RequestBody VolunteerDto volunteerDto) {
         return ResponseEntity.ok().body(RestResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .payload(volunteerService.update(volunteerDto))
