@@ -19,26 +19,26 @@ public class VolunteerControllerImpl implements IVolunteerController {
     private final IVolunteerService volunteerService;
     @Override
     @GetMapping
-    public ResponseEntity<?> getVolunteers() {
-        List<VolunteerDto> volunteerDtos = volunteerService.getVolunteers();
+    public ResponseEntity<?> findAll() {
+        List<VolunteerDto> volunteerDtos = volunteerService.findAll();
         return ResponseEntity.ok().body(RestResponse.builder().timestamp(LocalDateTime.now()).payload(volunteerDtos).build());
     }
 
     @Override
     @PostMapping
-    public ResponseEntity<?> saveVolunteer(@RequestBody VolunteerDto volunteerDto) {
+    public ResponseEntity<?> save(@RequestBody VolunteerDto volunteerDto) {
         return ResponseEntity.ok().body(RestResponse.builder()
                 .timestamp(LocalDateTime.now())
-                .payload(volunteerService.saveVolunteer(volunteerDto))
+                .payload(volunteerService.save(volunteerDto))
                 .build());
     }
 
     @Override
     @PutMapping
-    public ResponseEntity<?> updateVolunteer(@RequestBody @Valid VolunteerDto volunteerDto) {
+    public ResponseEntity<?> update(@RequestBody @Valid VolunteerDto volunteerDto) {
         return ResponseEntity.ok().body(RestResponse.builder()
                 .timestamp(LocalDateTime.now())
-                .payload(volunteerService.updateVolunteer(volunteerDto))
+                .payload(volunteerService.update(volunteerDto))
                 .build());
     }
 }

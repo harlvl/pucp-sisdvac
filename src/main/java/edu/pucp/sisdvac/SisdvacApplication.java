@@ -1,7 +1,11 @@
 package edu.pucp.sisdvac;
 
+import edu.pucp.sisdvac.controller.dto.TestSubjectDto;
 import edu.pucp.sisdvac.controller.dto.VolunteerDto;
 import edu.pucp.sisdvac.domain.enums.DocumentType;
+import edu.pucp.sisdvac.domain.enums.Status;
+import edu.pucp.sisdvac.domain.enums.SubjectType;
+import edu.pucp.sisdvac.service.impl.TestSubjectServiceImpl;
 import edu.pucp.sisdvac.service.impl.VolunteerServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,9 +20,9 @@ public class SisdvacApplication {
     }
 
     @Bean
-    CommandLineRunner run(VolunteerServiceImpl volunteerService) {
+    CommandLineRunner run(VolunteerServiceImpl volunteerService, TestSubjectServiceImpl testSubjectService) {
         return args -> {
-            volunteerService.saveVolunteer(
+            volunteerService.save(
                     VolunteerDto.builder()
                             .email("email@email.com")
                             .firstName("Juan")
@@ -26,6 +30,13 @@ public class SisdvacApplication {
                             .documentType(DocumentType.DNI)
                             .documentNumber("72471761")
                             .contactNumber("978592715")
+                            .build());
+
+            testSubjectService.save(
+                    TestSubjectDto.builder()
+                            .codeName("MICKEY01")
+                            .subjectType(SubjectType.RODENT)
+                            .status(Status.ACTIVE)
                             .build());
         };
     }

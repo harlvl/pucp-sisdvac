@@ -23,50 +23,39 @@ public class VolunteerServiceImpl implements IVolunteerService {
     private final VolunteerRepository volunteerRepository;
 
     @Override
-    public String testing() {
-        return "testing";
-    }
-
-    @Override
-    public List<VolunteerDto> getVolunteers() {
-        List<TestVolunteer> volunteers = volunteerRepository.findAll();
+    public List<VolunteerDto> findAll() {
+        List<TestVolunteer> dbItems = volunteerRepository.findAll();
         List<VolunteerDto> response = new ArrayList<>();
-        for (TestVolunteer volunteer:
-             volunteers) {
-            VolunteerDto volunteerDto = new VolunteerDto();
-            try {
-                volunteerDto = VolunteerParser.toDto(volunteer);
-                response.add(volunteerDto);
-            } catch (Exception e) {
-                LOGGER.error(String.format("Could not parse volunteer %d: %s %s", volunteer.getId(), volunteer.getFirstName(), volunteer.getLastName()));
-            }
-
+        for (TestVolunteer dbItem:
+             dbItems) {
+            response.add(VolunteerParser.toDto(dbItem));
         }
         return response;
     }
 
     @Override
-    public VolunteerDto saveVolunteer(VolunteerDto volunteerDto){
+    public VolunteerDto save(VolunteerDto volunteerDto){
         LOGGER.info("Saving volunteer...");
-        TestVolunteer savedVolunteer = volunteerRepository.save(VolunteerParser.fromDto(volunteerDto));
-        return VolunteerParser.toDto(savedVolunteer);
+        return VolunteerParser.toDto(
+                volunteerRepository.save(
+                        VolunteerParser.fromDto(volunteerDto)
+                )
+        );
     }
 
     @Override
-    public VolunteerDto updateVolunteer(VolunteerDto volunteerDto) {
+    public VolunteerDto update(VolunteerDto dto) {
         LOGGER.info("Updating volunteer");
 
-        TestVolunteer testVolunteer = volunteerRepository.findById(volunteerDto.getId()).orElseThrow(() -> new NotFoundException("Volunteer not found."));
-        LOGGER.info(String.format("Found volunteer: %d) %s|%s %s", testVolunteer.getId(), testVolunteer.getDocumentNumber(), testVolunteer.getFirstName(), testVolunteer.getLastName()));
+        TestVolunteer dbItem = volunteerRepository.findById(dto.getId())
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "Volunteer %d not found.", dto.getId()))
+                );
 
-        TestVolunteer updatedVolunteer = BaseParser.copyProperties(volunteerDto, testVolunteer);
-
-//        testVolunteer.setDocumentNumber(volunteerDto.getDocumentNumber());
-//        testVolunteer.setEmail(volunteerDto.getEmail());
-//        testVolunteer.setContactNumber(volunteerDto.getContactNumber());
-//        testVolunteer.setFirstName(volunteerDto.getFirstName());
-//        testVolunteer.setLastName(volunteerDto.getLastName());
-
-        return VolunteerParser.toDto(volunteerRepository.save(updatedVolunteer));
+        return VolunteerParser.toDto(
+                volunteerRepository.save(
+                        BaseParser.copyProperties(dto, dbItem)
+                )
+        );
     }
 }

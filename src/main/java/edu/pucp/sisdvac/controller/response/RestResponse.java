@@ -24,4 +24,6 @@ public class RestResponse {
     private String message;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object payload;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer hits;
 }
