@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 
 public interface ITestSubjectController {
     ResponseEntity<?> findAll();
-
     ResponseEntity<?> findById(Integer id);
     ResponseEntity<?> save(TestSubjectDto dto);
     ResponseEntity<?> update(TestSubjectDto dto);
