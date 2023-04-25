@@ -1,6 +1,10 @@
 package edu.pucp.sisdvac;
 
-import edu.pucp.sisdvac.controller.dto.*;
+import edu.pucp.sisdvac.controller.dto.AdverseEventDto;
+import edu.pucp.sisdvac.controller.dto.TestSubjectDto;
+import edu.pucp.sisdvac.controller.dto.TrialDto;
+import edu.pucp.sisdvac.controller.dto.TrialStatusDto;
+import edu.pucp.sisdvac.controller.dto.VolunteerDto;
 import edu.pucp.sisdvac.domain.enums.DocumentType;
 import edu.pucp.sisdvac.domain.enums.Stage;
 import edu.pucp.sisdvac.domain.enums.Status;

@@ -8,8 +8,6 @@ import java.util.Optional;
 
 public interface VolunteerRepository extends JpaRepository<TestVolunteer, Integer> {
     List<TestVolunteer> findAll();
-
     Optional<TestVolunteer> findByDocumentNumber(String documentNumber);
-
     Optional<TestVolunteer> findById(Integer id);
 }

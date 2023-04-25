@@ -7,6 +7,7 @@ import edu.pucp.sisdvac.service.IVolunteerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,12 +22,38 @@ import java.util.List;
 @RequestMapping("/api/v1/volunteer")
 @RequiredArgsConstructor
 public class VolunteerControllerImpl implements IVolunteerController {
-    private final IVolunteerService volunteerService;
+    private final IVolunteerService service;
     @Override
     @GetMapping
     public ResponseEntity<?> findAll() {
-        List<VolunteerDto> volunteerDtos = volunteerService.findAll();
-        return ResponseEntity.ok().body(RestResponse.builder().timestamp(LocalDateTime.now()).payload(volunteerDtos).build());
+        List<VolunteerDto> volunteerDtos = service.findAll();
+        return ResponseEntity.ok().body(RestResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .payload(volunteerDtos)
+                .build()
+        );
+    }
+
+    @Override
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable(name = "id") final Integer id) {
+        return ResponseEntity.ok().body(RestResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .payload(service.findById(id))
+                .hits(1)
+                .build()
+        );
+    }
+
+    @Override
+    @GetMapping("/document_number/{document_number}")
+    public ResponseEntity<?> findByDocumentNumber(@PathVariable(name = "document_number") final String key) {
+        return ResponseEntity.ok().body(RestResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .payload(service.findByDocumentNumber(key))
+                .hits(1)
+                .build()
+        );
     }
 
     @Override
@@ -34,7 +61,7 @@ public class VolunteerControllerImpl implements IVolunteerController {
     public ResponseEntity<?> save(@Valid @RequestBody VolunteerDto volunteerDto) {
         return ResponseEntity.ok().body(RestResponse.builder()
                 .timestamp(LocalDateTime.now())
-                .payload(volunteerService.save(volunteerDto))
+                .payload(service.save(volunteerDto))
                 .build());
     }
 
@@ -43,7 +70,7 @@ public class VolunteerControllerImpl implements IVolunteerController {
     public ResponseEntity<?> update(@Valid @RequestBody VolunteerDto volunteerDto) {
         return ResponseEntity.ok().body(RestResponse.builder()
                 .timestamp(LocalDateTime.now())
-                .payload(volunteerService.update(volunteerDto))
+                .payload(service.update(volunteerDto))
                 .build());
     }
 }

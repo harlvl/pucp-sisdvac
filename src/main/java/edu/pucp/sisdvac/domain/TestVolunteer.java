@@ -27,5 +27,5 @@ public class TestVolunteer {
     private String email;
     private String contactNumber;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.ACTIVE;
 }

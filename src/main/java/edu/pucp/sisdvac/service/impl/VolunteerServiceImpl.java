@@ -19,11 +19,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VolunteerServiceImpl implements IVolunteerService {
     private static final Logger LOGGER = LoggerFactory.getLogger(VolunteerServiceImpl.class);
-    private final VolunteerRepository volunteerRepository;
+    private final VolunteerRepository repository;
 
     @Override
     public List<VolunteerDto> findAll() {
-        List<TestVolunteer> dbItems = volunteerRepository.findAll();
+        List<TestVolunteer> dbItems = repository.findAll();
         List<VolunteerDto> response = new ArrayList<>();
         for (TestVolunteer dbItem:
              dbItems) {
@@ -33,11 +33,31 @@ public class VolunteerServiceImpl implements IVolunteerService {
     }
 
     @Override
-    public VolunteerDto save(VolunteerDto volunteerDto){
+    public VolunteerDto findById(Integer id) {
+        return VolunteerParser.toDto(
+                repository.findById(id)
+                        .orElseThrow(() -> new NotFoundException(String.format(
+                                "Volunteer with ID [%d] not found.", id
+                        )))
+        );
+    }
+
+    @Override
+    public VolunteerDto findByDocumentNumber(String key) {
+        return VolunteerParser.toDto(
+                repository.findByDocumentNumber(key)
+                        .orElseThrow(() -> new NotFoundException(String.format(
+                                "Volunteer with document number [%s] not found.", key
+                        )))
+        );
+    }
+
+    @Override
+    public VolunteerDto save(VolunteerDto dto){
         LOGGER.info("Creating new volunteer...");
         return VolunteerParser.toDto(
-                volunteerRepository.save(
-                        VolunteerParser.fromDto(volunteerDto)
+                repository.save(
+                        VolunteerParser.fromDto(dto)
                 )
         );
     }
@@ -46,13 +66,13 @@ public class VolunteerServiceImpl implements IVolunteerService {
     public VolunteerDto update(VolunteerDto dto) {
         LOGGER.info("Updating existing volunteer...");
 
-        TestVolunteer dbItem = volunteerRepository.findById(dto.getId())
+        TestVolunteer dbItem = repository.findById(dto.getId())
                 .orElseThrow(() -> new NotFoundException(String.format(
                         "Volunteer %d not found.", dto.getId()))
                 );
 
         return VolunteerParser.toDto(
-                volunteerRepository.save(
+                repository.save(
                         BaseParser.copyProperties(dto, dbItem)
                 )
         );

@@ -19,7 +19,7 @@ public class RestResponse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private HttpStatus status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_FORMAT)
-    private LocalDateTime timestamp;
+    private LocalDateTime timestamp = LocalDateTime.now();
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
     @JsonInclude(JsonInclude.Include.NON_NULL)
