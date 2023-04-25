@@ -50,6 +50,18 @@ public class TrialController implements ITrialController {
     }
 
     @Override
+    @GetMapping("/ins_number/{ins_number}")
+    public ResponseEntity<?> findByInsNumber(@PathVariable(name = "ins_number") final String key) {
+        return ResponseEntity.ok().body(
+                RestResponse.builder()
+                        .timestamp(LocalDateTime.now())
+                        .payload(service.findByInsNumber(key))
+                        .hits(1)
+                        .build()
+        );
+    }
+
+    @Override
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody TrialDto dto) {
         return ResponseEntity.ok().body(

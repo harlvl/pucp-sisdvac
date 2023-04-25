@@ -8,6 +8,7 @@ import java.util.List;
 public interface ITrialService {
     List<TrialDto> findAll();
     TrialDto findById(Integer id);
+    TrialDto findByInsNumber(String key);
     TrialDto save(TrialDto dto);
     TrialDto update(Integer id, TrialDto dto);
 }

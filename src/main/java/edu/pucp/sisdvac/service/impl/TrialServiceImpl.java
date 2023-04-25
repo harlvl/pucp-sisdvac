@@ -42,6 +42,16 @@ public class TrialServiceImpl implements ITrialService {
     }
 
     @Override
+    public TrialDto findByInsNumber(String key) {
+        return TrialParser.toDto(
+                repository.findByInsNumber(key)
+                        .orElseThrow(() -> new NotFoundException(String.format(
+                                "Trial with INS number [%s] not found", key
+                        )))
+        );
+    }
+
+    @Override
     public TrialDto save(TrialDto dto) {
         LOGGER.info("Creating new trial...");
         return TrialParser.toDto(

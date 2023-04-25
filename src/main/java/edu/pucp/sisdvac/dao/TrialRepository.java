@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface TrialRepository extends JpaRepository<Trial, Integer> {
     List<Trial> findAll();
     Optional<Trial> findById(Integer integer);
+    Optional<Trial> findByInsNumber(String insNumber);
 }

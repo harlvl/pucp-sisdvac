@@ -23,13 +23,14 @@ public class Trial {
     @GeneratedValue
     private Integer id;
     private String title;
-    @Column(name = "ins_number", unique = true)
+    @Column(name = "ins_number", unique = true, nullable = false)
     private String insNumber;
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Stage stage; // clinical or preclinical
     private Integer phase;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     private Date startDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
     @Column(name = "end_date")
