@@ -43,6 +43,16 @@ public class CandidateVaccineImpl implements ICandidateVaccineService {
     }
 
     @Override
+    public CandidateVaccineDto findByCode(String key) {
+        return CandidateVaccineParser.toDto(
+                repository.findByCode(key)
+                        .orElseThrow(() -> new NotFoundException(String.format(
+                                "Candidate vaccine with code [%s] not found", key
+                        )))
+        );
+    }
+
+    @Override
     public CandidateVaccineDto save(CandidateVaccineDto dto) {
         LOGGER.info("Creating new vaccine candidate...");
         return CandidateVaccineParser.toDto(

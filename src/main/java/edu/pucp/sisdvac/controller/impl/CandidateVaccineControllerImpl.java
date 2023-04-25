@@ -25,7 +25,6 @@ import java.util.List;
 public class CandidateVaccineControllerImpl implements ICandidateVaccineController {
     private final ICandidateVaccineService service;
 
-
     @Override
     @GetMapping
     public ResponseEntity<?> findAll() {
@@ -46,6 +45,18 @@ public class CandidateVaccineControllerImpl implements ICandidateVaccineControll
                 RestResponse.builder()
                         .timestamp(LocalDateTime.now())
                         .payload(service.findById(id))
+                        .hits(1)
+                        .build()
+        );
+    }
+
+    @Override
+    @GetMapping("/code/{code}")
+    public ResponseEntity<?> findByCode(@PathVariable(name = "code") final String key) {
+        return ResponseEntity.ok().body(
+                RestResponse.builder()
+                        .timestamp(LocalDateTime.now())
+                        .payload(service.findByCode(key))
                         .hits(1)
                         .build()
         );
