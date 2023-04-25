@@ -41,6 +41,16 @@ public class TestSubjectServiceImpl implements ITestSubjectService {
     }
 
     @Override
+    public TestSubjectDto findByCodeName(String key) {
+        return TestSubjectParser.toDto(
+                repository.findByCodeName(key)
+                        .orElseThrow(() -> new NotFoundException(String.format(
+                                "Test subject code name [%s] not found.", key
+                        )))
+        );
+    }
+
+    @Override
     public TestSubjectDto save(TestSubjectDto dto) {
         LOGGER.info("Creating new test subject...");
         return TestSubjectParser.toDto(

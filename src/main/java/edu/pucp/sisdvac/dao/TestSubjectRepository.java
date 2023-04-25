@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface TestSubjectRepository extends JpaRepository<TestSubject, Integer> {
     List<TestSubject> findAll();
-    Optional<TestSubject> findById(Integer integer);
-
+    Optional<TestSubject> findById(Integer id);
+    Optional<TestSubject> findByCodeName(String key);
 
 }

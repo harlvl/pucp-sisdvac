@@ -21,7 +21,8 @@ public class TestSubject {
     private Integer id;
     @Enumerated(EnumType.STRING)
     private SubjectType subjectType;
+    @Column(unique = true, nullable = false)
     private String codeName;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.ACTIVE;
 }

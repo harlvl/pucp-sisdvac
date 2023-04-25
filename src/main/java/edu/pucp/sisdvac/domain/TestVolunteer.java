@@ -20,7 +20,7 @@ public class TestVolunteer {
     private Integer id;
     @Enumerated(EnumType.STRING)
     private DocumentType documentType;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String documentNumber;
     private String firstName;
     private String lastName;

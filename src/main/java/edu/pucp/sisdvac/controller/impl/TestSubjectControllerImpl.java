@@ -50,6 +50,18 @@ public class TestSubjectControllerImpl implements ITestSubjectController {
     }
 
     @Override
+    @GetMapping("/code_name/{code_name}")
+    public ResponseEntity<?> findByCodeName(@PathVariable(name = "code_name") final String key) {
+        return ResponseEntity.ok().body(
+                RestResponse.builder()
+                        .timestamp(LocalDateTime.now())
+                        .payload(service.findByCodeName(key))
+                        .hits(1)
+                        .build()
+        );
+    }
+
+    @Override
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody final TestSubjectDto dto) {
         return ResponseEntity.ok().body(
