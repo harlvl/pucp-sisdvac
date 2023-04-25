@@ -58,5 +58,6 @@ public class TrialDto {
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
         private Date endDate;
         private String subject; //applies only for Preclinical
+        private List<AdverseEventDto> adverseEvents;
     }
 }

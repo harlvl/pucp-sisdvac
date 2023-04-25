@@ -1,9 +1,6 @@
 package edu.pucp.sisdvac;
 
-import edu.pucp.sisdvac.controller.dto.TestSubjectDto;
-import edu.pucp.sisdvac.controller.dto.TrialDto;
-import edu.pucp.sisdvac.controller.dto.TrialStatusDto;
-import edu.pucp.sisdvac.controller.dto.VolunteerDto;
+import edu.pucp.sisdvac.controller.dto.*;
 import edu.pucp.sisdvac.domain.enums.DocumentType;
 import edu.pucp.sisdvac.domain.enums.Stage;
 import edu.pucp.sisdvac.domain.enums.Status;
@@ -39,10 +36,24 @@ public class SisdvacApplication {
 
             // build preclinical trial
             List<TrialDto.AdvanceItem> advanceItems = new ArrayList<>();
-            advanceItems.add(TrialDto.AdvanceItem.builder()
-                    .subjectsTotal(10)
-                    .startDate(new Date())
-                    .build());
+            List<AdverseEventDto> adverseEventDtos = new ArrayList<>();
+            adverseEventDtos.add(
+                    AdverseEventDto.builder()
+                            .sex('F')
+                            .patientCID("CID98875421")
+                            .description("Alergia a X")
+                            .age(23)
+                            .build()
+            );
+
+            advanceItems.add(
+                    TrialDto.AdvanceItem.builder()
+                            .adverseEvents(adverseEventDtos)
+                            .subjectsTotal(10)
+                            .startDate(new Date())
+                            .build()
+            );
+
             TrialDto preclinicalTrial = TrialDto.builder()
                     .insNumber("123456789")
                     .stage(Stage.PRECLINICAL)
@@ -59,6 +70,7 @@ public class SisdvacApplication {
 
             trialService.save(preclinicalTrial);
 
+            // register admin user
             authenticationService.register(
                     RegisterRequest.builder()
                             .email("luis.viguria@pucp.pe")
@@ -69,6 +81,7 @@ public class SisdvacApplication {
                             .build()
             );
 
+            // create new volunteer
             volunteerService.save(
                     VolunteerDto.builder()
                             .email("email@email.com")
@@ -79,6 +92,7 @@ public class SisdvacApplication {
                             .contactNumber("978592715")
                             .build());
 
+            // create new test subject
             testSubjectService.save(
                     TestSubjectDto.builder()
                             .codeName("MICKEY01")

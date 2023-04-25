@@ -34,6 +34,6 @@ public class Advance {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
     private Date endDate;
     private String subject; //applies only for Preclinical
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<AdverseEvent> adverseEvents;
 }
