@@ -1,6 +1,5 @@
 package edu.pucp.sisdvac.controller;
 
-import edu.pucp.sisdvac.controller.dto.InfectiousDiseaseDto;
 import edu.pucp.sisdvac.controller.dto.TrialDto;
 import org.springframework.http.ResponseEntity;
 

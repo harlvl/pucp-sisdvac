@@ -1,30 +1,25 @@
-package edu.pucp.sisdvac.domain;
+package edu.pucp.sisdvac.controller.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "adverse_event")
-public class AdverseEvent {
-    @Id
-    @GeneratedValue
+public class AdverseEventDto {
     private Integer id;
-
-    @Column(name = "patient_cid")
+    @NotNull
     private String patientCID;
+    @NotNull
     private String description;
+    @NotNull
     private Integer age;
+    @NotNull
     private char sex; // F or M
     private Double weight;
     private Double height;

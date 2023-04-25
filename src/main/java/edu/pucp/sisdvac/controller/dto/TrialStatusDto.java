@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Data
 @Builder
@@ -19,7 +20,7 @@ public class TrialStatusDto {
     private String name;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
     @NotNull
-    private Long startDate;
+    private Date startDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
-    private Long endDate;
+    private Date endDate;
 }

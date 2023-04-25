@@ -7,7 +7,6 @@ import edu.pucp.sisdvac.dao.parser.BaseParser;
 import edu.pucp.sisdvac.dao.parser.CandidateVaccineParser;
 import edu.pucp.sisdvac.domain.CandidateVaccine;
 import edu.pucp.sisdvac.service.ICandidateVaccineService;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -21,10 +23,10 @@ public class TrialStatus {
     private String name;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
     @Column(name = "start_date")
-    private Long startDate;
+    private Date startDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
     @Column(name = "end_date")
-    private Long endDate;
+    private Date endDate;
 
     @OneToOne(mappedBy = "status")
     private Trial trial;

@@ -1,16 +1,12 @@
 package edu.pucp.sisdvac.service.impl;
 
-import edu.pucp.sisdvac.controller.dto.CandidateVaccineDto;
 import edu.pucp.sisdvac.controller.dto.InfectiousDiseaseDto;
 import edu.pucp.sisdvac.controller.exception.NotFoundException;
 import edu.pucp.sisdvac.dao.InfectiousDiseaseRepository;
 import edu.pucp.sisdvac.dao.parser.BaseParser;
-import edu.pucp.sisdvac.dao.parser.CandidateVaccineParser;
 import edu.pucp.sisdvac.dao.parser.InfectiousDiseaseParser;
-import edu.pucp.sisdvac.domain.CandidateVaccine;
 import edu.pucp.sisdvac.domain.InfectiousDisease;
 import edu.pucp.sisdvac.service.IInfectiousDiseaseService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

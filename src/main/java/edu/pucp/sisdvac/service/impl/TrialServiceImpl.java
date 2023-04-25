@@ -1,13 +1,10 @@
 package edu.pucp.sisdvac.service.impl;
 
-import edu.pucp.sisdvac.controller.dto.CandidateVaccineDto;
 import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.controller.exception.NotFoundException;
 import edu.pucp.sisdvac.dao.TrialRepository;
 import edu.pucp.sisdvac.dao.parser.BaseParser;
-import edu.pucp.sisdvac.dao.parser.CandidateVaccineParser;
 import edu.pucp.sisdvac.dao.parser.TrialParser;
-import edu.pucp.sisdvac.domain.CandidateVaccine;
 import edu.pucp.sisdvac.domain.Trial;
 import edu.pucp.sisdvac.service.ITrialService;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +43,7 @@ public class TrialServiceImpl implements ITrialService {
 
     @Override
     public TrialDto save(TrialDto dto) {
-        LOGGER.info("Creating new vaccine candidate...");
+        LOGGER.info("Creating new trial...");
         return TrialParser.toDto(
                 repository.save(
                         TrialParser.fromDto(dto)

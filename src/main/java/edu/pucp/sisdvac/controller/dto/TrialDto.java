@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -32,6 +33,30 @@ public class TrialDto {
     private Date startDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
     private Date endDate;
-
+    @NotNull
     private TrialStatusDto status;
+    private List<AdvanceItem> advanceItems;
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AdvanceItem {
+        private Integer id;
+        @NotNull
+        private Integer subjectsTotal;
+        private Integer subjectsCompleted;
+        private Integer subjectsAbandoned;
+        private Integer subjectsFailed;
+        private Integer males;
+        private Integer females;
+        private Integer minAge;
+        private Integer maxAge;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
+        @NotNull
+        private Date startDate;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
+        private Date endDate;
+        private String subject; //applies only for Preclinical
+    }
 }

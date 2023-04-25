@@ -1,10 +1,9 @@
 package edu.pucp.sisdvac.security.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.pucp.sisdvac.security.config.JwtService;
-import edu.pucp.sisdvac.domain.user.Role;
-import edu.pucp.sisdvac.domain.user.User;
 import edu.pucp.sisdvac.dao.UserRepository;
+import edu.pucp.sisdvac.domain.user.User;
+import edu.pucp.sisdvac.security.config.JwtService;
 import edu.pucp.sisdvac.security.token.Token;
 import edu.pucp.sisdvac.security.token.TokenRepository;
 import edu.pucp.sisdvac.security.token.TokenType;
