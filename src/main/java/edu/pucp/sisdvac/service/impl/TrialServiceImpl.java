@@ -71,6 +71,17 @@ public class TrialServiceImpl implements ITrialService {
                         "Trial [%d] not found.", id)
                 ));
 
+        if (dto.getTpp() != null) {
+            if (dto.getTpp().getItems().size() != dbItem.getTargetProductProfile().getItems().size()) {
+                LOGGER.info(String.format(
+                        "Target product profile length has changed from %d to %d",
+                        dbItem.getTargetProductProfile().getItems().size(),
+                        dto.getTpp().getItems().size()
+                ));
+                dbItem.setTargetProductProfile(TrialParser.updateTpp(dto.getTpp()));
+            }
+        }
+
         return TrialParser.toDto(
                 repository.save(
                         BaseParser.copyProperties(dto, dbItem)

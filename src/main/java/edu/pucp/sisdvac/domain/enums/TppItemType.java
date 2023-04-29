@@ -1,0 +1,10 @@
+package edu.pucp.sisdvac.domain.enums;
+
+public enum TppItemType {
+    TARGET_POPULATION,
+    DESIRED_EFFICACY_PROFILE,
+    DESIRED_IMMUNOLOGICAL_RESPONSE,
+    ADMINISTRATION_ROUTE,
+    STORAGE_CONDITION,
+    OTHER
+}

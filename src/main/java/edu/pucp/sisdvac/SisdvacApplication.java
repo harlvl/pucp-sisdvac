@@ -1,14 +1,7 @@
 package edu.pucp.sisdvac;
 
-import edu.pucp.sisdvac.controller.dto.AdverseEventDto;
-import edu.pucp.sisdvac.controller.dto.TestSubjectDto;
-import edu.pucp.sisdvac.controller.dto.TrialDto;
-import edu.pucp.sisdvac.controller.dto.TrialStatusDto;
-import edu.pucp.sisdvac.controller.dto.VolunteerDto;
-import edu.pucp.sisdvac.domain.enums.DocumentType;
-import edu.pucp.sisdvac.domain.enums.Stage;
-import edu.pucp.sisdvac.domain.enums.Status;
-import edu.pucp.sisdvac.domain.enums.SubjectType;
+import edu.pucp.sisdvac.controller.dto.*;
+import edu.pucp.sisdvac.domain.enums.*;
 import edu.pucp.sisdvac.domain.user.Role;
 import edu.pucp.sisdvac.security.auth.AuthenticationService;
 import edu.pucp.sisdvac.security.auth.RegisterRequest;
@@ -58,6 +51,13 @@ public class SisdvacApplication {
                             .build()
             );
 
+            List<TppItemDto> itemDtos = new ArrayList<>();
+            itemDtos.add(TppItemDto.builder()
+                    .type(TppItemType.STORAGE_CONDITION)
+                    .detail("Under 5 degrees")
+                    .build()
+            );
+
             TrialDto preclinicalTrial = TrialDto.builder()
                     .insNumber("123456789")
                     .stage(Stage.PRECLINICAL)
@@ -70,6 +70,9 @@ public class SisdvacApplication {
                                     .build()
                     )
                     .advanceItems(advanceItems)
+                    .tpp(TppDto.builder()
+                            .items(itemDtos)
+                            .build())
                     .build();
 
             trialService.save(preclinicalTrial);
