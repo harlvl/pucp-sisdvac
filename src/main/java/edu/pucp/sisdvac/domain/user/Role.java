@@ -1,6 +1,8 @@
 package edu.pucp.sisdvac.domain.user;
 
 public enum Role {
-    USER,
-    ADMIN
+    ADMIN,
+    SPONSOR,
+    DOCTOR_MAIN,
+    DOCTOR_MEMBER
 }

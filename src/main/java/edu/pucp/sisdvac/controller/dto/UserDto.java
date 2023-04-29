@@ -1,7 +1,9 @@
-package edu.pucp.sisdvac.security.auth;
+package edu.pucp.sisdvac.controller.dto;
 
 import edu.pucp.sisdvac.domain.enums.DocumentType;
 import edu.pucp.sisdvac.domain.user.Role;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,21 +13,26 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
-    @NotNull
-    private String firstName;
-    @NotNull
-    private String lastName;
-    @NotNull
-    private String email;
-    @NotNull
-    private String password;
-    @NotNull
-    private Role role;
-    @NotNull
-    private DocumentType documentType;
+@AllArgsConstructor
+public class UserDto {
+    private Integer id;
+
     @NotNull
     private String documentNumber;
+
+    @NotNull
+    private DocumentType documentType;
+
+    @NotNull
+    private String firstName;
+
+    @NotNull
+    private String lastName;
+
+    @NotNull
+    private String email;
+
+    @NotNull
+    private Role role;
 }

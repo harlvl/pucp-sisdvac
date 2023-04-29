@@ -85,6 +85,8 @@ public class SisdvacApplication {
                             .firstName("Luis")
                             .lastName("Viguria")
                             .role(Role.ADMIN)
+                            .documentType(DocumentType.DNI)
+                            .documentNumber("72471761")
                             .build()
             );
 
