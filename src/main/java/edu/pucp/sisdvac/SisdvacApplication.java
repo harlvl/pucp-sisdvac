@@ -8,7 +8,6 @@ import edu.pucp.sisdvac.security.auth.RegisterRequest;
 import edu.pucp.sisdvac.service.impl.TestSubjectServiceImpl;
 import edu.pucp.sisdvac.service.impl.TrialServiceImpl;
 import edu.pucp.sisdvac.service.impl.VolunteerServiceImpl;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -47,7 +46,8 @@ public class SisdvacApplication {
                           TrialServiceImpl trialService) {
         return args -> {
 
-            // build preclinical trial
+            // build preclinical trials
+            // trial 1
             List<TrialDto.AdvanceItem> advanceItems = new ArrayList<>();
             List<AdverseEventDto> adverseEventDtos = new ArrayList<>();
             adverseEventDtos.add(
@@ -91,7 +91,25 @@ public class SisdvacApplication {
                             .build())
                     .build();
 
+            TrialDto preclinicalTrial2 = TrialDto.builder()
+                    .insNumber("1234567891")
+                    .stage(Stage.PRECLINICAL)
+                    .startDate(new Date())
+                    .title("Estudio clinico de prueba 2")
+                    .status(
+                            TrialStatusDto.builder()
+                                    .name("Estado inicial")
+                                    .startDate(new Date())
+                                    .build()
+                    )
+                    .advanceItems(advanceItems)
+                    .tpp(TppDto.builder()
+                            .items(itemDtos)
+                            .build())
+                    .build();
+
             trialService.save(preclinicalTrial);
+            trialService.save(preclinicalTrial2);
 
             // register admin user
             authenticationService.register(
