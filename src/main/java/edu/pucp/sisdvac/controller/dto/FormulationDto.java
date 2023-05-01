@@ -1,23 +1,17 @@
 package edu.pucp.sisdvac.controller.dto;
 
-import edu.pucp.sisdvac.domain.enums.TppItemType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
+import java.util.Collection;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TppItemDto {
+public class FormulationDto {
     private Integer id;
-
-    @NotNull
-    private TppItemType type;
-
-    @NotNull
-    private String detail;
+    private Collection<FormulationItemDto> items;
 }

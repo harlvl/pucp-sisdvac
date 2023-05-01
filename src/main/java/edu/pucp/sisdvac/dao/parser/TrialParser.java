@@ -1,8 +1,10 @@
 package edu.pucp.sisdvac.dao.parser;
 
+import edu.pucp.sisdvac.controller.dto.FormulationDto;
 import edu.pucp.sisdvac.controller.dto.TppDto;
 import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.domain.Advance;
+import edu.pucp.sisdvac.domain.Formulation;
 import edu.pucp.sisdvac.domain.TargetProductProfile;
 import edu.pucp.sisdvac.domain.Trial;
 
@@ -24,6 +26,7 @@ public class TrialParser {
             );
         }
 
+        output.setFormulation(FormulationParser.toDto(input.getFormulation()));
         output.setTpp(TppParser.toDto(input.getTargetProductProfile()));
         output.setAdvanceItems(advanceItems);
 
@@ -44,6 +47,7 @@ public class TrialParser {
             );
         }
 
+        output.setFormulation(FormulationParser.fromDto(input.getFormulation()));
         output.setTargetProductProfile(TppParser.fromDto(input.getTpp()));
         output.setAdvances(advances);
 
@@ -52,5 +56,9 @@ public class TrialParser {
 
     public static TargetProductProfile updateTpp(TppDto input) {
         return TppParser.fromDto(input);
+    }
+
+    public static Formulation updateFormulation(FormulationDto input) {
+        return FormulationParser.fromDto(input);
     }
 }

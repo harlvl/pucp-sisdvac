@@ -1,7 +1,20 @@
 package edu.pucp.sisdvac;
 
-import edu.pucp.sisdvac.controller.dto.*;
-import edu.pucp.sisdvac.domain.enums.*;
+import edu.pucp.sisdvac.controller.dto.AdverseEventDto;
+import edu.pucp.sisdvac.controller.dto.FormulationDto;
+import edu.pucp.sisdvac.controller.dto.FormulationItemDto;
+import edu.pucp.sisdvac.controller.dto.TestSubjectDto;
+import edu.pucp.sisdvac.controller.dto.TppDto;
+import edu.pucp.sisdvac.controller.dto.TppItemDto;
+import edu.pucp.sisdvac.controller.dto.TrialDto;
+import edu.pucp.sisdvac.controller.dto.TrialStatusDto;
+import edu.pucp.sisdvac.controller.dto.VolunteerDto;
+import edu.pucp.sisdvac.domain.enums.DocumentType;
+import edu.pucp.sisdvac.domain.enums.FormulationItemType;
+import edu.pucp.sisdvac.domain.enums.Stage;
+import edu.pucp.sisdvac.domain.enums.Status;
+import edu.pucp.sisdvac.domain.enums.SubjectType;
+import edu.pucp.sisdvac.domain.enums.TppItemType;
 import edu.pucp.sisdvac.domain.user.Role;
 import edu.pucp.sisdvac.security.auth.AuthenticationService;
 import edu.pucp.sisdvac.security.auth.RegisterRequest;
@@ -74,6 +87,13 @@ public class SisdvacApplication {
                     .build()
             );
 
+            List<FormulationItemDto> formulationItemDtos = new ArrayList<>();
+            formulationItemDtos.add(FormulationItemDto.builder()
+                    .type(FormulationItemType.COMPOSITION)
+                    .detail("Biocompatible y no tóxico")
+                    .build()
+            );
+
             TrialDto preclinicalTrial = TrialDto.builder()
                     .insNumber("123456789")
                     .stage(Stage.PRECLINICAL)
@@ -86,6 +106,9 @@ public class SisdvacApplication {
                                     .build()
                     )
                     .advanceItems(advanceItems)
+                    .formulation(FormulationDto.builder()
+                            .items(formulationItemDtos)
+                            .build())
                     .tpp(TppDto.builder()
                             .items(itemDtos)
                             .build())
@@ -103,6 +126,9 @@ public class SisdvacApplication {
                                     .build()
                     )
                     .advanceItems(advanceItems)
+                    .formulation(FormulationDto.builder()
+                    .items(formulationItemDtos)
+                    .build())
                     .tpp(TppDto.builder()
                             .items(itemDtos)
                             .build())
