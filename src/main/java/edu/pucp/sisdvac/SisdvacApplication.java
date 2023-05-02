@@ -150,6 +150,31 @@ public class SisdvacApplication {
                             .build()
             );
 
+            //register doctor user
+            authenticationService.register(
+                    RegisterRequest.builder()
+                            .email("francisco.bolognesi@pucp.pe")
+                            .password("1234")
+                            .firstName("Francisco")
+                            .lastName("Bolognesi")
+                            .role(Role.DOCTOR_MAIN)
+                            .documentType(DocumentType.DNI)
+                            .documentNumber("72471762")
+                            .build()
+            );
+
+            authenticationService.register(
+                    RegisterRequest.builder()
+                            .email("jose.olaya@pucp.pe")
+                            .password("1234")
+                            .firstName("Jose")
+                            .lastName("Olaya")
+                            .role(Role.DOCTOR_MEMBER)
+                            .documentType(DocumentType.DNI)
+                            .documentNumber("72471763")
+                            .build()
+            );
+
             // create new volunteer
             volunteerService.save(
                     VolunteerDto.builder()
@@ -157,7 +182,7 @@ public class SisdvacApplication {
                             .firstName("Juan")
                             .lastName("Perez")
                             .documentType(DocumentType.DNI)
-                            .documentNumber("72471761")
+                            .documentNumber("62471761")
                             .contactNumber("978592715")
                             .build());
 
