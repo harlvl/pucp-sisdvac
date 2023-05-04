@@ -16,11 +16,14 @@ import java.util.Date;
 @AllArgsConstructor
 public class TrialStatusDto {
     private Integer id;
+
     @NotNull
     private String name;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
     @NotNull
     private Date startDate;
+    
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
     private Date endDate;
 }

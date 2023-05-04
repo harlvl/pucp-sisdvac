@@ -57,4 +57,14 @@ public class Trial {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<Advance> advances;
 
+    // START audit fields
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
+    @Column(name = "last_updated_at")
+    private Date lastUpdatedAt;
+    // END audit fields
+
 }

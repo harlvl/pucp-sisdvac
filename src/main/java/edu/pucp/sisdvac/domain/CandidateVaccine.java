@@ -18,7 +18,10 @@ public class CandidateVaccine {
     @Id
     @GeneratedValue
     private Integer id;
+
+    @Column(nullable = false)
     private String name;
+
     @Column(unique = true, nullable = false)
     private String code;
     private String description;

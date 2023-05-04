@@ -74,4 +74,11 @@ public class TrialDto {
         private String subject; //applies only for Preclinical
         private List<AdverseEventDto> adverseEvents;
     }
+
+    // audit fields
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
+    private Date createdAt;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
+    private Date lastUpdatedAt;
 }

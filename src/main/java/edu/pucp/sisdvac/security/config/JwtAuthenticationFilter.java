@@ -44,15 +44,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         jwt = authHeader.substring(7); // starting after the Bearer part of the header
 
-        LOGGER.info("Extracting username...");
+        LOGGER.debug("Extracting username...");
         userEmail = jwtService.extractUsername(jwt);
 
         // second condition being null means the user is not yet authenticated
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            LOGGER.info("Extracting user details...");
+            LOGGER.debug("Extracting user details...");
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
-            LOGGER.info("Validating token...");
+            LOGGER.debug("Validating token...");
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
