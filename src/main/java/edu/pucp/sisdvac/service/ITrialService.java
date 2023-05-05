@@ -1,6 +1,5 @@
 package edu.pucp.sisdvac.service;
 
-import edu.pucp.sisdvac.controller.dto.CandidateVaccineDto;
 import edu.pucp.sisdvac.controller.dto.TrialDto;
 
 import java.util.List;

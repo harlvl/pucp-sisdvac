@@ -1,14 +1,20 @@
 package edu.pucp.sisdvac;
 
 import edu.pucp.sisdvac.controller.dto.AdverseEventDto;
+import edu.pucp.sisdvac.controller.dto.FormulationDto;
+import edu.pucp.sisdvac.controller.dto.FormulationItemDto;
 import edu.pucp.sisdvac.controller.dto.TestSubjectDto;
+import edu.pucp.sisdvac.controller.dto.TppDto;
+import edu.pucp.sisdvac.controller.dto.TppItemDto;
 import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.controller.dto.TrialStatusDto;
 import edu.pucp.sisdvac.controller.dto.VolunteerDto;
 import edu.pucp.sisdvac.domain.enums.DocumentType;
+import edu.pucp.sisdvac.domain.enums.FormulationItemType;
 import edu.pucp.sisdvac.domain.enums.Stage;
 import edu.pucp.sisdvac.domain.enums.Status;
 import edu.pucp.sisdvac.domain.enums.SubjectType;
+import edu.pucp.sisdvac.domain.enums.TppItemType;
 import edu.pucp.sisdvac.domain.user.Role;
 import edu.pucp.sisdvac.security.auth.AuthenticationService;
 import edu.pucp.sisdvac.security.auth.RegisterRequest;
@@ -19,6 +25,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +38,19 @@ public class SisdvacApplication {
     public static void main(String[] args) {
         SpringApplication.run(SisdvacApplication.class, args);
     }
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        String uiHost = "http://localhost:4200";
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedMethods("*")
+                        .allowedHeaders("*")
+                        .allowedOrigins(uiHost);
+            }
+        };
+    }
 
     @Bean
     CommandLineRunner run(VolunteerServiceImpl volunteerService,
@@ -38,7 +59,8 @@ public class SisdvacApplication {
                           TrialServiceImpl trialService) {
         return args -> {
 
-            // build preclinical trial
+            // build preclinical trials
+            // trial 1
             List<TrialDto.AdvanceItem> advanceItems = new ArrayList<>();
             List<AdverseEventDto> adverseEventDtos = new ArrayList<>();
             adverseEventDtos.add(
@@ -58,6 +80,20 @@ public class SisdvacApplication {
                             .build()
             );
 
+            List<TppItemDto> itemDtos = new ArrayList<>();
+            itemDtos.add(TppItemDto.builder()
+                    .type(TppItemType.STORAGE_CONDITION)
+                    .detail("Under 5 degrees")
+                    .build()
+            );
+
+            List<FormulationItemDto> formulationItemDtos = new ArrayList<>();
+            formulationItemDtos.add(FormulationItemDto.builder()
+                    .type(FormulationItemType.COMPOSITION)
+                    .detail("Biocompatible y no tóxico")
+                    .build()
+            );
+
             TrialDto preclinicalTrial = TrialDto.builder()
                     .insNumber("123456789")
                     .stage(Stage.PRECLINICAL)
@@ -70,9 +106,36 @@ public class SisdvacApplication {
                                     .build()
                     )
                     .advanceItems(advanceItems)
+                    .formulation(FormulationDto.builder()
+                            .items(formulationItemDtos)
+                            .build())
+                    .tpp(TppDto.builder()
+                            .items(itemDtos)
+                            .build())
+                    .build();
+
+            TrialDto preclinicalTrial2 = TrialDto.builder()
+                    .insNumber("1234567891")
+                    .stage(Stage.PRECLINICAL)
+                    .startDate(new Date())
+                    .title("Estudio clinico de prueba 2")
+                    .status(
+                            TrialStatusDto.builder()
+                                    .name("Estado inicial")
+                                    .startDate(new Date())
+                                    .build()
+                    )
+                    .advanceItems(advanceItems)
+                    .formulation(FormulationDto.builder()
+                    .items(formulationItemDtos)
+                    .build())
+                    .tpp(TppDto.builder()
+                            .items(itemDtos)
+                            .build())
                     .build();
 
             trialService.save(preclinicalTrial);
+            trialService.save(preclinicalTrial2);
 
             // register admin user
             authenticationService.register(
@@ -82,6 +145,33 @@ public class SisdvacApplication {
                             .firstName("Luis")
                             .lastName("Viguria")
                             .role(Role.ADMIN)
+                            .documentType(DocumentType.DNI)
+                            .documentNumber("72471761")
+                            .build()
+            );
+
+            //register doctor user
+            authenticationService.register(
+                    RegisterRequest.builder()
+                            .email("francisco.bolognesi@pucp.pe")
+                            .password("1234")
+                            .firstName("Francisco")
+                            .lastName("Bolognesi")
+                            .role(Role.DOCTOR_MAIN)
+                            .documentType(DocumentType.DNI)
+                            .documentNumber("72471762")
+                            .build()
+            );
+
+            authenticationService.register(
+                    RegisterRequest.builder()
+                            .email("jose.olaya@pucp.pe")
+                            .password("1234")
+                            .firstName("Jose")
+                            .lastName("Olaya")
+                            .role(Role.DOCTOR_MEMBER)
+                            .documentType(DocumentType.DNI)
+                            .documentNumber("72471763")
                             .build()
             );
 
@@ -92,7 +182,7 @@ public class SisdvacApplication {
                             .firstName("Juan")
                             .lastName("Perez")
                             .documentType(DocumentType.DNI)
-                            .documentNumber("72471761")
+                            .documentNumber("62471761")
                             .contactNumber("978592715")
                             .build());
 

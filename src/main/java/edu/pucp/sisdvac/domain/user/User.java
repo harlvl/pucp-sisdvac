@@ -1,5 +1,6 @@
 package edu.pucp.sisdvac.domain.user;
 
+import edu.pucp.sisdvac.domain.enums.DocumentType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,11 +23,22 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue
     private Integer id;
+
+    @Column(unique = true, nullable = false)
     private String documentNumber;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private DocumentType documentType;
     private String firstName;
     private String lastName;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String password;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 

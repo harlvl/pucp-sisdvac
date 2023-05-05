@@ -20,21 +20,35 @@ import java.util.List;
 @AllArgsConstructor
 public class TrialDto {
     private Integer id;
+
     @NotNull
     private String title;
+
     @NotNull
     private String insNumber;
+
     @Enumerated(EnumType.STRING)
     @NotNull
     private Stage stage; // clinical or preclinical
+
     private Integer phase;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
     @NotNull
     private Date startDate;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
     private Date endDate;
+
     @NotNull
     private TrialStatusDto status;
+
+    @NotNull
+    private TppDto tpp;
+
+    @NotNull
+    private FormulationDto formulation;
+
     private List<AdvanceItem> advanceItems;
 
     @Data
@@ -60,4 +74,11 @@ public class TrialDto {
         private String subject; //applies only for Preclinical
         private List<AdverseEventDto> adverseEvents;
     }
+
+    // audit fields
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
+    private Date createdAt;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
+    private Date lastUpdatedAt;
 }
