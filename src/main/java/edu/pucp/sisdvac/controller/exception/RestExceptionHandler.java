@@ -1,6 +1,7 @@
 package edu.pucp.sisdvac.controller.exception;
 
 import edu.pucp.sisdvac.controller.response.RestResponse;
+import org.hibernate.PropertyValueException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -16,18 +17,13 @@ public class RestExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(RestExceptionHandler.class);
     @ExceptionHandler(GenericException.class)
     protected ResponseEntity<?> handleGenericException(GenericException exception) {
-        RestResponse restResponse = RestResponse.builder()
-                .status(HttpStatus.FAILED_DEPENDENCY)
-                .message(exception.getMessage())
-                .timestamp(LocalDateTime.now())
-                .build();
-        return ResponseEntity
-                .status(restResponse.getStatus())
-                .body(restResponse);
+        printErrorMessage(exception);
+        return buildGenericResponse(exception, HttpStatus.FAILED_DEPENDENCY);
     }
 
     @ExceptionHandler(NotFoundException.class)
     protected ResponseEntity<?> handleNotFoundException(NotFoundException exception) {
+        printErrorMessage(exception);
         RestResponse restResponse = RestResponse.builder()
                 .status(HttpStatus.NOT_FOUND)
                 .message(exception.getMessage())
@@ -41,20 +37,31 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(IllegalAccessException.class)
     protected ResponseEntity<?> handleIllegalAccessException(IllegalAccessException exception) {
-        RestResponse restResponse = RestResponse.builder()
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .message(exception.getMessage())
-                .timestamp(LocalDateTime.now())
-                .build();
-        return ResponseEntity
-                .status(restResponse.getStatus())
-                .body(restResponse);
+        printErrorMessage(exception);
+        return buildGenericResponse(exception, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(InstantiationException.class)
     protected ResponseEntity<?> handleInstantiationException(InstantiationException exception) {
+        printErrorMessage(exception);
+        return buildGenericResponse(exception, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    protected ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+        printErrorMessage(exception);
+        return buildGenericResponse(exception, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PropertyValueException.class)
+    protected ResponseEntity<?> handlePropertyValueException(PropertyValueException exception) {
+        printErrorMessage(exception);
+        return buildGenericResponse(exception, HttpStatus.BAD_REQUEST);
+    }
+
+    private ResponseEntity<?> buildGenericResponse(Exception exception, HttpStatus status) {
         RestResponse restResponse = RestResponse.builder()
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .status(status)
                 .message(exception.getMessage())
                 .timestamp(LocalDateTime.now())
                 .build();
@@ -63,18 +70,11 @@ public class RestExceptionHandler {
                 .body(restResponse);
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    protected ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+    private void printErrorMessage(Exception exception) {
         LOGGER.error(String.format(
-                "[%s] %s", exception.getClass().getName(), exception.getMessage()
+                "[%s] %s",
+                exception.getClass().getName(),
+                exception.getMessage()
         ));
-        RestResponse restResponse = RestResponse.builder()
-                .status(HttpStatus.BAD_REQUEST)
-                .message(exception.getMessage())
-                .timestamp(LocalDateTime.now())
-                .build();
-        return ResponseEntity
-                .status(restResponse.getStatus())
-                .body(restResponse);
     }
 }

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 @Data
@@ -13,5 +14,6 @@ import java.util.Collection;
 @AllArgsConstructor
 public class TppDto {
     private Integer id;
+    @NotNull
     private Collection<TppItemDto> items;
 }
