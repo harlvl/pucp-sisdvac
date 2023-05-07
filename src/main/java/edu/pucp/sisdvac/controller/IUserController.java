@@ -8,6 +8,7 @@ public interface IUserController {
     ResponseEntity<?> findAll();
     ResponseEntity<?> findById(Integer id);
     ResponseEntity<?> findByDocumentNumber(String key);
+    ResponseEntity<?> findByName(String key); // TODO handle first and last name at the same time
     ResponseEntity<?> findByRole(Role role);
     ResponseEntity<?> save(UserDto dto);
     ResponseEntity<?> update(Integer id, UserDto dto);

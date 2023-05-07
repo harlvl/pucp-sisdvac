@@ -155,6 +155,7 @@ public class SisdvacApplication {
                             .build()
             );
 
+            //register doctor member user
             authenticationService.register(
                     RegisterRequest.builder()
                             .email("jose.olaya@pucp.pe")
@@ -164,6 +165,58 @@ public class SisdvacApplication {
                             .role(Role.DOCTOR_MEMBER)
                             .documentType(DocumentType.DNI)
                             .documentNumber("72471763")
+                            .build()
+            );
+
+            //register doctor member user
+            authenticationService.register(
+                    RegisterRequest.builder()
+                            .email("miguel.grau@pucp.pe")
+                            .password("1234")
+                            .firstName("Miguel")
+                            .lastName("Grau")
+                            .role(Role.DOCTOR_MEMBER)
+                            .documentType(DocumentType.DNI)
+                            .documentNumber("72471233")
+                            .build()
+            );
+
+            //register doctor member user
+            authenticationService.register(
+                    RegisterRequest.builder()
+                            .email("hip.una@pucp.pe")
+                            .password("1234")
+                            .firstName("Hipolito")
+                            .lastName("Unanue")
+                            .role(Role.DOCTOR_MEMBER)
+                            .documentType(DocumentType.DNI)
+                            .documentNumber("789071233")
+                            .build()
+            );
+
+            //register assistant user
+            authenticationService.register(
+                    RegisterRequest.builder()
+                            .email("luis.miguel@pucp.pe")
+                            .password("1234")
+                            .firstName("Luis")
+                            .lastName("Miguel")
+                            .role(Role.ASSISTANT)
+                            .documentType(DocumentType.DNI)
+                            .documentNumber("67871763")
+                            .build()
+            );
+
+            //register assistant user
+            authenticationService.register(
+                    RegisterRequest.builder()
+                            .email("mic.bas@pucp.pe")
+                            .password("1234")
+                            .firstName("Micaela")
+                            .lastName("Bastidas")
+                            .role(Role.ASSISTANT)
+                            .documentType(DocumentType.DNI)
+                            .documentNumber("6000763")
                             .build()
             );
 

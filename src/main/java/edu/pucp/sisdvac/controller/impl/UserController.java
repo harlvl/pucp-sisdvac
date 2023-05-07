@@ -48,7 +48,16 @@ public class UserController implements IUserController {
                 )
         );
     }
-
+    @Override
+    @GetMapping("/name/{key}")
+    public ResponseEntity<?> findByName(@PathVariable(name = "key") final String key) {
+        List<UserDto> output = service.findByName(key);
+        return ResponseEntity.ok().body(
+                PayloadObjectBuilder.buildPayloadObject(
+                        output, output.size()
+                )
+        );
+    }
     @Override
     @GetMapping("/role/{key}")
     public ResponseEntity<?> findByRole(@PathVariable(name = "key") final Role key) { // TODO clean input for key

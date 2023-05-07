@@ -4,5 +4,6 @@ public enum Role {
     ADMIN,
     SPONSOR,
     DOCTOR_MAIN,
-    DOCTOR_MEMBER
+    DOCTOR_MEMBER,
+    ASSISTANT
 }

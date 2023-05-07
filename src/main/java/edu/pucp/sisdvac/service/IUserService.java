@@ -11,6 +11,7 @@ public interface IUserService {
     UserDto findById(Integer id);
     UserDto findByEmail(String key);
     UserDto findByDocumentNumber(String key);
+    List<UserDto> findByName(String key);
     UserDto save(UserDto dto);
     UserDto update(Integer id, UserDto dto);
 }

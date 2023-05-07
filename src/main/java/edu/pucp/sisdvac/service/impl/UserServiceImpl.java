@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -80,6 +81,36 @@ public class UserServiceImpl implements IUserService {
                                 "User with document number %s not found.", key
                         )))
         );
+    }
+
+    @Override
+    public List<UserDto> findByName(String key) {
+        List<UserDto> output = new ArrayList<>();
+        key = key.strip();
+
+        List<User> dbItems = repository.findByFirstNameEqualsIgnoreCase(key);
+        if (dbItems != null && !dbItems.isEmpty()) {
+            for (User item :
+                    dbItems) {
+                output.add(UserParser.toDto(item));
+            }
+        }
+
+        dbItems = repository.findByLastNameEqualsIgnoreCase(key);
+        if (dbItems != null && !dbItems.isEmpty()) {
+            for (User item :
+                    dbItems) {
+                output.add(UserParser.toDto(item));
+            }
+        }
+
+        if (output.isEmpty()) {
+            throw new NotFoundException(String.format(
+                    "No users with first name or last name [%s] were found found.", key
+            ));
+        }
+
+        return output;
     }
 
     @Override
