@@ -1,14 +1,15 @@
 package edu.pucp.sisdvac.service.impl;
 
 import edu.pucp.sisdvac.controller.dto.ResearchDto;
-import edu.pucp.sisdvac.controller.dto.TrialDto;
+import edu.pucp.sisdvac.controller.dto.UserDto;
 import edu.pucp.sisdvac.controller.exception.NotFoundException;
+import edu.pucp.sisdvac.controller.exception.UserAlreadyAddedException;
 import edu.pucp.sisdvac.dao.ResearchRepository;
+import edu.pucp.sisdvac.dao.UserRepository;
 import edu.pucp.sisdvac.dao.parser.BaseParser;
 import edu.pucp.sisdvac.dao.parser.ResearchParser;
-import edu.pucp.sisdvac.dao.parser.TrialParser;
 import edu.pucp.sisdvac.domain.Research;
-import edu.pucp.sisdvac.domain.Trial;
+import edu.pucp.sisdvac.domain.user.User;
 import edu.pucp.sisdvac.service.IResearchService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -17,12 +18,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class ResearchServiceImpl implements IResearchService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ResearchServiceImpl.class);
     private final ResearchRepository repository;
+    private final UserRepository userRepository;
     @Override
     public List<ResearchDto> findAll() {
         List<Research> dbItems = repository.findAll();
@@ -67,7 +70,7 @@ public class ResearchServiceImpl implements IResearchService {
     @Override
     public ResearchDto update(Integer id, ResearchDto dto) {
         LOGGER.info(String.format(
-                "Updating existing Trial [%d]...", id)
+                "Updating existing research [%d]...", id)
         );
         Research dbItem = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format(
@@ -78,6 +81,40 @@ public class ResearchServiceImpl implements IResearchService {
                 repository.save(
                         BaseParser.copyProperties(dto, dbItem)
                 )
+        );
+    }
+
+    @Override
+    public ResearchDto addUser(Integer id, UserDto dto) {
+        LOGGER.info(String.format(
+                "Adding user [%d] to research [%d]...", dto.getId(), id)
+        );
+        Research dbItem = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "Research [%d] not found.", id)
+                ));
+
+        User dbUser = userRepository.findById(dto.getId())
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "User [%d] not found.", dto.getId())
+                ));
+
+        // check if user is already on the research
+        for (User currentUser :
+                dbItem.getUsers()) {
+            if (Objects.equals(currentUser.getId(), dto.getId())) {
+                throw new UserAlreadyAddedException(String.format(
+                        "User [%d] is already part of the research [%d]",
+                        dto.getId(),
+                        dbItem.getId()
+                ));
+            }
+        }
+
+        dbItem.getUsers().add(dbUser);
+
+        return ResearchParser.toDto(
+                repository.save(dbItem)
         );
     }
 }

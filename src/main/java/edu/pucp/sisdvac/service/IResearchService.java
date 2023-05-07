@@ -1,7 +1,7 @@
 package edu.pucp.sisdvac.service;
 
 import edu.pucp.sisdvac.controller.dto.ResearchDto;
-import edu.pucp.sisdvac.controller.dto.TrialDto;
+import edu.pucp.sisdvac.controller.dto.UserDto;
 
 import java.util.List;
 
@@ -11,4 +11,5 @@ public interface IResearchService {
     ResearchDto findByInsNumber(String key);
     ResearchDto save(ResearchDto dto);
     ResearchDto update(Integer id, ResearchDto dto);
+    ResearchDto addUser(Integer id, UserDto dto);
 }

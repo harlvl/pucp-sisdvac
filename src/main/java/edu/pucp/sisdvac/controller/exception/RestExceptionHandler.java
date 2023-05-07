@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
@@ -55,6 +54,12 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(PropertyValueException.class)
     protected ResponseEntity<?> handlePropertyValueException(PropertyValueException exception) {
+        printErrorMessage(exception);
+        return buildGenericResponse(exception, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserAlreadyAddedException.class)
+    protected ResponseEntity<?> handleUserAlreadyAddedException(UserAlreadyAddedException exception) {
         printErrorMessage(exception);
         return buildGenericResponse(exception, HttpStatus.BAD_REQUEST);
     }

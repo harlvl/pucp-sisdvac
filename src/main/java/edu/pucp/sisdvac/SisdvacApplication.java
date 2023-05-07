@@ -170,7 +170,7 @@ public class SisdvacApplication {
 
             List<UserDto> users = new ArrayList<>();
             users.add(userService.findByEmail("jose.olaya@pucp.pe"));
-            users.add(userService.findByEmail("francisco.bolognesi@pucp.pe"));
+//            users.add(userService.findByEmail("francisco.bolognesi@pucp.pe"));
 
             researchService.save(ResearchDto.builder()
                     .title("Investigacion contra el sarampion")

@@ -2,13 +2,19 @@ package edu.pucp.sisdvac.controller.impl;
 
 import edu.pucp.sisdvac.controller.IResearchController;
 import edu.pucp.sisdvac.controller.dto.ResearchDto;
-import edu.pucp.sisdvac.controller.dto.TrialDto;
+import edu.pucp.sisdvac.controller.dto.UserDto;
 import edu.pucp.sisdvac.controller.response.RestResponse;
 import edu.pucp.sisdvac.service.IResearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -76,6 +82,18 @@ public class ResearchController implements IResearchController {
                 RestResponse.builder()
                         .timestamp(LocalDateTime.now())
                         .payload(service.update(id, dto))
+                        .status(HttpStatus.OK)
+                        .build()
+        );
+    }
+
+    @Override
+    @PostMapping("/id/{id}/add_user")
+    public ResponseEntity<?> addUser(@PathVariable(name = "id") final Integer id, @RequestBody UserDto dto) {
+        return ResponseEntity.ok().body(
+                RestResponse.builder()
+                        .timestamp(LocalDateTime.now())
+                        .payload(service.addUser(id, dto))
                         .status(HttpStatus.OK)
                         .build()
         );
