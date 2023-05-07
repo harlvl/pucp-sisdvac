@@ -7,6 +7,4 @@ import java.util.List;
 import java.util.Optional;
 
 public interface InfectiousDiseaseRepository extends JpaRepository<InfectiousDisease, Integer> {
-    List<InfectiousDisease> findAll();
-    Optional<InfectiousDisease> findById(Integer integer);
 }
