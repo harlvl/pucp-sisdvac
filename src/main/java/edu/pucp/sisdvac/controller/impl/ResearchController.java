@@ -52,6 +52,18 @@ public class ResearchController implements IResearchController {
     }
 
     @Override
+    @GetMapping("/user_id/{id}")
+    public ResponseEntity<?> findByUser(@PathVariable(name = "id") Integer id) {
+        return ResponseEntity.ok().body(
+                RestResponse.builder()
+                        .timestamp(LocalDateTime.now())
+                        .payload(service.findByUserId(id))
+                        .hits(1)
+                        .build()
+        );
+    }
+
+    @Override
     @GetMapping("/ins_number/{insNumber}")
     public ResponseEntity<?> findByInsNumber(@PathVariable(name = "insNumber") final String key) {
         return ResponseEntity.ok().body(

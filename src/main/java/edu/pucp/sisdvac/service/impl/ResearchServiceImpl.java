@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,6 +57,24 @@ public class ResearchServiceImpl implements IResearchService {
                         )))
         );
     }
+
+    @Override
+    public List<ResearchDto> findByUserId(Integer id) {
+        List<Research> dbItems = repository.findAll();
+        List<ResearchDto> output = new ArrayList<>();
+        for (Research research :
+                dbItems) {
+            Collection<User> users = research.getUsers();
+            for (User user :
+                    users) {
+                if (Objects.equals(user.getId(), id)) {
+                    output.add(ResearchParser.toDto(research));
+                }
+            }
+        }
+        return output;
+    }
+
 
     @Override
     public ResearchDto save(ResearchDto dto) {
