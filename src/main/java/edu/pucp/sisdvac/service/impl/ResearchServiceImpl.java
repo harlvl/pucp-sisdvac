@@ -8,7 +8,9 @@ import edu.pucp.sisdvac.dao.ResearchRepository;
 import edu.pucp.sisdvac.dao.UserRepository;
 import edu.pucp.sisdvac.dao.parser.BaseParser;
 import edu.pucp.sisdvac.dao.parser.ResearchParser;
+import edu.pucp.sisdvac.dao.parser.UserParser;
 import edu.pucp.sisdvac.domain.Research;
+import edu.pucp.sisdvac.domain.user.Role;
 import edu.pucp.sisdvac.domain.user.User;
 import edu.pucp.sisdvac.service.IResearchService;
 import lombok.RequiredArgsConstructor;
@@ -72,6 +74,28 @@ public class ResearchServiceImpl implements IResearchService {
                 }
             }
         }
+        return output;
+    }
+
+    @Override
+    public List<?> findUsersByRole(Integer id, Role role) {
+        List<UserDto> output = new ArrayList<>();
+
+        Research dbItem = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "Research [%d] not found", id
+                )));
+        Collection<User> dbUsers = dbItem.getUsers();
+
+        for (User item :
+                dbUsers) {
+            if (item.getRole() == role) {
+                output.add(
+                        UserParser.toDto(item)
+                );
+            }
+        }
+
         return output;
     }
 

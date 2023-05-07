@@ -3,7 +3,9 @@ package edu.pucp.sisdvac.controller.impl;
 import edu.pucp.sisdvac.controller.IResearchController;
 import edu.pucp.sisdvac.controller.dto.ResearchDto;
 import edu.pucp.sisdvac.controller.dto.UserDto;
+import edu.pucp.sisdvac.controller.response.PayloadObjectBuilder;
 import edu.pucp.sisdvac.controller.response.RestResponse;
+import edu.pucp.sisdvac.domain.user.Role;
 import edu.pucp.sisdvac.service.IResearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -72,6 +74,16 @@ public class ResearchController implements IResearchController {
                         .payload(service.findByInsNumber(key))
                         .hits(1)
                         .build()
+        );
+    }
+
+    @Override
+    @GetMapping("/{id}/users/role/{key}")
+    public ResponseEntity<?> findUsersByRole(@PathVariable(name = "id") final Integer id,
+                                             @PathVariable(name = "key") final Role key) {
+        List<?> output = service.findUsersByRole(id, key);
+        return ResponseEntity.ok().body(
+                PayloadObjectBuilder.buildPayloadObject(output, output.size())
         );
     }
 
