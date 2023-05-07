@@ -3,6 +3,7 @@ package edu.pucp.sisdvac.controller.impl;
 import edu.pucp.sisdvac.controller.IResearchController;
 import edu.pucp.sisdvac.controller.dto.ResearchDto;
 import edu.pucp.sisdvac.controller.dto.UserDto;
+import edu.pucp.sisdvac.controller.request.AddUsersRequest;
 import edu.pucp.sisdvac.controller.response.PayloadObjectBuilder;
 import edu.pucp.sisdvac.controller.response.RestResponse;
 import edu.pucp.sisdvac.domain.user.Role;
@@ -120,6 +121,14 @@ public class ResearchController implements IResearchController {
                         .payload(service.addUser(id, dto))
                         .status(HttpStatus.OK)
                         .build()
+        );
+    }
+
+    @Override
+    @PostMapping("/id/{id}/add_users")
+    public ResponseEntity<?> addUsers(@PathVariable(name = "id") final Integer id, @RequestBody AddUsersRequest request) {
+        return ResponseEntity.ok().body(
+                PayloadObjectBuilder.buildPayloadObject(service.addUsers(id, request))
         );
     }
 }

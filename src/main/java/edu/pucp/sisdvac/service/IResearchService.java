@@ -2,6 +2,7 @@ package edu.pucp.sisdvac.service;
 
 import edu.pucp.sisdvac.controller.dto.ResearchDto;
 import edu.pucp.sisdvac.controller.dto.UserDto;
+import edu.pucp.sisdvac.controller.request.AddUsersRequest;
 import edu.pucp.sisdvac.domain.user.Role;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface IResearchService {
     ResearchDto save(ResearchDto dto);
     ResearchDto update(Integer id, ResearchDto dto);
     ResearchDto addUser(Integer id, UserDto dto);
+    ResearchDto addUsers(Integer id, AddUsersRequest dto);
 }

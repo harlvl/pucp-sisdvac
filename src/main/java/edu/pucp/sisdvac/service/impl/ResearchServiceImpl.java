@@ -4,6 +4,7 @@ import edu.pucp.sisdvac.controller.dto.ResearchDto;
 import edu.pucp.sisdvac.controller.dto.UserDto;
 import edu.pucp.sisdvac.controller.exception.NotFoundException;
 import edu.pucp.sisdvac.controller.exception.UserAlreadyAddedException;
+import edu.pucp.sisdvac.controller.request.AddUsersRequest;
 import edu.pucp.sisdvac.dao.ResearchRepository;
 import edu.pucp.sisdvac.dao.UserRepository;
 import edu.pucp.sisdvac.dao.parser.BaseParser;
@@ -155,6 +156,46 @@ public class ResearchServiceImpl implements IResearchService {
         }
 
         dbItem.getUsers().add(dbUser);
+
+        return ResearchParser.toDto(
+                repository.save(dbItem)
+        );
+    }
+    @Override
+    public ResearchDto addUsers(Integer id, AddUsersRequest dto) {
+        Research dbItem = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "Research [%d] not found.", id)
+                ));
+
+        List<UserDto> dtos = dto.getUsers();
+        for (UserDto item :
+                dtos) {
+            User dbUser = userRepository.findById(item.getId())
+                    .orElseThrow(() -> new NotFoundException(String.format(
+                            "User [%d] not found.", item.getId())
+                    ));
+
+            // check if user is already on the research
+            boolean isAlreadyAdded = false;
+            for (User currentUser :
+                    dbItem.getUsers()) {
+                if (Objects.equals(currentUser.getId(), item.getId())) {
+                    LOGGER.warn(String.format(
+                            "User [%d] is already part of the research [%d]",
+                            item.getId(),
+                            dbItem.getId()
+                    ));
+
+                    isAlreadyAdded = true;
+                    break;
+                }
+            }
+
+            if (!isAlreadyAdded) {
+                dbItem.getUsers().add(dbUser);
+            }
+        }
 
         return ResearchParser.toDto(
                 repository.save(dbItem)
