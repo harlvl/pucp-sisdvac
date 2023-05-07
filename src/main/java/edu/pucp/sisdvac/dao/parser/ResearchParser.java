@@ -1,8 +1,10 @@
 package edu.pucp.sisdvac.dao.parser;
 
 import edu.pucp.sisdvac.controller.dto.ResearchDto;
+import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.controller.dto.UserDto;
 import edu.pucp.sisdvac.domain.Research;
+import edu.pucp.sisdvac.domain.Trial;
 import edu.pucp.sisdvac.domain.user.User;
 
 import java.util.ArrayList;
@@ -19,6 +21,17 @@ public class ResearchParser {
             }
             output.setUsers(users);
         }
+
+        if (input.getTrials() != null && !input.getTrials().isEmpty()) {
+
+            List<Trial> trials = new ArrayList<>();
+            for (TrialDto trialDto :
+                    input.getTrials()) {
+                trials.add(TrialParser.fromDto(trialDto));
+            }
+
+            output.setTrials(trials);
+        }
         return output;
     }
 
@@ -31,8 +44,18 @@ public class ResearchParser {
                     input.getUsers()) {
                 userDtos.add(UserParser.toDto(user));
             }
-            output.setUsers(userDtos);
 
+            output.setUsers(userDtos);
+        }
+
+        if (input.getTrials() != null && !input.getTrials().isEmpty()) {
+            List<TrialDto> trialDtos = new ArrayList<>();
+            for (Trial trial :
+                    input.getTrials()) {
+                trialDtos.add(TrialParser.toDto(trial));
+            }
+
+            output.setTrials(trialDtos);
         }
 
         return output;

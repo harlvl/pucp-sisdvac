@@ -1,6 +1,7 @@
 package edu.pucp.sisdvac;
 
 import edu.pucp.sisdvac.controller.dto.*;
+import edu.pucp.sisdvac.domain.Trial;
 import edu.pucp.sisdvac.domain.enums.DocumentType;
 import edu.pucp.sisdvac.domain.enums.FormulationItemType;
 import edu.pucp.sisdvac.domain.enums.Stage;
@@ -172,13 +173,41 @@ public class SisdvacApplication {
             users.add(userService.findByEmail("jose.olaya@pucp.pe"));
 //            users.add(userService.findByEmail("francisco.bolognesi@pucp.pe"));
 
+            TrialDto preclinicalTrial3 = TrialDto.builder()
+                    .insNumber("9834567891")
+                    .stage(Stage.PRECLINICAL)
+                    .startDate(new Date())
+                    .title("Estudio clinico de prueba 3")
+                    .status(
+                            TrialStatusDto.builder()
+                                    .name("Estado inicial")
+                                    .startDate(new Date())
+                                    .build()
+                    )
+                    .advanceItems(advanceItems)
+                    .formulation(FormulationDto.builder()
+                            .items(formulationItemDtos)
+                            .build())
+                    .tpp(TppDto.builder()
+                            .items(itemDtos)
+                            .build())
+                    .build();
+
+            List<TrialDto> trialDtos = new ArrayList<>();
+            trialDtos.add(preclinicalTrial3);
+
+            // create new research and attach a doctor
             researchService.save(ResearchDto.builder()
                     .title("Investigacion contra el sarampion")
                     .insNumber("567345234")
                     .startDate(new Date())
                     .users(users)
+                    .trials(trialDtos)
                     .build()
             );
+
+
+
 
             // create new volunteer
             volunteerService.save(

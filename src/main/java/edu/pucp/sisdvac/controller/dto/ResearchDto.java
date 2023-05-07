@@ -25,6 +25,7 @@ public class ResearchDto {
     private String insNumber;
 
     private Collection<UserDto> users;
+    private Collection<TrialDto> trials;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
     @NotNull
