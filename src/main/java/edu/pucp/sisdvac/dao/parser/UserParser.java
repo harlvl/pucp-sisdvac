@@ -5,10 +5,19 @@ import edu.pucp.sisdvac.domain.user.User;
 
 public class UserParser {
     public static UserDto toDto(User input){
-        return BaseParser.parse(input, UserDto.class);
+        UserDto output = BaseParser.parse(input, UserDto.class);
+        if (input.getId() != null) {
+            output.setId(input.getId());
+        }
+
+        return output;
     }
 
     public static User fromDto(UserDto input){
-        return BaseParser.parse(input, User.class);
+        User output = BaseParser.parse(input, User.class);
+        if (input.getId() != null) {
+            output.setId(input.getId());
+        }
+        return output;
     }
 }

@@ -1,14 +1,6 @@
 package edu.pucp.sisdvac;
 
-import edu.pucp.sisdvac.controller.dto.AdverseEventDto;
-import edu.pucp.sisdvac.controller.dto.FormulationDto;
-import edu.pucp.sisdvac.controller.dto.FormulationItemDto;
-import edu.pucp.sisdvac.controller.dto.TestSubjectDto;
-import edu.pucp.sisdvac.controller.dto.TppDto;
-import edu.pucp.sisdvac.controller.dto.TppItemDto;
-import edu.pucp.sisdvac.controller.dto.TrialDto;
-import edu.pucp.sisdvac.controller.dto.TrialStatusDto;
-import edu.pucp.sisdvac.controller.dto.VolunteerDto;
+import edu.pucp.sisdvac.controller.dto.*;
 import edu.pucp.sisdvac.domain.enums.DocumentType;
 import edu.pucp.sisdvac.domain.enums.FormulationItemType;
 import edu.pucp.sisdvac.domain.enums.Stage;
@@ -16,11 +8,10 @@ import edu.pucp.sisdvac.domain.enums.Status;
 import edu.pucp.sisdvac.domain.enums.SubjectType;
 import edu.pucp.sisdvac.domain.enums.TppItemType;
 import edu.pucp.sisdvac.domain.user.Role;
+import edu.pucp.sisdvac.domain.user.User;
 import edu.pucp.sisdvac.security.auth.AuthenticationService;
 import edu.pucp.sisdvac.security.auth.RegisterRequest;
-import edu.pucp.sisdvac.service.impl.TestSubjectServiceImpl;
-import edu.pucp.sisdvac.service.impl.TrialServiceImpl;
-import edu.pucp.sisdvac.service.impl.VolunteerServiceImpl;
+import edu.pucp.sisdvac.service.impl.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -47,7 +38,7 @@ public class SisdvacApplication {
                 registry.addMapping("/**")
                         .allowedMethods("*")
                         .allowedHeaders("*")
-                        .allowedOrigins(uiHost);
+                        .allowedOrigins("*");
             }
         };
     }
@@ -56,6 +47,8 @@ public class SisdvacApplication {
     CommandLineRunner run(VolunteerServiceImpl volunteerService,
                           TestSubjectServiceImpl testSubjectService,
                           AuthenticationService authenticationService,
+                          UserServiceImpl userService,
+                          ResearchServiceImpl researchService,
                           TrialServiceImpl trialService) {
         return args -> {
 
@@ -173,6 +166,18 @@ public class SisdvacApplication {
                             .documentType(DocumentType.DNI)
                             .documentNumber("72471763")
                             .build()
+            );
+
+            List<UserDto> users = new ArrayList<>();
+            users.add(userService.findByEmail("jose.olaya@pucp.pe"));
+            users.add(userService.findByEmail("francisco.bolognesi@pucp.pe"));
+
+            researchService.save(ResearchDto.builder()
+                    .title("Investigacion contra el sarampion")
+                    .insNumber("567345234")
+                    .startDate(new Date())
+                    .users(users)
+                    .build()
             );
 
             // create new volunteer
