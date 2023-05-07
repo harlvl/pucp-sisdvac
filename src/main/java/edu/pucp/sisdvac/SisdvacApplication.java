@@ -1,7 +1,6 @@
 package edu.pucp.sisdvac;
 
 import edu.pucp.sisdvac.controller.dto.*;
-import edu.pucp.sisdvac.domain.Trial;
 import edu.pucp.sisdvac.domain.enums.DocumentType;
 import edu.pucp.sisdvac.domain.enums.FormulationItemType;
 import edu.pucp.sisdvac.domain.enums.Stage;
@@ -9,7 +8,6 @@ import edu.pucp.sisdvac.domain.enums.Status;
 import edu.pucp.sisdvac.domain.enums.SubjectType;
 import edu.pucp.sisdvac.domain.enums.TppItemType;
 import edu.pucp.sisdvac.domain.user.Role;
-import edu.pucp.sisdvac.domain.user.User;
 import edu.pucp.sisdvac.security.auth.AuthenticationService;
 import edu.pucp.sisdvac.security.auth.RegisterRequest;
 import edu.pucp.sisdvac.service.impl.*;

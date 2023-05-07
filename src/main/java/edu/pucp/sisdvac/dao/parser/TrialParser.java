@@ -8,7 +8,6 @@ import edu.pucp.sisdvac.domain.Formulation;
 import edu.pucp.sisdvac.domain.TargetProductProfile;
 import edu.pucp.sisdvac.domain.Trial;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
