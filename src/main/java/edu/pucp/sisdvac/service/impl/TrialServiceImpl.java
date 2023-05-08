@@ -1,10 +1,12 @@
 package edu.pucp.sisdvac.service.impl;
 
+import edu.pucp.sisdvac.controller.dto.FormulationDto;
 import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.controller.exception.NotFoundException;
 import edu.pucp.sisdvac.dao.TrialRepository;
 import edu.pucp.sisdvac.dao.parser.BaseParser;
 import edu.pucp.sisdvac.dao.parser.TrialParser;
+import edu.pucp.sisdvac.domain.Formulation;
 import edu.pucp.sisdvac.domain.Trial;
 import edu.pucp.sisdvac.service.ITrialService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -82,21 +85,46 @@ public class TrialServiceImpl implements ITrialService {
             }
         }
 
-        if (dto.getFormulation() != null) {
-            if (dto.getFormulation().getItems().size() != dbItem.getFormulation().getItems().size()) {
-                LOGGER.info(String.format(
-                        "Formulation items length has changed from %d to %d",
-                        dbItem.getFormulation().getItems().size(),
-                        dto.getFormulation().getItems().size()
-                ));
-                dbItem.setFormulation(TrialParser.updateFormulation(dto.getFormulation()));
+        if (dto.getFormulations() != null && !dto.getFormulations().isEmpty()) {
+            List<FormulationDto> formulations = dto.getFormulations();
+            for (FormulationDto item :
+                    formulations) {
+                //TODO UPDATE FORMULATIONS
+                if (item.getItems() != null && !item.getItems().isEmpty()) {
+
+                }
             }
         }
+
+//        if (dto.getFormulation() != null) {
+//            if (dto.getFormulation().getItems().size() != dbItem.getFormulation().getItems().size()) {
+//                LOGGER.info(String.format(
+//                        "Formulation items length has changed from %d to %d",
+//                        dbItem.getFormulation().getItems().size(),
+//                        dto.getFormulation().getItems().size()
+//                ));
+//                dbItem.setFormulation(TrialParser.updateFormulation(dto.getFormulation()));
+//            }
+//        }
 
         return TrialParser.toDto(
                 repository.save(
                         BaseParser.copyProperties(dto, dbItem)
                 )
         );
+    }
+
+    @Override
+    public TrialDto addFormulation(Integer id, FormulationDto dto) {
+        LOGGER.info(String.format(
+                "Adding new formulation to existing trial [%d]...", id)
+        );
+        Trial dbItem = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "Trial [%d] not found.", id)
+                ));
+
+
+        return null;
     }
 }

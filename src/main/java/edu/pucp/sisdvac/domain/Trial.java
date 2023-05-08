@@ -51,8 +51,8 @@ public class Trial {
     @OneToOne(cascade = CascadeType.ALL)
     private TargetProductProfile targetProductProfile;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Formulation formulation;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Collection<Formulation> formulations;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<Advance> advances;

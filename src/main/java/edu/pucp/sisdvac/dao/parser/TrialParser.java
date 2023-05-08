@@ -30,7 +30,16 @@ public class TrialParser {
             output.setAdvanceItems(advanceItems);
         }
 
-        output.setFormulation(FormulationParser.toDto(input.getFormulation()));
+        if (input.getFormulations() != null && !input.getFormulations().isEmpty()) {
+            List<FormulationDto> formulationDtos = new ArrayList<>();
+            for (Formulation item :
+                    input.getFormulations()) {
+                formulationDtos.add(FormulationParser.toDto(item));
+            }
+
+            output.setFormulations(formulationDtos);
+        }
+
         output.setTpp(TppParser.toDto(input.getTargetProductProfile()));
 
         return output;
@@ -54,7 +63,17 @@ public class TrialParser {
             output.setAdvances(advances);
         }
 
-        output.setFormulation(FormulationParser.fromDto(input.getFormulation()));
+        if (input.getFormulations() != null && !input.getFormulations().isEmpty()) {
+            List<FormulationDto> formulationDtos = input.getFormulations();
+            List<Formulation> formulations = new ArrayList<>();
+            for (FormulationDto item :
+                    formulationDtos) {
+                formulations.add(FormulationParser.fromDto(item));
+            }
+
+            output.setFormulations(formulations);
+        }
+
         output.setTargetProductProfile(TppParser.fromDto(input.getTpp()));
 
         // add created at date

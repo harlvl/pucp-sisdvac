@@ -1,12 +1,7 @@
 package edu.pucp.sisdvac;
 
 import edu.pucp.sisdvac.controller.dto.*;
-import edu.pucp.sisdvac.domain.enums.DocumentType;
-import edu.pucp.sisdvac.domain.enums.FormulationItemType;
-import edu.pucp.sisdvac.domain.enums.Stage;
-import edu.pucp.sisdvac.domain.enums.Status;
-import edu.pucp.sisdvac.domain.enums.SubjectType;
-import edu.pucp.sisdvac.domain.enums.TppItemType;
+import edu.pucp.sisdvac.domain.enums.*;
 import edu.pucp.sisdvac.domain.user.Role;
 import edu.pucp.sisdvac.security.auth.AuthenticationService;
 import edu.pucp.sisdvac.security.auth.RegisterRequest;
@@ -86,6 +81,13 @@ public class SisdvacApplication {
                     .build()
             );
 
+            List<FormulationDto> formulationDtos = new ArrayList<>();
+            formulationDtos.add(FormulationDto.builder()
+                    .status(FormulationStatus.ACTIVE)
+                    .order(1)
+                    .items(formulationItemDtos)
+                    .build());
+
             TrialDto preclinicalTrial = TrialDto.builder()
                     .insNumber("123456789")
                     .stage(Stage.PRECLINICAL)
@@ -98,9 +100,7 @@ public class SisdvacApplication {
                                     .build()
                     )
                     .advanceItems(advanceItems)
-                    .formulation(FormulationDto.builder()
-                            .items(formulationItemDtos)
-                            .build())
+                    .formulations(formulationDtos)
                     .tpp(TppDto.builder()
                             .items(itemDtos)
                             .build())
@@ -118,9 +118,7 @@ public class SisdvacApplication {
                                     .build()
                     )
                     .advanceItems(advanceItems)
-                    .formulation(FormulationDto.builder()
-                    .items(formulationItemDtos)
-                    .build())
+                    .formulations(formulationDtos)
                     .tpp(TppDto.builder()
                             .items(itemDtos)
                             .build())
@@ -203,7 +201,7 @@ public class SisdvacApplication {
                             .lastName("Miguel")
                             .role(Role.ASSISTANT)
                             .documentType(DocumentType.DNI)
-                            .documentNumber("67871763")
+                            .documentNumber("11111111")
                             .build()
             );
 
@@ -224,6 +222,14 @@ public class SisdvacApplication {
             users.add(userService.findByEmail("jose.olaya@pucp.pe"));
 //            users.add(userService.findByEmail("francisco.bolognesi@pucp.pe"));
 
+            FormulationDto formulationDto = FormulationDto.builder()
+                    .items(formulationItemDtos)
+                    .status(FormulationStatus.ACTIVE)
+                    .order(1)
+                    .build();
+            List<FormulationDto> formulationDtos3 = new ArrayList<>();
+            formulationDtos3.add(formulationDto);
+
             TrialDto preclinicalTrial3 = TrialDto.builder()
                     .insNumber("9834567891")
                     .stage(Stage.PRECLINICAL)
@@ -236,9 +242,7 @@ public class SisdvacApplication {
                                     .build()
                     )
                     .advanceItems(advanceItems)
-                    .formulation(FormulationDto.builder()
-                            .items(formulationItemDtos)
-                            .build())
+                    .formulations(formulationDtos3)
                     .tpp(TppDto.builder()
                             .items(itemDtos)
                             .build())
@@ -256,8 +260,6 @@ public class SisdvacApplication {
                     .trials(trialDtos)
                     .build()
             );
-
-
 
 
             // create new volunteer

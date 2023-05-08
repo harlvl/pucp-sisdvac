@@ -1,6 +1,7 @@
 package edu.pucp.sisdvac.domain;
 
 
+import edu.pucp.sisdvac.domain.enums.FormulationStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,9 +21,12 @@ public class Formulation {
     @GeneratedValue
     private Integer id;
 
+    @Enumerated(EnumType.STRING)
+    private FormulationStatus status;
+
+    @Column(name = "_order") // make sure this column is not called just "order" or it will throw a huge fucking error
+    private Integer order; // used to keep track of which formulation was first
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<FormulationItem> items;
-
-    @OneToOne(mappedBy = "formulation")
-    private Trial trial;
 }

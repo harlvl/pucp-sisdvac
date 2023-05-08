@@ -46,8 +46,7 @@ public class TrialDto {
     @NotNull
     private TppDto tpp;
 
-    @NotNull
-    private FormulationDto formulation;
+    private List<FormulationDto> formulations;
 
     private List<AdvanceItem> advanceItems;
 

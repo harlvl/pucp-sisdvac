@@ -1,6 +1,7 @@
 package edu.pucp.sisdvac.controller.impl;
 
 import edu.pucp.sisdvac.controller.ITrialController;
+import edu.pucp.sisdvac.controller.dto.FormulationDto;
 import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.controller.response.RestResponse;
 import edu.pucp.sisdvac.service.ITrialService;
@@ -77,5 +78,17 @@ public class TrialControllerImpl implements ITrialController {
                         .status(HttpStatus.OK)
                         .build()
         );
+    }
+
+    @Override
+    @PatchMapping("/{id}/formulation/{key}")
+    public ResponseEntity<?> updateFormulation(Integer id, Integer key, FormulationDto dto) {
+        return null;
+    }
+
+    @Override
+    @PostMapping("/{id}/formulation")
+    public ResponseEntity<?> addFormulation(@PathVariable(name = "id") final Integer id, @Valid @RequestBody FormulationDto dto) {
+        return null;
     }
 }

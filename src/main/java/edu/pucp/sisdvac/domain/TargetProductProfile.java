@@ -1,19 +1,15 @@
 package edu.pucp.sisdvac.domain;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import edu.pucp.sisdvac.utils.Constants;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Collection;
+import java.util.Date;
 
 @Data
 @Builder
@@ -31,4 +27,14 @@ public class TargetProductProfile {
 
     @OneToOne(mappedBy = "targetProductProfile")
     private Trial trial;
+
+    // START audit fields
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
+    @Column(name = "last_updated_at")
+    private Date lastUpdatedAt;
+    // END audit fields
 }
