@@ -74,13 +74,14 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserDto findByDocumentNumber(String key) {
-        return UserParser.toDto(
-                repository.findByDocumentNumber(key)
-                        .orElseThrow(() -> new NotFoundException(String.format(
-                                "User with document number %s not found.", key
-                        )))
-        );
+    public List<UserDto> findByDocumentNumber(String key) {
+        List<UserDto> response = new ArrayList<>();
+        User dbUser = repository.findByDocumentNumber(key)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "User with document number %s not found.", key
+                )));
+        response.add(UserParser.toDto(dbUser));
+        return response;
     }
 
     @Override

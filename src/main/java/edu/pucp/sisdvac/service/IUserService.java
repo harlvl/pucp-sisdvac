@@ -10,7 +10,7 @@ public interface IUserService {
     List<UserDto> findByRole(Role role);
     UserDto findById(Integer id);
     UserDto findByEmail(String key);
-    UserDto findByDocumentNumber(String key);
+    List<UserDto> findByDocumentNumber(String key);
     List<UserDto> findByName(String key);
     UserDto save(UserDto dto);
     UserDto update(Integer id, UserDto dto);
