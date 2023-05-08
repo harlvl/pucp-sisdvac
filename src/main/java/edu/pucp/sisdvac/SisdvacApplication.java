@@ -86,6 +86,7 @@ public class SisdvacApplication {
                     .status(FormulationStatus.ACTIVE)
                     .order(1)
                     .items(formulationItemDtos)
+                    .createdAt(new Date())
                     .build());
 
             TrialDto preclinicalTrial = TrialDto.builder()
@@ -226,6 +227,7 @@ public class SisdvacApplication {
                     .items(formulationItemDtos)
                     .status(FormulationStatus.ACTIVE)
                     .order(1)
+                    .createdAt(new Date())
                     .build();
             List<FormulationDto> formulationDtos3 = new ArrayList<>();
             formulationDtos3.add(formulationDto);
