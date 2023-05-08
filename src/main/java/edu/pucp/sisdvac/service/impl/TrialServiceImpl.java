@@ -5,6 +5,7 @@ import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.controller.exception.NotFoundException;
 import edu.pucp.sisdvac.dao.TrialRepository;
 import edu.pucp.sisdvac.dao.parser.BaseParser;
+import edu.pucp.sisdvac.dao.parser.FormulationParser;
 import edu.pucp.sisdvac.dao.parser.TrialParser;
 import edu.pucp.sisdvac.domain.Formulation;
 import edu.pucp.sisdvac.domain.Trial;
@@ -124,7 +125,12 @@ public class TrialServiceImpl implements ITrialService {
                         "Trial [%d] not found.", id)
                 ));
 
+        // TODO validate it's not null
+        Collection<Formulation> updatedFormulations = FormulationParser.updateFormulations(dbItem.getFormulations(), dto);
 
-        return null;
+        dbItem.setFormulations(updatedFormulations);
+        return TrialParser.toDto(
+                repository.save(dbItem)
+        );
     }
 }

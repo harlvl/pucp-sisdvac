@@ -3,6 +3,7 @@ package edu.pucp.sisdvac.controller.impl;
 import edu.pucp.sisdvac.controller.ITrialController;
 import edu.pucp.sisdvac.controller.dto.FormulationDto;
 import edu.pucp.sisdvac.controller.dto.TrialDto;
+import edu.pucp.sisdvac.controller.response.PayloadObjectBuilder;
 import edu.pucp.sisdvac.controller.response.RestResponse;
 import edu.pucp.sisdvac.service.ITrialService;
 import lombok.RequiredArgsConstructor;
@@ -89,6 +90,8 @@ public class TrialControllerImpl implements ITrialController {
     @Override
     @PostMapping("/{id}/formulation")
     public ResponseEntity<?> addFormulation(@PathVariable(name = "id") final Integer id, @Valid @RequestBody FormulationDto dto) {
-        return null;
+        return ResponseEntity.ok().body(
+                PayloadObjectBuilder.buildPayloadObject(service.addFormulation(id, dto))
+        );
     }
 }

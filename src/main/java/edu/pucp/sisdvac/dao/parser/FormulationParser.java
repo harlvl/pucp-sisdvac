@@ -4,8 +4,10 @@ import edu.pucp.sisdvac.controller.dto.FormulationDto;
 import edu.pucp.sisdvac.controller.dto.FormulationItemDto;
 import edu.pucp.sisdvac.domain.Formulation;
 import edu.pucp.sisdvac.domain.FormulationItem;
+import edu.pucp.sisdvac.domain.enums.FormulationStatus;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class FormulationParser {
@@ -54,5 +56,36 @@ public class FormulationParser {
         output.setItems(items);
 
         return output;
+    }
+
+    public static Collection<Formulation> updateFormulations(Collection<Formulation> formulations, FormulationDto dto) {
+        Collection<Formulation> response = new ArrayList<>();
+
+        // set all previous formulations to inactive
+        Integer lastFormulation = 0;
+        for (Formulation item :
+                formulations) {
+            Integer currentFormulation = item.getOrder();
+            response.add(Formulation.builder()
+                    .id(item.getId())
+                    .order(item.getOrder())
+                    .status(FormulationStatus.INACTIVE)
+                    .items(item.getItems())
+                    .build()
+            );
+
+            if (currentFormulation >= lastFormulation) {
+                lastFormulation = currentFormulation;
+            }
+        }
+
+        // add the new formulation and set it to active
+        Formulation newElement = FormulationParser.fromDto(dto);
+        newElement.setStatus(FormulationStatus.ACTIVE);
+        newElement.setOrder(lastFormulation + 1);
+
+        response.add(newElement);
+
+        return response;
     }
 }
