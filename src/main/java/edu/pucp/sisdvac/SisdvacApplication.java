@@ -90,7 +90,7 @@ public class SisdvacApplication {
                     .build());
 
             TrialDto preclinicalTrial = TrialDto.builder()
-                    .insNumber("123456789")
+                    .insNumber("PER-103-20")
                     .stage(Stage.PRECLINICAL)
                     .startDate(new Date())
                     .title("Estudio clinico de prueba 1")
@@ -108,7 +108,7 @@ public class SisdvacApplication {
                     .build();
 
             TrialDto preclinicalTrial2 = TrialDto.builder()
-                    .insNumber("1234567891")
+                    .insNumber("PER-203-20")
                     .stage(Stage.PRECLINICAL)
                     .startDate(new Date())
                     .title("Estudio clinico de prueba 2")
@@ -141,7 +141,7 @@ public class SisdvacApplication {
                             .build()
             );
 
-            //register doctor user
+            //register doctor main user
             authenticationService.register(
                     RegisterRequest.builder()
                             .email("francisco.bolognesi@pucp.pe")
@@ -151,6 +151,19 @@ public class SisdvacApplication {
                             .role(Role.DOCTOR_MAIN)
                             .documentType(DocumentType.DNI)
                             .documentNumber("72471762")
+                            .build()
+            );
+
+            //register doctor main user
+            authenticationService.register(
+                    RegisterRequest.builder()
+                            .email("abe.qui@pucp.pe")
+                            .password("1234")
+                            .firstName("Abelardo")
+                            .lastName("Quiñones")
+                            .role(Role.DOCTOR_MAIN)
+                            .documentType(DocumentType.DNI)
+                            .documentNumber("00000762")
                             .build()
             );
 
@@ -219,9 +232,36 @@ public class SisdvacApplication {
                             .build()
             );
 
+            //register assistant user
+            authenticationService.register(
+                    RegisterRequest.builder()
+                            .email("bri.sil@pucp.pe")
+                            .password("1234")
+                            .firstName("Brigida")
+                            .lastName("Silva")
+                            .role(Role.ASSISTANT)
+                            .documentType(DocumentType.DNI)
+                            .documentNumber("60239763")
+                            .build()
+            );
+
+            //register assistant user
+            authenticationService.register(
+                    RegisterRequest.builder()
+                            .email("ma.pa@pucp.pe")
+                            .password("1234")
+                            .firstName("Maria")
+                            .lastName("Parado")
+                            .role(Role.ASSISTANT)
+                            .documentType(DocumentType.DNI)
+                            .documentNumber("602318763")
+                            .build()
+            );
+
             List<UserDto> users = new ArrayList<>();
             users.add(userService.findByEmail("jose.olaya@pucp.pe"));
-//            users.add(userService.findByEmail("francisco.bolognesi@pucp.pe"));
+            users.add(userService.findByEmail("abe.qui@pucp.pe"));
+            users.add(userService.findByEmail("ma.pa@pucp.pe"));
 
             FormulationDto formulationDto = FormulationDto.builder()
                     .items(formulationItemDtos)
@@ -233,7 +273,7 @@ public class SisdvacApplication {
             formulationDtos3.add(formulationDto);
 
             TrialDto preclinicalTrial3 = TrialDto.builder()
-                    .insNumber("9834567891")
+                    .insNumber("PER-303-20")
                     .stage(Stage.PRECLINICAL)
                     .startDate(new Date())
                     .title("Estudio clinico de prueba 3")
@@ -256,7 +296,7 @@ public class SisdvacApplication {
             // create new research and attach a doctor
             researchService.save(ResearchDto.builder()
                     .title("Investigacion contra el sarampion")
-                    .insNumber("567345234")
+                    .insNumber("PER-103-20")
                     .startDate(new Date())
                     .users(users)
                     .trials(trialDtos)

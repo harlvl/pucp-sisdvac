@@ -1,6 +1,7 @@
 package edu.pucp.sisdvac.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import edu.pucp.sisdvac.domain.enums.SubjectType;
 import edu.pucp.sisdvac.utils.Constants;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,11 +30,16 @@ public class Advance {
     private Integer females;
     private Integer minAge;
     private Integer maxAge;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
     private Date startDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
     private Date endDate;
-    private String subject; //applies only for Preclinical
+
+    @Enumerated(EnumType.STRING)
+    private SubjectType subjectType;
+    private String subjectName; //applies only for Preclinical
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<AdverseEvent> adverseEvents;
 }

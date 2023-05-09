@@ -2,6 +2,7 @@ package edu.pucp.sisdvac.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import edu.pucp.sisdvac.domain.enums.Stage;
+import edu.pucp.sisdvac.domain.enums.SubjectType;
 import edu.pucp.sisdvac.utils.Constants;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -70,7 +71,10 @@ public class TrialDto {
         private Date startDate;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
         private Date endDate;
-        private String subject; //applies only for Preclinical
+
+        @Enumerated(EnumType.STRING)
+        private SubjectType subjectType;
+        private String subjectName; //applies only for Preclinical
         private List<AdverseEventDto> adverseEvents;
     }
 

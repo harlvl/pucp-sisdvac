@@ -4,5 +4,6 @@ public enum SubjectType {
     MICRO,
     RODENT,
     BIRD,
-    PRIMATE
+    PRIMATE,
+    HUMAN
 }
