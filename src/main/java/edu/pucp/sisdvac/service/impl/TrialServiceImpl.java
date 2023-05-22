@@ -1,23 +1,26 @@
 package edu.pucp.sisdvac.service.impl;
 
 import edu.pucp.sisdvac.controller.dto.FormulationDto;
+import edu.pucp.sisdvac.controller.dto.FormulationEvaluationDto;
 import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.controller.exception.NotFoundException;
 import edu.pucp.sisdvac.dao.TrialRepository;
 import edu.pucp.sisdvac.dao.parser.BaseParser;
 import edu.pucp.sisdvac.dao.parser.FormulationParser;
 import edu.pucp.sisdvac.dao.parser.TrialParser;
+import edu.pucp.sisdvac.domain.EvaluationItem;
 import edu.pucp.sisdvac.domain.Formulation;
+import edu.pucp.sisdvac.domain.FormulationEvaluation;
 import edu.pucp.sisdvac.domain.Trial;
+import edu.pucp.sisdvac.domain.enums.EvaluationFormulaEnum;
 import edu.pucp.sisdvac.service.ITrialService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -132,5 +135,89 @@ public class TrialServiceImpl implements ITrialService {
         return TrialParser.toDto(
                 repository.save(dbItem)
         );
+    }
+
+    @Override
+    public Object evaluateFormulation(Integer id, Integer formulationId, FormulationEvaluationDto dto) {
+        LOGGER.info(String.format(
+                "Evaluation formulation [%d]...", formulationId)
+        );
+        Trial dbItem = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "Trial [%d] not found.", id)
+                ));
+
+        // get formulation details
+        Formulation formulationToEvaluate = new Formulation();
+        for (Formulation f :
+                dbItem.getFormulations()) {
+            if (Objects.equals(f.getId(), formulationId)) {
+                formulationToEvaluate = f;
+                break;
+            }
+        }
+
+        // calculate values
+        Map<String, BigDecimal> calculatedValues = calculateFormulas(dto);
+        List<EvaluationItem> items = new ArrayList<>();
+        for (Map.Entry<String, BigDecimal> set : calculatedValues.entrySet()) {
+            items.add(
+                    EvaluationItem.builder()
+                            .type(EvaluationFormulaEnum.valueOf(set.getKey()))
+                            .detail(set.getValue())
+                            .build()
+            );
+        }
+
+        formulationToEvaluate.setEvaluation(
+                FormulationEvaluation.builder()
+                        .items(items)
+                        .build()
+        );
+
+        List<Formulation> formulations = (List<Formulation>) dbItem.getFormulations();
+
+        // update formulation by adding the evaluation
+        for (int i = 0; i < formulations.size(); i++) {
+            if (Objects.equals(formulations.get(i).getId(), formulationToEvaluate.getId())) {
+                formulations.set(i, formulationToEvaluate);
+                break;
+            }
+        }
+
+        dbItem.setFormulations(formulations);
+
+        Trial savedItem = repository.save(dbItem);
+        List<Formulation> updatedFormulations = (List<Formulation>) savedItem.getFormulations();
+
+        Formulation result = new Formulation();
+        for (Formulation f :
+                updatedFormulations) {
+            if (Objects.equals(f.getId(), formulationId)) {
+                result = f;
+                break;
+            }
+        }
+
+        return FormulationEvaluationDto.builder()
+                .id(result.getId())
+                .build();
+    }
+
+    private Map<String, BigDecimal> calculateFormulas(FormulationEvaluationDto dto) {
+        Map<String, BigDecimal> response = new HashMap<>();
+
+        try {
+            response.put(String.valueOf(EvaluationFormulaEnum.IMMUNOGENICITY), BigDecimal.valueOf(5.1));
+            response.put(String.valueOf(EvaluationFormulaEnum.EFFICACY), BigDecimal.valueOf(2.3));
+            response.put(String.valueOf(EvaluationFormulaEnum.EFFICIENCY), BigDecimal.valueOf(3.4));
+            response.put(String.valueOf(EvaluationFormulaEnum.SAFETY_INDEX), BigDecimal.valueOf(1.2));
+        } catch (Exception e) {
+            LOGGER.error(String.format(
+                    "Error calculating formula: %s", e.getMessage()
+            ));
+        }
+
+        return response;
     }
 }

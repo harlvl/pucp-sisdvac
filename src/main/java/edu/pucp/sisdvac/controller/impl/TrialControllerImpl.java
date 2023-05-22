@@ -2,6 +2,7 @@ package edu.pucp.sisdvac.controller.impl;
 
 import edu.pucp.sisdvac.controller.ITrialController;
 import edu.pucp.sisdvac.controller.dto.FormulationDto;
+import edu.pucp.sisdvac.controller.dto.FormulationEvaluationDto;
 import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.controller.response.PayloadObjectBuilder;
 import edu.pucp.sisdvac.controller.response.RestResponse;
@@ -83,7 +84,7 @@ public class TrialControllerImpl implements ITrialController {
 
     @Override
     @PatchMapping("/{id}/formulation/{key}")
-    public ResponseEntity<?> updateFormulation(Integer id, Integer key, FormulationDto dto) {
+    public ResponseEntity<?> updateFormulation(@PathVariable(name = "id") final Integer id, @PathVariable(name = "key") final Integer key, @RequestBody FormulationDto dto) {
         return null;
     }
 
@@ -92,6 +93,14 @@ public class TrialControllerImpl implements ITrialController {
     public ResponseEntity<?> addFormulation(@PathVariable(name = "id") final Integer id, @Valid @RequestBody FormulationDto dto) {
         return ResponseEntity.ok().body(
                 PayloadObjectBuilder.buildPayloadObject(service.addFormulation(id, dto))
+        );
+    }
+
+    @Override
+    @PostMapping("/{id}/formulation/{fid}/evaluate")
+    public ResponseEntity<?> evaluateFormulation(@PathVariable(name = "id") final Integer id, @PathVariable(name = "fid") final Integer formulationId, @RequestBody FormulationEvaluationDto dto) {
+        return ResponseEntity.ok().body(
+                PayloadObjectBuilder.buildPayloadObject(service.evaluateFormulation(id, formulationId, dto))
         );
     }
 }

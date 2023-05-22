@@ -33,6 +33,9 @@ public class Formulation {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<FormulationItem> items;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private FormulationEvaluation evaluation;
+
     // START audit fields
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
     @Column(name = "created_at")
