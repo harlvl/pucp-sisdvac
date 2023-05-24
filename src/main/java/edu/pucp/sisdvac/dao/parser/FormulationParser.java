@@ -1,14 +1,15 @@
 package edu.pucp.sisdvac.dao.parser;
 
 import edu.pucp.sisdvac.controller.dto.FormulationDto;
+import edu.pucp.sisdvac.controller.dto.FormulationEvaluationDto;
 import edu.pucp.sisdvac.controller.dto.FormulationItemDto;
+import edu.pucp.sisdvac.domain.EvaluationItem;
 import edu.pucp.sisdvac.domain.Formulation;
+import edu.pucp.sisdvac.domain.FormulationEvaluation;
 import edu.pucp.sisdvac.domain.FormulationItem;
 import edu.pucp.sisdvac.domain.enums.FormulationStatus;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class FormulationParser {
     public static FormulationDto toDto(Formulation input) {
@@ -27,12 +28,32 @@ public class FormulationParser {
                 formulationItemDto.setId(item.getId());
             }
 
+            if (input.getEvaluation() != null) {
+                output.setEvaluation(
+                        FormulationEvaluationDto.builder()
+                                .id(input.getEvaluation().getId())
+                                .items(getItems(input.getEvaluation().getItems()))
+                                .build()
+                );
+            }
+
             itemDtos.add(formulationItemDto);
         }
 
         output.setItems(itemDtos);
 
         return output;
+    }
+
+    public static Map<String, Object> getItems(Collection<EvaluationItem> items) {
+        HashMap<String, Object> response = new HashMap<>();
+
+        for (EvaluationItem item :
+                items) {
+            response.put(String.valueOf(item.getType()), item.getDetail());
+        }
+
+        return response;
     }
 
     public static Formulation fromDto(FormulationDto input) {

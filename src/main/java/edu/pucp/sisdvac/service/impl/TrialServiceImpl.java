@@ -140,7 +140,9 @@ public class TrialServiceImpl implements ITrialService {
     @Override
     public Object evaluateFormulation(Integer id, Integer formulationId, FormulationEvaluationDto dto) {
         LOGGER.info(String.format(
-                "Evaluation formulation [%d]...", formulationId)
+                "Evaluating formulation [%d] for trial [%d]...",
+                formulationId,
+                id)
         );
         Trial dbItem = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format(
@@ -159,6 +161,7 @@ public class TrialServiceImpl implements ITrialService {
 
         // calculate values
         Map<String, BigDecimal> calculatedValues = calculateFormulas(dto);
+
         List<EvaluationItem> items = new ArrayList<>();
         for (Map.Entry<String, BigDecimal> set : calculatedValues.entrySet()) {
             items.add(
@@ -201,6 +204,7 @@ public class TrialServiceImpl implements ITrialService {
 
         return FormulationEvaluationDto.builder()
                 .id(result.getId())
+                .items(FormulationParser.getItems(result.getEvaluation().getItems()))
                 .build();
     }
 

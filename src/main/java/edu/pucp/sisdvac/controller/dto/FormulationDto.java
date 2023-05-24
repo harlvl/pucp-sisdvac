@@ -25,6 +25,8 @@ public class FormulationDto {
     private Integer order;
     private Collection<FormulationItemDto> items;
 
+    private FormulationEvaluationDto evaluation;
+
     // START audit fields
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
     private Date createdAt;

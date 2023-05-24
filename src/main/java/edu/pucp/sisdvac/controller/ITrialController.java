@@ -3,7 +3,6 @@ package edu.pucp.sisdvac.controller;
 import edu.pucp.sisdvac.controller.dto.FormulationDto;
 import edu.pucp.sisdvac.controller.dto.FormulationEvaluationDto;
 import edu.pucp.sisdvac.controller.dto.TrialDto;
-import edu.pucp.sisdvac.domain.FormulationEvaluation;
 import org.springframework.http.ResponseEntity;
 
 public interface ITrialController {

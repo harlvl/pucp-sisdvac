@@ -63,6 +63,7 @@ public class SisdvacApplication {
                     TrialDto.AdvanceItem.builder()
                             .adverseEvents(adverseEventDtos)
                             .subjectsTotal(10)
+                            .stage(Stage.PRECLINICAL)
                             .startDate(new Date())
                             .build()
             );
