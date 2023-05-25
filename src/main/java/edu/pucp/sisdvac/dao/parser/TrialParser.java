@@ -1,6 +1,7 @@
 package edu.pucp.sisdvac.dao.parser;
 
 import edu.pucp.sisdvac.controller.dto.FormulationDto;
+import edu.pucp.sisdvac.controller.dto.FormulationEvaluationDto;
 import edu.pucp.sisdvac.controller.dto.TppDto;
 import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.domain.Advance;
@@ -34,7 +35,17 @@ public class TrialParser {
             List<FormulationDto> formulationDtos = new ArrayList<>();
             for (Formulation item :
                     input.getFormulations()) {
-                formulationDtos.add(FormulationParser.toDto(item));
+                FormulationDto dto = FormulationParser.toDto(item);
+                if (item.getEvaluation() != null) {
+                    dto.setEvaluation(
+                            FormulationEvaluationDto.builder()
+                                    .id(item.getEvaluation().getId())
+                                    .items(FormulationParser.getItems(item.getEvaluation().getItems()))
+                                    .build()
+                    );
+                }
+
+                formulationDtos.add(dto);
             }
 
             output.setFormulations(formulationDtos);

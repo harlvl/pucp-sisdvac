@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import edu.pucp.sisdvac.domain.enums.Stage;
 import edu.pucp.sisdvac.domain.enums.SubjectType;
 import edu.pucp.sisdvac.utils.Constants;
-import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;

@@ -3,7 +3,6 @@ package edu.pucp.sisdvac.controller.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import edu.pucp.sisdvac.domain.enums.FormulationStatus;
 import edu.pucp.sisdvac.utils.Constants;
-import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;

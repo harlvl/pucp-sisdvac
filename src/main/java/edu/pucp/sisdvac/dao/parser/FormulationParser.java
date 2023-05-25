@@ -5,11 +5,15 @@ import edu.pucp.sisdvac.controller.dto.FormulationEvaluationDto;
 import edu.pucp.sisdvac.controller.dto.FormulationItemDto;
 import edu.pucp.sisdvac.domain.EvaluationItem;
 import edu.pucp.sisdvac.domain.Formulation;
-import edu.pucp.sisdvac.domain.FormulationEvaluation;
 import edu.pucp.sisdvac.domain.FormulationItem;
 import edu.pucp.sisdvac.domain.enums.FormulationStatus;
 
-import java.util.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class FormulationParser {
     public static FormulationDto toDto(Formulation input) {
@@ -45,8 +49,8 @@ public class FormulationParser {
         return output;
     }
 
-    public static Map<String, Object> getItems(Collection<EvaluationItem> items) {
-        HashMap<String, Object> response = new HashMap<>();
+    public static Map<String, BigDecimal> getItems(Collection<EvaluationItem> items) {
+        HashMap<String, BigDecimal> response = new HashMap<>();
 
         for (EvaluationItem item :
                 items) {
