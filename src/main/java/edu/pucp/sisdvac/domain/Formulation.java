@@ -45,4 +45,14 @@ public class Formulation {
     @Column(name = "last_updated_at")
     private Date lastUpdatedAt;
     // END audit fields
+
+
+    // METHODS
+    @Override
+    public String toString() {
+        return String.format(
+                "Formulación %d: %s con %d items.", this.order, this.status.toString(), this.items.size()
+        );
+    }
+
 }

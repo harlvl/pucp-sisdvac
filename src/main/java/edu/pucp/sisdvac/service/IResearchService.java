@@ -17,4 +17,7 @@ public interface IResearchService {
     ResearchDto update(Integer id, ResearchDto dto);
     ResearchDto addUser(Integer id, UserDto dto);
     ResearchDto addUsers(Integer id, AddUsersRequest dto);
+
+    // TRIAL LEVEL METHODS
+    Object findAnimalStudiesByUser(String documentNumber, Integer trialId);
 }

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -273,17 +274,37 @@ public class SisdvacApplication {
             List<FormulationDto> formulationDtos3 = new ArrayList<>();
             formulationDtos3.add(formulationDto);
 
+
+            AnimalStudyDto animalStudyDto = AnimalStudyDto.builder()
+                    .objectives("Objetivo de prueba")
+                    .animalModel(SubjectType.RODENT)
+                    .sampleSize(1)
+                    .ethicalGuidelines("National Committee for Research Ethics")
+                    .ethicalGuidelinesUri("https://www.forskningsetikk.no/en/guidelines/science-and-technology/guidelines-for-research-ethics-in-science-and-technology/")
+                    .build();
+            AdvanceDto advanceDto = AdvanceDto.builder()
+                    .stage(Stage.PRECLINICAL)
+                    .subjectName("MICKEY01")
+                    .animalStudy(animalStudyDto)
+                    .createdAt(new Date())
+                    .lastUpdatedAt(new Date())
+                    .build();
+
+            Collection<AdvanceDto> advanceDtos = new ArrayList<>();
+            advanceDtos.add(advanceDto);
+
             TrialDto preclinicalTrial3 = TrialDto.builder()
                     .insNumber("PER-303-20")
                     .stage(Stage.PRECLINICAL)
                     .startDate(new Date())
-                    .title("Estudio clinico de prueba 3")
+                    .title("Estudio preclínico de prueba 3")
                     .status(
                             TrialStatusDto.builder()
                                     .name("Estado inicial")
                                     .startDate(new Date())
                                     .build()
                     )
+                    .advanceDtos(advanceDtos)
 //                    .advances(advanceItems)
                     .formulations(formulationDtos3)
                     .tpp(TppDto.builder()
@@ -321,6 +342,13 @@ public class SisdvacApplication {
                     TestSubjectDto.builder()
                             .codeName("MICKEY01")
                             .subjectType(SubjectType.RODENT)
+                            .status(Status.ACTIVE)
+                            .build());
+
+            testSubjectService.save(
+                    TestSubjectDto.builder()
+                            .codeName("MICRO01")
+                            .subjectType(SubjectType.MICRO)
                             .status(Status.ACTIVE)
                             .build());
         };

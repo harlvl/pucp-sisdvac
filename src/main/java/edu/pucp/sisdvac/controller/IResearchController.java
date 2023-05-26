@@ -18,4 +18,5 @@ public interface IResearchController {
     ResponseEntity<?> update(Integer id, ResearchDto dto);
     ResponseEntity<?> addUser(Integer id, UserDto dto);
     ResponseEntity<?> addUsers(Integer id, AddUsersRequest request);
+    ResponseEntity<?> findAnimalStudiesByUser(String documentNumber, Integer trialId);
 }

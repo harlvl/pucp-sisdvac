@@ -13,6 +13,10 @@ public class AdvanceParser {
     public static AdvanceDto toDto(Advance input) {
         AdvanceDto response = BaseParser.parse(input, AdvanceDto.class);
 
+        if (input.getAnimalStudy() != null) {
+            response.setAnimalStudy(AnimalStudyParser.toDto(input.getAnimalStudy()));
+        }
+
         if (input.getAdverseEvents() != null && !input.getAdverseEvents().isEmpty()) {
             Collection<AdverseEventDto> adverseEventDtos = new ArrayList<>();
             for (AdverseEvent adverseEvent :
@@ -27,6 +31,10 @@ public class AdvanceParser {
 
     public static Advance fromDto(AdvanceDto input) {
         Advance response = BaseParser.parse(input, Advance.class);
+
+        if (input.getAnimalStudy() != null) {
+            response.setAnimalStudy(AnimalStudyParser.fromDto(input.getAnimalStudy()));
+        }
 
         if (input.getAdverseEvents() != null && !input.getAdverseEvents().isEmpty()) {
             Collection<AdverseEvent> adverseEvents = new ArrayList<>();

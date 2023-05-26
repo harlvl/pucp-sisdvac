@@ -38,7 +38,9 @@ public class AnimalStudy {
 
     private Integer sampleSize;
 
-    private String ethicalGuidelines; // should be a URI
+    private String ethicalGuidelines;
+
+    private String ethicalGuidelinesUri; // should be a URI
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
     private Date startDate;

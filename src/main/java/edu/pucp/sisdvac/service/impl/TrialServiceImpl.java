@@ -233,6 +233,14 @@ public class TrialServiceImpl implements ITrialService {
             ));
         }
 
+        LOGGER.info(String.format("Formulation found: %s", formulationFound));
+
+        if (formulationFound.getEvaluation() == null) {
+            throw new NotFoundException(String.format(
+                    "Formulation [%d] has not been evaluated.", fid
+            ));
+        }
+
         return FormulationEvaluationParser.toDto(formulationFound.getEvaluation());
     }
 

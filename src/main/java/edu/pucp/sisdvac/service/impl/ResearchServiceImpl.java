@@ -1,19 +1,27 @@
 package edu.pucp.sisdvac.service.impl;
 
+import edu.pucp.sisdvac.controller.dto.AnimalStudyDto;
 import edu.pucp.sisdvac.controller.dto.ResearchDto;
 import edu.pucp.sisdvac.controller.dto.UserDto;
 import edu.pucp.sisdvac.controller.exception.NotFoundException;
 import edu.pucp.sisdvac.controller.exception.UserAlreadyAddedException;
 import edu.pucp.sisdvac.controller.request.AddUsersRequest;
 import edu.pucp.sisdvac.dao.ResearchRepository;
+import edu.pucp.sisdvac.dao.TrialRepository;
 import edu.pucp.sisdvac.dao.UserRepository;
+import edu.pucp.sisdvac.dao.parser.AnimalStudyParser;
 import edu.pucp.sisdvac.dao.parser.BaseParser;
 import edu.pucp.sisdvac.dao.parser.ResearchParser;
 import edu.pucp.sisdvac.dao.parser.UserParser;
+import edu.pucp.sisdvac.domain.Advance;
 import edu.pucp.sisdvac.domain.Research;
+import edu.pucp.sisdvac.domain.Trial;
+import edu.pucp.sisdvac.domain.enums.Stage;
 import edu.pucp.sisdvac.domain.user.Role;
 import edu.pucp.sisdvac.domain.user.User;
 import edu.pucp.sisdvac.service.IResearchService;
+import edu.pucp.sisdvac.service.ITrialService;
+import edu.pucp.sisdvac.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +38,7 @@ public class ResearchServiceImpl implements IResearchService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ResearchServiceImpl.class);
     private final ResearchRepository repository;
     private final UserRepository userRepository;
+    private final TrialRepository trialRepository;
     @Override
     public List<ResearchDto> findAll() {
         List<Research> dbItems = repository.findAll();
@@ -200,5 +209,40 @@ public class ResearchServiceImpl implements IResearchService {
         return ResearchParser.toDto(
                 repository.save(dbItem)
         );
+    }
+
+    @Override
+    public Object findAnimalStudiesByUser(String documentNumber, Integer tid) {
+        List<AnimalStudyDto> response = new ArrayList<>();
+
+        User user = userRepository.findByDocumentNumber(documentNumber)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "User with document number [%s] not found.", documentNumber)
+                ));
+
+        Trial dbItem = trialRepository.findById(tid)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "Trial [%d] not found.", tid)
+                ));
+
+        Collection<Advance> advances = dbItem.getAdvances();
+        if (advances == null || advances.isEmpty()) {
+            LOGGER.warn(String.format("Trial [%d] has no advances associated.", tid));
+        } else {
+            for (Advance item :
+                    advances) {
+                if (item.getStage().equals(Stage.PRECLINICAL)) {
+                    if (item.getAnimalStudy() != null) {
+                        response.add(AnimalStudyParser.toDto(item.getAnimalStudy()));
+                    }
+                }
+            }
+
+            if (response.isEmpty()) {
+                LOGGER.warn(String.format("Trial [%d] has no preclinical stage advances associated.", tid));
+            }
+        }
+
+        return response;
     }
 }

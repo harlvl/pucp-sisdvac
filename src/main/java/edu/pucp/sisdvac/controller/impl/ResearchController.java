@@ -131,4 +131,13 @@ public class ResearchController implements IResearchController {
                 PayloadObjectBuilder.buildPayloadObject(service.addUsers(id, request))
         );
     }
+
+    @Override
+    @GetMapping("/user/{document-number}/trial/{tid}/animal-studies")
+    public ResponseEntity<?> findAnimalStudiesByUser(@PathVariable(name = "document-number") final String documentNumber, @PathVariable(name = "tid") final Integer trialId) {
+        return ResponseEntity.ok().body(
+                PayloadObjectBuilder.buildPayloadObject(service.findAnimalStudiesByUser(documentNumber, trialId))
+        );
+    }
+
 }
