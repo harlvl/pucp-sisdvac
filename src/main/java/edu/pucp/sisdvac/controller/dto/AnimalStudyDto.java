@@ -19,6 +19,12 @@ import java.util.Date;
 public class AnimalStudyDto {
     private Integer id;
 
+    private Integer researchId;
+
+    private Integer trialId;
+
+    private Integer advanceId;
+
     private String objectives;
 
     @Enumerated(EnumType.STRING)

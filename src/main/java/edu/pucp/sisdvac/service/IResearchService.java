@@ -12,6 +12,7 @@ public interface IResearchService {
     ResearchDto findById(Integer id);
     ResearchDto findByInsNumber(String key);
     List<ResearchDto> findByUserId(Integer id);
+    List<ResearchDto> findByUserDocumentNumber(String key);
     List<?> findUsersByRole(Integer id, Role role);
     ResearchDto save(ResearchDto dto);
     ResearchDto update(Integer id, ResearchDto dto);
@@ -19,5 +20,6 @@ public interface IResearchService {
     ResearchDto addUsers(Integer id, AddUsersRequest dto);
 
     // TRIAL LEVEL METHODS
-    Object findAnimalStudiesByUser(String documentNumber, Integer trialId);
+    Object findAnimalStudiesByUserAndTrial(String documentNumber, Integer trialId);
+    Object findAnimalStudiesByUser(String documentNumber);
 }

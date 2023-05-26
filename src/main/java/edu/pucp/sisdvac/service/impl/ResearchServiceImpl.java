@@ -20,8 +20,6 @@ import edu.pucp.sisdvac.domain.enums.Stage;
 import edu.pucp.sisdvac.domain.user.Role;
 import edu.pucp.sisdvac.domain.user.User;
 import edu.pucp.sisdvac.service.IResearchService;
-import edu.pucp.sisdvac.service.ITrialService;
-import edu.pucp.sisdvac.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,6 +82,34 @@ public class ResearchServiceImpl implements IResearchService {
                 }
             }
         }
+        return output;
+    }
+
+    @Override
+    public List<ResearchDto> findByUserDocumentNumber(String key) {
+        List<Research> dbItems = this.findByUserDocumentNumberInternal(key);
+        List<ResearchDto> output = new ArrayList<>();
+        for (Research research :
+                dbItems) {
+            output.add(ResearchParser.toDto(research));
+        }
+        return output;
+    }
+
+    private List<Research> findByUserDocumentNumberInternal(String key) {
+        List<Research> dbItems = repository.findAll();
+        List<Research> output = new ArrayList<>();
+        for (Research research :
+                dbItems) {
+            Collection<User> users = research.getUsers();
+            for (User user :
+                    users) {
+                if (Objects.equals(user.getDocumentNumber(), key)) {
+                    output.add(research);
+                }
+            }
+        }
+
         return output;
     }
 
@@ -212,7 +238,7 @@ public class ResearchServiceImpl implements IResearchService {
     }
 
     @Override
-    public Object findAnimalStudiesByUser(String documentNumber, Integer tid) {
+    public Object findAnimalStudiesByUserAndTrial(String documentNumber, Integer tid) {
         List<AnimalStudyDto> response = new ArrayList<>();
 
         User user = userRepository.findByDocumentNumber(documentNumber)
@@ -240,6 +266,45 @@ public class ResearchServiceImpl implements IResearchService {
 
             if (response.isEmpty()) {
                 LOGGER.warn(String.format("Trial [%d] has no preclinical stage advances associated.", tid));
+            }
+        }
+
+        return response;
+    }
+
+    @Override
+    public Object findAnimalStudiesByUser(String documentNumber) {
+        List<AnimalStudyDto> response = new ArrayList<>();
+
+        userRepository.findByDocumentNumber(documentNumber)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "User with document number [%s] not found.", documentNumber)
+                ));
+
+        List<Research> userResearches = this.findByUserDocumentNumberInternal(documentNumber);
+
+        for (Research research :
+                userResearches) {
+            if (research.getTrials() == null || research.getTrials().isEmpty()) {
+                continue;
+            }
+
+            for (Trial trial :
+                    research.getTrials()) {
+                if (trial.getAdvances() == null || trial.getAdvances().isEmpty()) {
+                    continue;
+                }
+
+                for (Advance advance :
+                        trial.getAdvances()) {
+                    if (advance.getAnimalStudy() != null) {
+                        AnimalStudyDto element = AnimalStudyParser.toDto(advance.getAnimalStudy());
+                        element.setResearchId(research.getId());
+                        element.setTrialId(trial.getId());
+                        element.setAdvanceId(advance.getId());
+                        response.add(element);
+                    }
+                }
             }
         }
 

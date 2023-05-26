@@ -134,10 +134,19 @@ public class ResearchController implements IResearchController {
 
     @Override
     @GetMapping("/user/{document-number}/trial/{tid}/animal-studies")
-    public ResponseEntity<?> findAnimalStudiesByUser(@PathVariable(name = "document-number") final String documentNumber, @PathVariable(name = "tid") final Integer trialId) {
+    public ResponseEntity<?> findAnimalStudiesByUserAndTrial(@PathVariable(name = "document-number") final String documentNumber, @PathVariable(name = "tid") final Integer trialId) {
         return ResponseEntity.ok().body(
-                PayloadObjectBuilder.buildPayloadObject(service.findAnimalStudiesByUser(documentNumber, trialId))
+                PayloadObjectBuilder.buildPayloadObject(service.findAnimalStudiesByUserAndTrial(documentNumber, trialId))
         );
     }
+
+    @Override
+    @GetMapping("/user/{document-number}/animal-studies")
+    public ResponseEntity<?> findAnimalStudiesByUser(@PathVariable(name = "document-number") final String documentNumber) {
+        return ResponseEntity.ok().body(
+                PayloadObjectBuilder.buildPayloadObject(service.findAnimalStudiesByUser(documentNumber))
+        );
+    }
+
 
 }

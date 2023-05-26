@@ -6,8 +6,6 @@ import edu.pucp.sisdvac.controller.request.AddUsersRequest;
 import edu.pucp.sisdvac.domain.user.Role;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-
 public interface IResearchController {
     ResponseEntity<?> findAll();
     ResponseEntity<?> findById(Integer id);
@@ -18,5 +16,6 @@ public interface IResearchController {
     ResponseEntity<?> update(Integer id, ResearchDto dto);
     ResponseEntity<?> addUser(Integer id, UserDto dto);
     ResponseEntity<?> addUsers(Integer id, AddUsersRequest request);
-    ResponseEntity<?> findAnimalStudiesByUser(String documentNumber, Integer trialId);
+    ResponseEntity<?> findAnimalStudiesByUserAndTrial(String documentNumber, Integer trialId);
+    ResponseEntity<?> findAnimalStudiesByUser(String documentNumber);
 }
