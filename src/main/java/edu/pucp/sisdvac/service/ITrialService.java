@@ -1,5 +1,6 @@
 package edu.pucp.sisdvac.service;
 
+import edu.pucp.sisdvac.controller.dto.AdvanceDto;
 import edu.pucp.sisdvac.controller.dto.FormulationDto;
 import edu.pucp.sisdvac.controller.dto.FormulationEvaluationDto;
 import edu.pucp.sisdvac.controller.dto.TrialDto;
@@ -15,4 +16,5 @@ public interface ITrialService {
     TrialDto addFormulation(Integer id, FormulationDto dto);
     Object evaluateFormulation(Integer id, Integer formulationId, FormulationEvaluationDto formulationEvaluation);
     Object findFormulationEvaluation(Integer tid, Integer fid);
+    Object saveAdvance(Integer trialId, AdvanceDto dto);
 }

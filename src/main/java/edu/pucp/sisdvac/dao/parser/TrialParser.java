@@ -19,17 +19,17 @@ public class TrialParser {
         TrialDto output = BaseParser.parse(input, TrialDto.class);
         output.setStatus(TrialStatusParser.toDto(input.getStatus())); // TODO check if this is actually necessary
 
-        if (input.getAdvances() != null && input.getAdvances().size() > 0) {
-            Collection<Advance> advances = input.getAdvances();
-            List<TrialDto.AdvanceItem> advanceItems = new ArrayList<>();
-            for (Advance item :
-                    advances) {
-                advanceItems.add(
-                        AdvanceParser.toAdvanceItem(item)
-                );
-            }
-            output.setAdvanceItems(advanceItems);
-        }
+//        if (input.getAdvances() != null && input.getAdvances().size() > 0) {
+//            Collection<Advance> advances = input.getAdvances();
+//            List<TrialDto.AdvanceDto> advanceItems = new ArrayList<>();
+//            for (Advance item :
+//                    advances) {
+//                advanceItems.add(
+//                        AdvanceParser.toDto(item)
+//                );
+//            }
+//            output.setAdvances(advanceItems);
+//        }
 
         if (input.getFormulations() != null && !input.getFormulations().isEmpty()) {
             List<FormulationDto> formulationDtos = new ArrayList<>();
@@ -61,18 +61,18 @@ public class TrialParser {
         output.setStatus(TrialStatusParser.fromDto(input.getStatus())); // TODO same
 
         // build advances list
-        if (input.getAdvanceItems() != null && input.getAdvanceItems().size() > 0) {
-            List<TrialDto.AdvanceItem> advanceItems = input.getAdvanceItems();
-            List<Advance> advances = new ArrayList<>();
-            for (TrialDto.AdvanceItem item :
-                    advanceItems) {
-                advances.add(
-                        AdvanceParser.toAdvance(item)
-                );
-            }
-
-            output.setAdvances(advances);
-        }
+//        if (input.getAdvances() != null && input.getAdvances().size() > 0) {
+//            List<TrialDto.AdvanceDto> advanceItems = input.getAdvances();
+//            List<Advance> advances = new ArrayList<>();
+//            for (TrialDto.AdvanceDto item :
+//                    advanceItems) {
+//                advances.add(
+//                        AdvanceParser.fromDto(item)
+//                );
+//            }
+//
+//            output.setAdvances(advances);
+//        }
 
         if (input.getFormulations() != null && !input.getFormulations().isEmpty()) {
             List<FormulationDto> formulationDtos = input.getFormulations();

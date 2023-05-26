@@ -1,15 +1,10 @@
-package edu.pucp.sisdvac.domain;
+package edu.pucp.sisdvac.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import edu.pucp.sisdvac.domain.enums.SubjectType;
 import edu.pucp.sisdvac.utils.Constants;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,15 +16,8 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "animal_study")
-public class AnimalStudy {
-    @Id
-    @GeneratedValue
+public class AnimalStudyDto {
     private Integer id;
-
-    @OneToOne(mappedBy = "animalStudy")
-    private Advance advance;
 
     private String objectives;
 

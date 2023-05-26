@@ -1,6 +1,7 @@
 package edu.pucp.sisdvac.controller.impl;
 
 import edu.pucp.sisdvac.controller.ITrialController;
+import edu.pucp.sisdvac.controller.dto.AdvanceDto;
 import edu.pucp.sisdvac.controller.dto.FormulationDto;
 import edu.pucp.sisdvac.controller.dto.FormulationEvaluationDto;
 import edu.pucp.sisdvac.controller.dto.TrialDto;
@@ -111,4 +112,13 @@ public class TrialControllerImpl implements ITrialController {
                 PayloadObjectBuilder.buildPayloadObject(service.findFormulationEvaluation(trialId, formulationId))
         );
     }
+
+    @Override
+    @PostMapping("/{tid}/advance")
+    public ResponseEntity<?> saveAdvance(@PathVariable(name = "tid") final Integer trialId, @RequestBody AdvanceDto dto) {
+        return ResponseEntity.ok().body(
+                PayloadObjectBuilder.buildPayloadObject(service.saveAdvance(trialId, dto))
+        );
+    }
+
 }

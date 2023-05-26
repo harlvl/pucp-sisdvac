@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -49,7 +50,9 @@ public class TrialDto {
 
     private List<FormulationDto> formulations;
 
-    private List<AdvanceItem> advanceItems;
+    private Collection<AdvanceDto> advanceDtos;
+
+    private List<AdvanceItem> advances;
 
     @Data
     @Builder

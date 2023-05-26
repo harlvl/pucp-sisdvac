@@ -1,18 +1,13 @@
 package edu.pucp.sisdvac.service.impl;
 
+import edu.pucp.sisdvac.controller.dto.AdvanceDto;
 import edu.pucp.sisdvac.controller.dto.FormulationDto;
 import edu.pucp.sisdvac.controller.dto.FormulationEvaluationDto;
 import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.controller.exception.NotFoundException;
 import edu.pucp.sisdvac.dao.TrialRepository;
-import edu.pucp.sisdvac.dao.parser.BaseParser;
-import edu.pucp.sisdvac.dao.parser.FormulationEvaluationParser;
-import edu.pucp.sisdvac.dao.parser.FormulationParser;
-import edu.pucp.sisdvac.dao.parser.TrialParser;
-import edu.pucp.sisdvac.domain.EvaluationItem;
-import edu.pucp.sisdvac.domain.Formulation;
-import edu.pucp.sisdvac.domain.FormulationEvaluation;
-import edu.pucp.sisdvac.domain.Trial;
+import edu.pucp.sisdvac.dao.parser.*;
+import edu.pucp.sisdvac.domain.*;
 import edu.pucp.sisdvac.domain.enums.EvaluationFormulaEnum;
 import edu.pucp.sisdvac.service.ITrialService;
 import lombok.RequiredArgsConstructor;
@@ -239,6 +234,25 @@ public class TrialServiceImpl implements ITrialService {
         }
 
         return FormulationEvaluationParser.toDto(formulationFound.getEvaluation());
+    }
+
+    @Override
+    public Object saveAdvance(Integer tid, AdvanceDto dto) {
+        LOGGER.info(String.format("Saving advance for trial [%d]...", tid));
+
+        Trial dbItem = repository.findById(tid)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "Trial [%d] not found.", tid)
+                ));
+
+        Advance advanceToCreate = AdvanceParser.fromDto(dto);
+        if (dbItem.getAdvances() == null) {
+            dbItem.setAdvances(new ArrayList<>());
+        }
+
+        dbItem.getAdvances().add(advanceToCreate);
+
+        return TrialParser.toDto(repository.save(dbItem));
     }
 
     private Map<String, BigDecimal> calculateFormulas(FormulationEvaluationDto dto) {
