@@ -103,4 +103,12 @@ public class TrialControllerImpl implements ITrialController {
                 PayloadObjectBuilder.buildPayloadObject(service.evaluateFormulation(id, formulationId, dto))
         );
     }
+
+    @Override
+    @GetMapping("/{tid}/formulation/{fid}")
+    public ResponseEntity<?> findFormulationEvaluation(@PathVariable(name = "tid") final Integer trialId, @PathVariable(name = "fid") final Integer formulationId) {
+        return ResponseEntity.ok().body(
+                PayloadObjectBuilder.buildPayloadObject(service.findFormulationEvaluation(trialId, formulationId))
+        );
+    }
 }

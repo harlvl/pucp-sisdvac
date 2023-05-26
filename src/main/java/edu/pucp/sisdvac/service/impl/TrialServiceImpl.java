@@ -6,6 +6,7 @@ import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.controller.exception.NotFoundException;
 import edu.pucp.sisdvac.dao.TrialRepository;
 import edu.pucp.sisdvac.dao.parser.BaseParser;
+import edu.pucp.sisdvac.dao.parser.FormulationEvaluationParser;
 import edu.pucp.sisdvac.dao.parser.FormulationParser;
 import edu.pucp.sisdvac.dao.parser.TrialParser;
 import edu.pucp.sisdvac.domain.EvaluationItem;
@@ -206,6 +207,38 @@ public class TrialServiceImpl implements ITrialService {
                 .id(result.getId())
                 .items(FormulationParser.getItems(result.getEvaluation().getItems()))
                 .build();
+    }
+
+    @Override
+    public Object findFormulationEvaluation(Integer tid, Integer fid) {
+        LOGGER.info(String.format(
+                "Finding formulation [%d] for trial [%d]...",
+                fid,
+                tid)
+        );
+        Trial dbItem = repository.findById(tid)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "Trial [%d] not found.", tid)
+                ));
+
+        boolean formulationFoundFlag = false;
+        Formulation formulationFound = new Formulation();
+        for (Formulation f :
+                dbItem.getFormulations()) {
+            if (Objects.equals(f.getId(), fid)) {
+                formulationFoundFlag = true;
+                formulationFound = f;
+                break;
+            }
+        }
+
+        if (!formulationFoundFlag) {
+            throw new NotFoundException(String.format(
+                    "Formulation [%d] not found.", fid
+            ));
+        }
+
+        return FormulationEvaluationParser.toDto(formulationFound.getEvaluation());
     }
 
     private Map<String, BigDecimal> calculateFormulas(FormulationEvaluationDto dto) {

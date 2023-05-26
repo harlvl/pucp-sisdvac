@@ -14,4 +14,5 @@ public interface ITrialController {
     ResponseEntity<?> updateFormulation(Integer id, Integer key, FormulationDto dto);
     ResponseEntity<?> addFormulation(Integer id, FormulationDto dto);
     ResponseEntity<?> evaluateFormulation(Integer id, Integer formulationId, FormulationEvaluationDto formulationEvaluation);
+    ResponseEntity<?> findFormulationEvaluation(Integer trialId, Integer formulationId);
 }

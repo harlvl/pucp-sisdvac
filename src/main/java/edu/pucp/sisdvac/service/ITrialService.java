@@ -14,4 +14,5 @@ public interface ITrialService {
     TrialDto update(Integer id, TrialDto dto);
     TrialDto addFormulation(Integer id, FormulationDto dto);
     Object evaluateFormulation(Integer id, Integer formulationId, FormulationEvaluationDto formulationEvaluation);
+    Object findFormulationEvaluation(Integer tid, Integer fid);
 }

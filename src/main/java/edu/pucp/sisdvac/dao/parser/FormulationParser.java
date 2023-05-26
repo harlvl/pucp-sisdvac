@@ -18,6 +18,7 @@ import java.util.Map;
 public class FormulationParser {
     public static FormulationDto toDto(Formulation input) {
         FormulationDto output = BaseParser.parse(input, FormulationDto.class);
+        output.setTitle(String.format("Formulación Nº %d", input.getId()));
         List<FormulationItemDto> itemDtos = new ArrayList<>();
 
         for (FormulationItem item:

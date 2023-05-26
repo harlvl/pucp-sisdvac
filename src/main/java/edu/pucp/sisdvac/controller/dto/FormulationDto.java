@@ -19,6 +19,9 @@ import java.util.Date;
 @AllArgsConstructor
 public class FormulationDto {
     private Integer id;
+
+    private String title;
+
     @Enumerated(EnumType.STRING)
     private FormulationStatus status;
     private Integer order;
