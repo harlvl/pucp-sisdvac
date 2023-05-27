@@ -1,6 +1,7 @@
 package edu.pucp.sisdvac.service;
 
 import edu.pucp.sisdvac.controller.dto.ResearchDto;
+import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.controller.dto.UserDto;
 import edu.pucp.sisdvac.controller.request.AddUsersRequest;
 import edu.pucp.sisdvac.domain.user.Role;
@@ -22,4 +23,5 @@ public interface IResearchService {
     // TRIAL LEVEL METHODS
     Object findAnimalStudiesByUserAndTrial(String documentNumber, Integer trialId);
     Object findAnimalStudiesByUser(String documentNumber);
+    List<TrialDto> findTrialsByUserDocumentNumber(String key);
 }

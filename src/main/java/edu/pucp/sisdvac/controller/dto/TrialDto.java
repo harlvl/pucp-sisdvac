@@ -23,6 +23,8 @@ import java.util.List;
 public class TrialDto {
     private Integer id;
 
+    private Integer researchId;
+
     @NotNull
     private String title;
 

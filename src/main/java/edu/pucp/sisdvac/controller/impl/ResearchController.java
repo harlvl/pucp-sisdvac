@@ -2,6 +2,7 @@ package edu.pucp.sisdvac.controller.impl;
 
 import edu.pucp.sisdvac.controller.IResearchController;
 import edu.pucp.sisdvac.controller.dto.ResearchDto;
+import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.controller.dto.UserDto;
 import edu.pucp.sisdvac.controller.request.AddUsersRequest;
 import edu.pucp.sisdvac.controller.response.PayloadObjectBuilder;
@@ -56,13 +57,22 @@ public class ResearchController implements IResearchController {
 
     @Override
     @GetMapping("/user_id/{id}")
-    public ResponseEntity<?> findByUser(@PathVariable(name = "id") Integer id) {
+    public ResponseEntity<?> findByUserId(@PathVariable(name = "id") Integer id) {
         return ResponseEntity.ok().body(
                 RestResponse.builder()
                         .timestamp(LocalDateTime.now())
                         .payload(service.findByUserId(id))
                         .hits(1)
                         .build()
+        );
+    }
+
+    @Override
+    @GetMapping("/user/document-number/{documentNumber}")
+    public ResponseEntity<?> findByUserDocumentNumber(@PathVariable(name = "documentNumber") final String key) {
+        List<ResearchDto> response = service.findByUserDocumentNumber(key);
+        return ResponseEntity.ok().body(
+                PayloadObjectBuilder.buildPayloadObject(response, response.size())
         );
     }
 
@@ -129,6 +139,15 @@ public class ResearchController implements IResearchController {
     public ResponseEntity<?> addUsers(@PathVariable(name = "id") final Integer id, @RequestBody AddUsersRequest request) {
         return ResponseEntity.ok().body(
                 PayloadObjectBuilder.buildPayloadObject(service.addUsers(id, request))
+        );
+    }
+
+    @Override
+    @GetMapping("/user/document-number/{documentNumber}/trials")
+    public ResponseEntity<?> findTrialsByUserDocumentNumber(@PathVariable(name = "documentNumber") final String key) {
+        List<TrialDto> response = service.findTrialsByUserDocumentNumber(key);
+        return ResponseEntity.ok().body(
+                PayloadObjectBuilder.buildPayloadObject(response, response.size())
         );
     }
 

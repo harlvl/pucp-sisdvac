@@ -2,6 +2,7 @@ package edu.pucp.sisdvac.service.impl;
 
 import edu.pucp.sisdvac.controller.dto.AnimalStudyDto;
 import edu.pucp.sisdvac.controller.dto.ResearchDto;
+import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.controller.dto.UserDto;
 import edu.pucp.sisdvac.controller.exception.NotFoundException;
 import edu.pucp.sisdvac.controller.exception.UserAlreadyAddedException;
@@ -9,10 +10,7 @@ import edu.pucp.sisdvac.controller.request.AddUsersRequest;
 import edu.pucp.sisdvac.dao.ResearchRepository;
 import edu.pucp.sisdvac.dao.TrialRepository;
 import edu.pucp.sisdvac.dao.UserRepository;
-import edu.pucp.sisdvac.dao.parser.AnimalStudyParser;
-import edu.pucp.sisdvac.dao.parser.BaseParser;
-import edu.pucp.sisdvac.dao.parser.ResearchParser;
-import edu.pucp.sisdvac.dao.parser.UserParser;
+import edu.pucp.sisdvac.dao.parser.*;
 import edu.pucp.sisdvac.domain.Advance;
 import edu.pucp.sisdvac.domain.Research;
 import edu.pucp.sisdvac.domain.Trial;
@@ -304,6 +302,26 @@ public class ResearchServiceImpl implements IResearchService {
                         element.setAdvanceId(advance.getId());
                         response.add(element);
                     }
+                }
+            }
+        }
+
+        return response;
+    }
+
+    @Override
+    public List<TrialDto> findTrialsByUserDocumentNumber(String key) {
+        List<Research> researches = findByUserDocumentNumberInternal(key);
+        List<TrialDto> response = new ArrayList<>();
+
+        for (Research r :
+                researches) {
+            if (r.getTrials() != null && !r.getTrials().isEmpty()) {
+                for (Trial t :
+                        r.getTrials()) {
+                    TrialDto dto = TrialParser.toDto(t);
+                    dto.setResearchId(r.getId());
+                    response.add(dto);
                 }
             }
         }
