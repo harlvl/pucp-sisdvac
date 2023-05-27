@@ -1,9 +1,6 @@
 package edu.pucp.sisdvac.service;
 
-import edu.pucp.sisdvac.controller.dto.AdvanceDto;
-import edu.pucp.sisdvac.controller.dto.FormulationDto;
-import edu.pucp.sisdvac.controller.dto.FormulationEvaluationDto;
-import edu.pucp.sisdvac.controller.dto.TrialDto;
+import edu.pucp.sisdvac.controller.dto.*;
 
 import java.util.List;
 
@@ -17,4 +14,5 @@ public interface ITrialService {
     Object evaluateFormulation(Integer id, Integer formulationId, FormulationEvaluationDto formulationEvaluation);
     Object findFormulationEvaluation(Integer tid, Integer fid);
     Object saveAdvance(Integer trialId, AdvanceDto dto);
+    Object saveAnimalStudy(Integer tid, AnimalStudyDto dto);
 }

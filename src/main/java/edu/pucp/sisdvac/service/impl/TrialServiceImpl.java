@@ -1,14 +1,25 @@
 package edu.pucp.sisdvac.service.impl;
 
 import edu.pucp.sisdvac.controller.dto.AdvanceDto;
+import edu.pucp.sisdvac.controller.dto.AnimalStudyDto;
 import edu.pucp.sisdvac.controller.dto.FormulationDto;
 import edu.pucp.sisdvac.controller.dto.FormulationEvaluationDto;
 import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.controller.exception.NotFoundException;
 import edu.pucp.sisdvac.dao.TrialRepository;
-import edu.pucp.sisdvac.dao.parser.*;
-import edu.pucp.sisdvac.domain.*;
+import edu.pucp.sisdvac.dao.parser.AdvanceParser;
+import edu.pucp.sisdvac.dao.parser.AnimalStudyParser;
+import edu.pucp.sisdvac.dao.parser.BaseParser;
+import edu.pucp.sisdvac.dao.parser.FormulationEvaluationParser;
+import edu.pucp.sisdvac.dao.parser.FormulationParser;
+import edu.pucp.sisdvac.dao.parser.TrialParser;
+import edu.pucp.sisdvac.domain.Advance;
+import edu.pucp.sisdvac.domain.EvaluationItem;
+import edu.pucp.sisdvac.domain.Formulation;
+import edu.pucp.sisdvac.domain.FormulationEvaluation;
+import edu.pucp.sisdvac.domain.Trial;
 import edu.pucp.sisdvac.domain.enums.EvaluationFormulaEnum;
+import edu.pucp.sisdvac.domain.enums.Stage;
 import edu.pucp.sisdvac.service.ITrialService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -259,6 +270,36 @@ public class TrialServiceImpl implements ITrialService {
         }
 
         dbItem.getAdvances().add(advanceToCreate);
+
+        return TrialParser.toDto(repository.save(dbItem));
+    }
+
+    @Override
+    public Object saveAnimalStudy(Integer tid, AnimalStudyDto dto) {
+        LOGGER.info(String.format("Saving animal study for trial [%d]...", tid));
+
+        Trial dbItem = repository.findById(tid)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "Trial [%d] not found.", tid)
+                ));
+
+        // create advance and animal study
+        Advance advance = Advance.builder()
+                .startDate(dto.getStartDate())
+                .endDate(dto.getEndDate())
+                .stage(Stage.PRECLINICAL)
+                .animalStudy(AnimalStudyParser.fromDto(dto))
+                .createdAt(new Date())
+                .lastUpdatedAt(new Date())
+                .build();
+
+        // save trial
+        if (dbItem.getAdvances() == null) {
+            dbItem.setAdvances(new ArrayList<>());
+        }
+
+        dbItem.getAdvances().add(advance);
+
 
         return TrialParser.toDto(repository.save(dbItem));
     }
