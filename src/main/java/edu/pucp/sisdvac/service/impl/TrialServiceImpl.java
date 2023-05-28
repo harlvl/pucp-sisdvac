@@ -289,6 +289,7 @@ public class TrialServiceImpl implements ITrialService {
                 .endDate(dto.getEndDate())
                 .stage(Stage.PRECLINICAL)
                 .animalStudy(AnimalStudyParser.fromDto(dto))
+                .startDate(new Date())
                 .createdAt(new Date())
                 .lastUpdatedAt(new Date())
                 .build();

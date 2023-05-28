@@ -300,6 +300,10 @@ public class ResearchServiceImpl implements IResearchService {
                         element.setResearchId(research.getId());
                         element.setTrialId(trial.getId());
                         element.setAdvanceId(advance.getId());
+                        element.setTrialTitle(trial.getTitle());
+                        element.setTrialInsNumber(trial.getInsNumber());
+                        element.setStartDate(advance.getStartDate());
+                        element.setEndDate(advance.getEndDate());
                         response.add(element);
                     }
                 }

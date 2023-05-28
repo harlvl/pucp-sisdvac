@@ -286,6 +286,7 @@ public class SisdvacApplication {
                     .stage(Stage.PRECLINICAL)
                     .subjectName("MICKEY01")
                     .animalStudy(animalStudyDto)
+                    .startDate(new Date())
                     .createdAt(new Date())
                     .lastUpdatedAt(new Date())
                     .build();
@@ -297,7 +298,7 @@ public class SisdvacApplication {
                     .insNumber("PER-303-20")
                     .stage(Stage.PRECLINICAL)
                     .startDate(new Date())
-                    .title("Estudio preclínico de prueba 3")
+                    .title("Estudio contra la rabia")
                     .status(
                             TrialStatusDto.builder()
                                     .name("Estado inicial")

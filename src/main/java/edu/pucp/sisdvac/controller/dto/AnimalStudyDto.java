@@ -23,6 +23,10 @@ public class AnimalStudyDto {
 
     private Integer trialId;
 
+    private String trialTitle;
+
+    private String trialInsNumber;
+
     private Integer advanceId;
 
     private String objectives;
