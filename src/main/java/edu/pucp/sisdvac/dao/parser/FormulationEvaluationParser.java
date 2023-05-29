@@ -16,7 +16,7 @@ public class FormulationEvaluationParser {
         FormulationEvaluationDto response = BaseParser.parse(input, FormulationEvaluationDto.class);
 
         response.setId(input.getId());
-        response.setItems(convertItemCollectionToMap(input.getItems()));
+        response.setItems(GenericParser.convertItemCollectionToMap(input.getItems()));
 
         return response;
     }
@@ -25,33 +25,7 @@ public class FormulationEvaluationParser {
         FormulationEvaluation response = BaseParser.parse(input, FormulationEvaluation.class);
 
         response.setId(input.getId());
-        response.setItems(convertMapToItemCollection(input.getItems()));
-
-        return response;
-    }
-
-    private static Collection<EvaluationItem> convertMapToItemCollection(Map<String, BigDecimal> map) {
-        Collection<EvaluationItem> response = new ArrayList<>();
-
-        for (Map.Entry<String, BigDecimal> set : map.entrySet()) {
-            response.add(
-                    EvaluationItem.builder()
-                            .type(EvaluationFormulaEnum.valueOf(set.getKey()))
-                            .detail(set.getValue())
-                            .build()
-            );
-        }
-
-        return response;
-    }
-
-    private static Map<String, BigDecimal> convertItemCollectionToMap(Collection<EvaluationItem> items) {
-        HashMap<String, BigDecimal> response = new HashMap<>();
-
-        for (EvaluationItem item :
-                items) {
-            response.put(String.valueOf(item.getType()), item.getDetail());
-        }
+        response.setItems(GenericParser.convertMapToItemCollection(input.getItems()));
 
         return response;
     }

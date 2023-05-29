@@ -1,23 +1,14 @@
 package edu.pucp.sisdvac.service.impl;
 
-import edu.pucp.sisdvac.controller.dto.AdvanceDto;
-import edu.pucp.sisdvac.controller.dto.AnimalStudyDto;
-import edu.pucp.sisdvac.controller.dto.FormulationDto;
-import edu.pucp.sisdvac.controller.dto.FormulationEvaluationDto;
-import edu.pucp.sisdvac.controller.dto.TrialDto;
+import edu.pucp.sisdvac.controller.dto.*;
+import edu.pucp.sisdvac.controller.exception.FormulaCalculationException;
 import edu.pucp.sisdvac.controller.exception.NotFoundException;
+import edu.pucp.sisdvac.controller.request.AnimalStudyEvaluationRequest;
+import edu.pucp.sisdvac.dao.AdvanceRepository;
+import edu.pucp.sisdvac.dao.AnimalStudyRepository;
 import edu.pucp.sisdvac.dao.TrialRepository;
-import edu.pucp.sisdvac.dao.parser.AdvanceParser;
-import edu.pucp.sisdvac.dao.parser.AnimalStudyParser;
-import edu.pucp.sisdvac.dao.parser.BaseParser;
-import edu.pucp.sisdvac.dao.parser.FormulationEvaluationParser;
-import edu.pucp.sisdvac.dao.parser.FormulationParser;
-import edu.pucp.sisdvac.dao.parser.TrialParser;
-import edu.pucp.sisdvac.domain.Advance;
-import edu.pucp.sisdvac.domain.EvaluationItem;
-import edu.pucp.sisdvac.domain.Formulation;
-import edu.pucp.sisdvac.domain.FormulationEvaluation;
-import edu.pucp.sisdvac.domain.Trial;
+import edu.pucp.sisdvac.dao.parser.*;
+import edu.pucp.sisdvac.domain.*;
 import edu.pucp.sisdvac.domain.enums.EvaluationFormulaEnum;
 import edu.pucp.sisdvac.domain.enums.Stage;
 import edu.pucp.sisdvac.service.ITrialService;
@@ -33,10 +24,13 @@ import java.util.*;
 @RequiredArgsConstructor
 public class TrialServiceImpl implements ITrialService {
     private static final Logger LOGGER = LoggerFactory.getLogger(TrialServiceImpl.class);
-    private final TrialRepository repository;
+    private final TrialRepository trialRepository;
+    private final AdvanceRepository advanceRepository;
+    private final AnimalStudyRepository animalStudyRepository;
+
     @Override
     public List<TrialDto> findAll() {
-        List<Trial> dbItems = repository.findAll();
+        List<Trial> dbItems = trialRepository.findAll();
         List<TrialDto> response = new ArrayList<>();
         for (Trial dbItem :
                 dbItems) {
@@ -48,7 +42,7 @@ public class TrialServiceImpl implements ITrialService {
     @Override
     public TrialDto findById(Integer id) {
         return TrialParser.toDto(
-                repository.findById(id)
+                trialRepository.findById(id)
                         .orElseThrow(() -> new NotFoundException(String.format(
                                 "Trial [%d] not found", id
                         )))
@@ -58,7 +52,7 @@ public class TrialServiceImpl implements ITrialService {
     @Override
     public TrialDto findByInsNumber(String key) {
         return TrialParser.toDto(
-                repository.findByInsNumber(key)
+                trialRepository.findByInsNumber(key)
                         .orElseThrow(() -> new NotFoundException(String.format(
                                 "Trial with INS number [%s] not found", key
                         )))
@@ -69,7 +63,7 @@ public class TrialServiceImpl implements ITrialService {
     public TrialDto save(TrialDto dto) {
         LOGGER.info("Creating new trial...");
         return TrialParser.toDto(
-                repository.save(
+                trialRepository.save(
                         TrialParser.fromDto(dto)
                 )
         );
@@ -80,7 +74,7 @@ public class TrialServiceImpl implements ITrialService {
         LOGGER.info(String.format(
                 "Updating existing Trial [%d]...", id)
         );
-        Trial dbItem = repository.findById(id)
+        Trial dbItem = trialRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format(
                         "Trial [%d] not found.", id)
                 ));
@@ -119,7 +113,7 @@ public class TrialServiceImpl implements ITrialService {
 //        }
 
         return TrialParser.toDto(
-                repository.save(
+                trialRepository.save(
                         BaseParser.copyProperties(dto, dbItem)
                 )
         );
@@ -130,7 +124,7 @@ public class TrialServiceImpl implements ITrialService {
         LOGGER.info(String.format(
                 "Adding new formulation to existing trial [%d]...", id)
         );
-        Trial dbItem = repository.findById(id)
+        Trial dbItem = trialRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format(
                         "Trial [%d] not found.", id)
                 ));
@@ -140,7 +134,7 @@ public class TrialServiceImpl implements ITrialService {
 
         dbItem.setFormulations(updatedFormulations);
         return TrialParser.toDto(
-                repository.save(dbItem)
+                trialRepository.save(dbItem)
         );
     }
 
@@ -151,7 +145,7 @@ public class TrialServiceImpl implements ITrialService {
                 formulationId,
                 id)
         );
-        Trial dbItem = repository.findById(id)
+        Trial dbItem = trialRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format(
                         "Trial [%d] not found.", id)
                 ));
@@ -197,7 +191,7 @@ public class TrialServiceImpl implements ITrialService {
 
         dbItem.setFormulations(formulations);
 
-        Trial savedItem = repository.save(dbItem);
+        Trial savedItem = trialRepository.save(dbItem);
         List<Formulation> updatedFormulations = (List<Formulation>) savedItem.getFormulations();
 
         Formulation result = new Formulation();
@@ -222,7 +216,7 @@ public class TrialServiceImpl implements ITrialService {
                 fid,
                 tid)
         );
-        Trial dbItem = repository.findById(tid)
+        Trial dbItem = trialRepository.findById(tid)
                 .orElseThrow(() -> new NotFoundException(String.format(
                         "Trial [%d] not found.", tid)
                 ));
@@ -259,7 +253,7 @@ public class TrialServiceImpl implements ITrialService {
     public Object saveAdvance(Integer tid, AdvanceDto dto) {
         LOGGER.info(String.format("Saving advance for trial [%d]...", tid));
 
-        Trial dbItem = repository.findById(tid)
+        Trial dbItem = trialRepository.findById(tid)
                 .orElseThrow(() -> new NotFoundException(String.format(
                         "Trial [%d] not found.", tid)
                 ));
@@ -271,14 +265,14 @@ public class TrialServiceImpl implements ITrialService {
 
         dbItem.getAdvances().add(advanceToCreate);
 
-        return TrialParser.toDto(repository.save(dbItem));
+        return TrialParser.toDto(trialRepository.save(dbItem));
     }
 
     @Override
     public Object saveAnimalStudy(Integer tid, AnimalStudyDto dto) {
         LOGGER.info(String.format("Saving animal study for trial [%d]...", tid));
 
-        Trial dbItem = repository.findById(tid)
+        Trial dbItem = trialRepository.findById(tid)
                 .orElseThrow(() -> new NotFoundException(String.format(
                         "Trial [%d] not found.", tid)
                 ));
@@ -302,7 +296,111 @@ public class TrialServiceImpl implements ITrialService {
         dbItem.getAdvances().add(advance);
 
 
-        return TrialParser.toDto(repository.save(dbItem));
+        return TrialParser.toDto(trialRepository.save(dbItem));
+    }
+
+    @Override
+    public Object evaluateAnimalStudy(Integer tid, Integer aid, AnimalStudyEvaluationRequest request) {
+        LOGGER.info(String.format("Evaluating animal study for trial [%d] and advance [%d]..."
+                , tid, aid));
+
+        Trial dbItem = trialRepository.findById(tid)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "Trial [%d] not found.", tid)
+                ));
+
+        Advance advanceDb = advanceRepository.findById(aid)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "Advance [%d] not found.", aid)
+                ));
+
+        AnimalStudy animalStudyDb = advanceDb.getAnimalStudy();
+        if (animalStudyDb == null) {
+            throw new NotFoundException(String.format(
+                    "Advance [%d] has null animal study.", aid
+            ));
+        }
+
+
+        // calculate formulas
+        Map<String, BigDecimal> calculatedValues = calculateFormulas(request);
+
+        animalStudyDb.setEvaluation(AnimalStudyEvaluationParser.fromMap(calculatedValues));
+
+        LOGGER.info("Saving evaluation...");
+        AnimalStudy savedElement = animalStudyRepository.save(animalStudyDb);
+        return AnimalStudyParser.toDto(savedElement);
+    }
+
+    private Map<String, BigDecimal> calculateFormulas(AnimalStudyEvaluationRequest request) {
+        LOGGER.info("Calculating formulas...");
+        Map<String, BigDecimal> response = new HashMap<>();
+
+        try {
+            response.put(
+                    String.valueOf(EvaluationFormulaEnum.EFFICACY),
+                    calculateEfficacy(request)
+            );
+            response.put(
+                    String.valueOf(EvaluationFormulaEnum.EFFICIENCY),
+                    calculateEfficiency(request)
+            );
+            response.put(
+                    String.valueOf(EvaluationFormulaEnum.SAFETY_INDEX),
+                    calculateSafetyIndex(request)
+            );
+            response.put(
+                    String.valueOf(EvaluationFormulaEnum.INCIDENCE_RATE),
+                    calculateIncidenceRate(request)
+            );
+            response.put(
+                    String.valueOf(EvaluationFormulaEnum.IMMUNOGENICITY),
+                    calculateImmunogenicity(request)
+            );
+        } catch (Exception e) {
+            LOGGER.error(String.format(
+                    "Error calculating formula: %s", e.getMessage()
+            ));
+            throw new FormulaCalculationException(e.getMessage());
+        }
+
+        return response;
+    }
+
+    private BigDecimal calculateImmunogenicity(AnimalStudyEvaluationRequest request) {
+        return BigDecimal.valueOf(
+                (request.getAnimalsWithDetectableImmuneResponse() / request.getTotalVaccinatedAnimals()) * 100L
+        );
+    }
+
+    private BigDecimal calculateIncidenceRate(AnimalStudyEvaluationRequest request) {
+        if (request.getAdverseEventsVaccinatedGroup().equals(0)) {
+            return new BigDecimal(0);
+        }
+
+        return BigDecimal.valueOf(
+                (request.getAdverseEventsVaccinatedGroup() / request.getTotalVaccinatedAnimals()) * 100L
+        );
+    }
+
+    private BigDecimal calculateSafetyIndex(AnimalStudyEvaluationRequest request) {
+        return BigDecimal.valueOf(
+                request.getLethalDose() / request.getEffectiveDose()
+        );
+    }
+
+    private BigDecimal calculateEfficiency(AnimalStudyEvaluationRequest request) {
+        return BigDecimal.valueOf(
+                (request.getAttackRateUnvaccinatedGroup() - request.getAttackRateVaccinatedGroup())
+                        / request.getAttackRateUnvaccinatedGroup()
+        );
+    }
+
+    private BigDecimal calculateEfficacy(AnimalStudyEvaluationRequest request) {
+        return BigDecimal.valueOf(
+                (request.getAttackRateUnvaccinatedGroup() - request.getAttackRateVaccinatedGroup())
+                        / request.getAttackRateUnvaccinatedGroup()
+        );
     }
 
     private Map<String, BigDecimal> calculateFormulas(FormulationEvaluationDto dto) {

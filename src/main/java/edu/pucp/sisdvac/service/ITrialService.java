@@ -1,6 +1,7 @@
 package edu.pucp.sisdvac.service;
 
 import edu.pucp.sisdvac.controller.dto.*;
+import edu.pucp.sisdvac.controller.request.AnimalStudyEvaluationRequest;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface ITrialService {
     Object findFormulationEvaluation(Integer tid, Integer fid);
     Object saveAdvance(Integer trialId, AdvanceDto dto);
     Object saveAnimalStudy(Integer tid, AnimalStudyDto dto);
+    Object evaluateAnimalStudy(Integer tid, Integer aid, AnimalStudyEvaluationRequest dto);
 }

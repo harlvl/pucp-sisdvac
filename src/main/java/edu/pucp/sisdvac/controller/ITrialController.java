@@ -1,6 +1,7 @@
 package edu.pucp.sisdvac.controller;
 
 import edu.pucp.sisdvac.controller.dto.*;
+import edu.pucp.sisdvac.controller.request.AnimalStudyEvaluationRequest;
 import org.springframework.http.ResponseEntity;
 
 public interface ITrialController {
@@ -20,4 +21,5 @@ public interface ITrialController {
     // ANIMAL STUDIES METHODS
     ResponseEntity<?> saveAdvance(Integer trialId, AdvanceDto dto); // also used for saving animal study
     ResponseEntity<?> saveAnimalStudy(Integer tid, AnimalStudyDto dto);
+    ResponseEntity<?> evaluateAnimalStudy(Integer tid, Integer aid, AnimalStudyEvaluationRequest request);
 }

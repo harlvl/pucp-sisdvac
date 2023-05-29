@@ -72,6 +72,12 @@ public class RestExceptionHandler {
         return buildGenericResponse(exception, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(FormulaCalculationException.class)
+    protected ResponseEntity<?> handleFormulaCalculationException(FormulaCalculationException exception) {
+        printErrorMessage(exception);
+        return buildGenericResponse(exception, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     private ResponseEntity<?> buildGenericResponse(Exception exception, HttpStatus status) {
         RestResponse restResponse = RestResponse.builder()
                 .status(status)

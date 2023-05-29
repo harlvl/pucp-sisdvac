@@ -5,10 +5,22 @@ import edu.pucp.sisdvac.domain.AnimalStudy;
 
 public class AnimalStudyParser {
     public static AnimalStudyDto toDto(AnimalStudy input) {
-        return BaseParser.parse(input, AnimalStudyDto.class);
+        AnimalStudyDto response = BaseParser.parse(input, AnimalStudyDto.class);
+
+        if (input.getEvaluation() != null) {
+            response.setEvaluation(AnimalStudyEvaluationParser.toDto(input.getEvaluation()));
+        }
+
+        return response;
     }
 
     public static AnimalStudy fromDto(AnimalStudyDto input) {
-        return BaseParser.parse(input, AnimalStudy.class);
+        AnimalStudy response = BaseParser.parse(input, AnimalStudy.class);
+
+        if (input.getEvaluation() != null) {
+            response.setEvaluation(AnimalStudyEvaluationParser.fromDto(input.getEvaluation()));
+        }
+
+        return response;
     }
 }

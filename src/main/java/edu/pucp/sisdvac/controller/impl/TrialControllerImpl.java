@@ -1,11 +1,8 @@
 package edu.pucp.sisdvac.controller.impl;
 
 import edu.pucp.sisdvac.controller.ITrialController;
-import edu.pucp.sisdvac.controller.dto.AdvanceDto;
-import edu.pucp.sisdvac.controller.dto.AnimalStudyDto;
-import edu.pucp.sisdvac.controller.dto.FormulationDto;
-import edu.pucp.sisdvac.controller.dto.FormulationEvaluationDto;
-import edu.pucp.sisdvac.controller.dto.TrialDto;
+import edu.pucp.sisdvac.controller.dto.*;
+import edu.pucp.sisdvac.controller.request.AnimalStudyEvaluationRequest;
 import edu.pucp.sisdvac.controller.response.PayloadObjectBuilder;
 import edu.pucp.sisdvac.controller.response.RestResponse;
 import edu.pucp.sisdvac.service.ITrialService;
@@ -134,6 +131,16 @@ public class TrialControllerImpl implements ITrialController {
     public ResponseEntity<?> saveAnimalStudy(@PathVariable(name = "tid") final Integer tid, @RequestBody AnimalStudyDto dto) {
         return ResponseEntity.ok().body(
                 PayloadObjectBuilder.buildPayloadObject(service.saveAnimalStudy(tid, dto))
+        );
+    }
+
+    @Override
+    @PostMapping("/{tid}/advance/{aid}/animal-study/evaluate")
+    public ResponseEntity<?> evaluateAnimalStudy(@PathVariable(name = "tid") final Integer tid,
+                                                 @PathVariable(name = "aid") final Integer aid,
+                                                 @RequestBody @Valid AnimalStudyEvaluationRequest request) {
+        return ResponseEntity.ok().body(
+                PayloadObjectBuilder.buildPayloadObject(service.evaluateAnimalStudy(tid, aid, request))
         );
     }
 

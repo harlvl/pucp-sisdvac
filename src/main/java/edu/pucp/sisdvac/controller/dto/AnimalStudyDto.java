@@ -34,6 +34,8 @@ public class AnimalStudyDto {
     @Enumerated(EnumType.STRING)
     private SubjectType animalModel;
 
+    private AnimalStudyEvaluationDto evaluation;
+
     private Integer sampleSize;
 
     private String ethicalGuidelines;
