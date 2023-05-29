@@ -5,11 +5,11 @@ import edu.pucp.sisdvac.controller.dto.UserDto;
 import edu.pucp.sisdvac.controller.response.PayloadObjectBuilder;
 import edu.pucp.sisdvac.domain.user.Role;
 import edu.pucp.sisdvac.service.IUserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
