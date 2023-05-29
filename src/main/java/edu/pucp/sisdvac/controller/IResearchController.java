@@ -24,4 +24,6 @@ public interface IResearchController {
     // ANIMAL STUDIES
     ResponseEntity<?> findAnimalStudiesByUserAndTrial(String documentNumber, Integer trialId);
     ResponseEntity<?> findAnimalStudiesByUser(String documentNumber);
+
+    // CLINICAL STUDIES
 }

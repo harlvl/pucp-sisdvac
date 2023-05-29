@@ -260,6 +260,8 @@ public class SisdvacApplication {
                             .build()
             );
 
+//            CREATE NEW PRECLINICAL RESEARCH
+
             List<UserDto> users = new ArrayList<>();
             users.add(userService.findByEmail("jose.olaya@pucp.pe"));
             users.add(userService.findByEmail("abe.qui@pucp.pe"));
@@ -277,14 +279,15 @@ public class SisdvacApplication {
 
             AnimalStudyDto animalStudyDto = AnimalStudyDto.builder()
                     .objectives("Objetivo de prueba")
-                    .animalModel(SubjectType.RODENT)
+                    .animalModel(SubjectType.MICRO)
+                    .type(AnimalStudyTypeEnum.IN_VITRO)
                     .sampleSize(1)
                     .ethicalGuidelines("National Committee for Research Ethics")
                     .ethicalGuidelinesUri("https://www.forskningsetikk.no/en/guidelines/science-and-technology/guidelines-for-research-ethics-in-science-and-technology/")
                     .build();
             AdvanceDto advanceDto = AdvanceDto.builder()
                     .stage(Stage.PRECLINICAL)
-                    .subjectName("MICKEY01")
+                    .subjectName("MICRO-01")
                     .animalStudy(animalStudyDto)
                     .startDate(new Date())
                     .createdAt(new Date())
@@ -299,22 +302,34 @@ public class SisdvacApplication {
                     .stage(Stage.PRECLINICAL)
                     .startDate(new Date())
                     .title("Estudio contra la rabia")
-                    .status(
-                            TrialStatusDto.builder()
-                                    .name("Estado inicial")
-                                    .startDate(new Date())
-                                    .build()
+                    .status(TrialStatusDto.builder()
+                            .name("Estado inicial")
+                            .startDate(new Date())
+                            .build()
                     )
                     .advanceDtos(advanceDtos)
-//                    .advances(advanceItems)
                     .formulations(formulationDtos3)
                     .tpp(TppDto.builder()
                             .items(itemDtos)
                             .build())
                     .build();
 
+//            CREATE NEW CLINICAL TRIAL
+            TrialDto clinicalTrial = TrialDto.builder()
+                    .insNumber("PER-303-20")
+                    .stage(Stage.CLINICAL)
+                    .startDate(new Date())
+                    .title("Estudio contra la rabia")
+                    .status(TrialStatusDto.builder()
+                            .name("Estado inicial")
+                            .startDate(new Date())
+                            .build()
+                    )
+                    .build();
+
             List<TrialDto> trialDtos = new ArrayList<>();
             trialDtos.add(preclinicalTrial3);
+            trialDtos.add(clinicalTrial);
 
             // create new research and attach a doctor
             researchService.save(ResearchDto.builder()

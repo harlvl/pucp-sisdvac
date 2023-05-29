@@ -47,7 +47,9 @@ public class TrialParser {
             output.setFormulations(formulationDtos);
         }
 
-        output.setTpp(TppParser.toDto(input.getTargetProductProfile()));
+        if (input.getTargetProductProfile() != null) {
+            output.setTpp(TppParser.toDto(input.getTargetProductProfile()));
+        }
 
         return output;
     }
@@ -91,7 +93,10 @@ public class TrialParser {
             output.setFormulations(formulations);
         }
 
-        output.setTargetProductProfile(TppParser.fromDto(input.getTpp()));
+        if (input.getTpp() != null) {
+            output.setTargetProductProfile(TppParser.fromDto(input.getTpp()));
+        }
+
 
         // add created at date
         output.setCreatedAt(new Date());

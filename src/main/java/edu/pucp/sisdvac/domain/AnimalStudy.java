@@ -1,6 +1,7 @@
 package edu.pucp.sisdvac.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import edu.pucp.sisdvac.domain.enums.AnimalStudyTypeEnum;
 import edu.pucp.sisdvac.domain.enums.SubjectType;
 import edu.pucp.sisdvac.utils.Constants;
 import jakarta.persistence.*;
@@ -32,6 +33,9 @@ public class AnimalStudy {
 
     @Enumerated(EnumType.STRING)
     private SubjectType animalModel;
+
+    @Enumerated(EnumType.STRING)
+    private AnimalStudyTypeEnum type;
 
     private Integer sampleSize;
 

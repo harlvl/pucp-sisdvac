@@ -23,7 +23,6 @@ public class ResearchParser {
         }
 
         if (input.getTrials() != null && !input.getTrials().isEmpty()) {
-
             List<Trial> trials = new ArrayList<>();
             for (TrialDto trialDto :
                     input.getTrials()) {

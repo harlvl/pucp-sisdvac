@@ -1,6 +1,7 @@
 package edu.pucp.sisdvac.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import edu.pucp.sisdvac.domain.enums.AnimalStudyTypeEnum;
 import edu.pucp.sisdvac.domain.enums.SubjectType;
 import edu.pucp.sisdvac.utils.Constants;
 import jakarta.persistence.EnumType;
@@ -33,6 +34,9 @@ public class AnimalStudyDto {
 
     @Enumerated(EnumType.STRING)
     private SubjectType animalModel;
+
+    @Enumerated(EnumType.STRING)
+    private AnimalStudyTypeEnum type;
 
     private AnimalStudyEvaluationDto evaluation;
 

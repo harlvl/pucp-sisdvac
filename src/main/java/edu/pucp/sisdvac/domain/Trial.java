@@ -25,7 +25,7 @@ public class Trial {
 
     private String title;
 
-    @Column(name = "ins_number", unique = true, nullable = false)
+    @Column(name = "ins_number", nullable = false)
     private String insNumber;
 
     @Enumerated(EnumType.STRING)
