@@ -18,14 +18,21 @@ public class TestVolunteer {
     @Id
     @GeneratedValue
     private Integer id;
+
     @Enumerated(EnumType.STRING)
     private DocumentType documentType;
+
     @Column(unique = true, nullable = false)
     private String documentNumber;
+
     private String firstName;
+
     private String lastName;
+
     private String email;
+
     private String contactNumber;
+
     @Enumerated(EnumType.STRING)
     private Status status = Status.ACTIVE;
 }

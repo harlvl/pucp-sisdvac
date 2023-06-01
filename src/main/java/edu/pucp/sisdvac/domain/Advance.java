@@ -45,6 +45,9 @@ public class Advance {
     @OneToOne(cascade = CascadeType.ALL)
     private AnimalStudy animalStudy;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Collection<GenericStudy> studies;
+
     // the following 2 fields should be moved into animal study
     @Enumerated(EnumType.STRING)
     private SubjectType subjectType;

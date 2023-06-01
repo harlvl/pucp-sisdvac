@@ -23,9 +23,18 @@ public class AdverseEvent {
 
     @Column(name = "patient_cid")
     private String patientCID;
+
+//    this will document number for humans and codename for animals
+    @Column(name = "subject_identifier")
+    private String subjectIdentifier;
+
     private String description;
+
     private Integer age;
+
     private char sex; // F or M
+
     private Double weight;
+
     private Double height;
 }
