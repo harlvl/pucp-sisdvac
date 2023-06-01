@@ -17,4 +17,5 @@ public interface ITrialService {
     Object saveAdvance(Integer trialId, AdvanceDto dto);
     Object saveAnimalStudy(Integer tid, AnimalStudyDto dto);
     Object evaluateAnimalStudy(Integer tid, Integer aid, AnimalStudyEvaluationRequest dto);
+    Object saveClinicalStudy(Integer tid, Integer aid, GenericStudyDto dto);
 }

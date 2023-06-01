@@ -9,14 +9,7 @@ import edu.pucp.sisdvac.service.ITrialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import jakarta.validation.Valid;
@@ -142,6 +135,16 @@ public class TrialControllerImpl implements ITrialController {
                                                  @RequestBody @Valid AnimalStudyEvaluationRequest request) {
         return ResponseEntity.ok().body(
                 PayloadObjectBuilder.buildPayloadObject(service.evaluateAnimalStudy(tid, aid, request))
+        );
+    }
+
+    @Override
+    @PostMapping("/{tid}/clinical-study")
+    public ResponseEntity<?> saveClinicalStudy(@PathVariable(name = "tid") final Integer tid,
+                                               @RequestParam(name = "aid", required = false) final Integer aid,
+                                               @RequestBody GenericStudyDto dto) {
+        return ResponseEntity.ok().body(
+                PayloadObjectBuilder.buildPayloadObject(service.saveClinicalStudy(tid, aid, dto))
         );
     }
 

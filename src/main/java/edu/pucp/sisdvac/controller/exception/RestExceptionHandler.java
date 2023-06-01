@@ -26,15 +26,13 @@ public class RestExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     protected ResponseEntity<?> handleNotFoundException(NotFoundException exception) {
         printErrorMessage(exception);
-        RestResponse restResponse = RestResponse.builder()
-                .status(HttpStatus.NOT_FOUND)
-                .message(exception.getMessage())
-                .timestamp(LocalDateTime.now())
-                .hits(0)
-                .build();
-        return ResponseEntity
-                .status(restResponse.getStatus())
-                .body(restResponse);
+        return buildGenericResponse(exception, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    protected ResponseEntity<?> handleIllegalStateException(IllegalStateException exception) {
+        printErrorMessage(exception);
+        return buildGenericResponse(exception, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(IllegalAccessException.class)

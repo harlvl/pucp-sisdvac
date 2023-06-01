@@ -24,6 +24,8 @@ public class GenericStudy {
     @GeneratedValue
     private Integer id;
 
+    private Integer phase;
+
     // no need to have advance here since it's a one-to-many relationship
 
     @OneToOne(cascade = CascadeType.ALL)

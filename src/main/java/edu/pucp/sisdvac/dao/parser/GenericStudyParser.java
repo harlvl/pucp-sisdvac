@@ -5,6 +5,9 @@ import edu.pucp.sisdvac.controller.dto.GenericStudyDto;
 import edu.pucp.sisdvac.domain.AnimalStudy;
 import edu.pucp.sisdvac.domain.GenericStudy;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class GenericStudyParser {
     public static AnimalStudyDto toDto(AnimalStudy input) {
         AnimalStudyDto response = BaseParser.parse(input, AnimalStudyDto.class);
@@ -21,6 +24,16 @@ public class GenericStudyParser {
 
         if (input.getEvaluation() != null) {
             response.setEvaluation(GenericStudyEvaluationParser.toDto(input.getEvaluation()));
+        }
+
+        return response;
+    }
+
+    public static Collection<GenericStudyDto> toDto(Collection<GenericStudy> input) {
+        Collection<GenericStudyDto> response = new ArrayList<>();
+
+        for (GenericStudy s : input) {
+            response.add(GenericStudyParser.toDto(s));
         }
 
         return response;

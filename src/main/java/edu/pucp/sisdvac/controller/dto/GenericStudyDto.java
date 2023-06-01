@@ -20,6 +20,8 @@ import java.util.Date;
 public class GenericStudyDto {
     private Integer id;
 
+    private Integer phase;
+
     private Integer researchId;
 
     private Integer trialId;

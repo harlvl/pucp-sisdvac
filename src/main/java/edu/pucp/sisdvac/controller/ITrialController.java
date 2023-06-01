@@ -1,6 +1,11 @@
 package edu.pucp.sisdvac.controller;
 
-import edu.pucp.sisdvac.controller.dto.*;
+import edu.pucp.sisdvac.controller.dto.AdvanceDto;
+import edu.pucp.sisdvac.controller.dto.AnimalStudyDto;
+import edu.pucp.sisdvac.controller.dto.FormulationDto;
+import edu.pucp.sisdvac.controller.dto.FormulationEvaluationDto;
+import edu.pucp.sisdvac.controller.dto.GenericStudyDto;
+import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.controller.request.AnimalStudyEvaluationRequest;
 import org.springframework.http.ResponseEntity;
 
@@ -22,4 +27,9 @@ public interface ITrialController {
     ResponseEntity<?> saveAdvance(Integer trialId, AdvanceDto dto); // also used for saving animal study
     ResponseEntity<?> saveAnimalStudy(Integer tid, AnimalStudyDto dto);
     ResponseEntity<?> evaluateAnimalStudy(Integer tid, Integer aid, AnimalStudyEvaluationRequest request);
+
+
+
+    // CLINICAL STUDIES METHODS
+    ResponseEntity<?> saveClinicalStudy(Integer tid, Integer aid, GenericStudyDto dto);
 }

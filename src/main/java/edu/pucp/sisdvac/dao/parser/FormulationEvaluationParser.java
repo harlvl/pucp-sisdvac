@@ -1,15 +1,7 @@
 package edu.pucp.sisdvac.dao.parser;
 
 import edu.pucp.sisdvac.controller.dto.FormulationEvaluationDto;
-import edu.pucp.sisdvac.domain.EvaluationItem;
 import edu.pucp.sisdvac.domain.FormulationEvaluation;
-import edu.pucp.sisdvac.domain.enums.EvaluationFormulaEnum;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 public class FormulationEvaluationParser {
     public static FormulationEvaluationDto toDto(FormulationEvaluation input) {

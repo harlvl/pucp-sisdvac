@@ -17,6 +17,10 @@ public class AdvanceParser {
             response.setAnimalStudy(GenericStudyParser.toDto(input.getAnimalStudy()));
         }
 
+        if (input.getStudies() != null) {
+            response.setStudies(GenericStudyParser.toDto(input.getStudies()));
+        }
+
         if (input.getAdverseEvents() != null && !input.getAdverseEvents().isEmpty()) {
             Collection<AdverseEventDto> adverseEventDtos = new ArrayList<>();
             for (AdverseEvent adverseEvent :

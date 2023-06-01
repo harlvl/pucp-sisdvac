@@ -1,17 +1,34 @@
 package edu.pucp.sisdvac.service.impl;
 
-import edu.pucp.sisdvac.controller.dto.*;
-import edu.pucp.sisdvac.controller.exception.FormulaCalculationException;
+import edu.pucp.sisdvac.controller.dto.AdvanceDto;
+import edu.pucp.sisdvac.controller.dto.AnimalStudyDto;
+import edu.pucp.sisdvac.controller.dto.FormulationDto;
+import edu.pucp.sisdvac.controller.dto.FormulationEvaluationDto;
+import edu.pucp.sisdvac.controller.dto.GenericStudyDto;
+import edu.pucp.sisdvac.controller.dto.TrialDto;
 import edu.pucp.sisdvac.controller.exception.NotFoundException;
 import edu.pucp.sisdvac.controller.request.AnimalStudyEvaluationRequest;
 import edu.pucp.sisdvac.dao.AdvanceRepository;
 import edu.pucp.sisdvac.dao.AnimalStudyRepository;
 import edu.pucp.sisdvac.dao.TrialRepository;
-import edu.pucp.sisdvac.dao.parser.*;
-import edu.pucp.sisdvac.domain.*;
+import edu.pucp.sisdvac.dao.parser.AdvanceParser;
+import edu.pucp.sisdvac.dao.parser.BaseParser;
+import edu.pucp.sisdvac.dao.parser.FormulationEvaluationParser;
+import edu.pucp.sisdvac.dao.parser.FormulationParser;
+import edu.pucp.sisdvac.dao.parser.GenericStudyEvaluationParser;
+import edu.pucp.sisdvac.dao.parser.GenericStudyParser;
+import edu.pucp.sisdvac.dao.parser.TrialParser;
+import edu.pucp.sisdvac.domain.Advance;
+import edu.pucp.sisdvac.domain.AnimalStudy;
+import edu.pucp.sisdvac.domain.EvaluationItem;
+import edu.pucp.sisdvac.domain.Formulation;
+import edu.pucp.sisdvac.domain.FormulationEvaluation;
+import edu.pucp.sisdvac.domain.GenericStudy;
+import edu.pucp.sisdvac.domain.Trial;
 import edu.pucp.sisdvac.domain.enums.EvaluationFormulaEnum;
 import edu.pucp.sisdvac.domain.enums.Stage;
 import edu.pucp.sisdvac.service.ITrialService;
+import edu.pucp.sisdvac.service.calculator.Calculator;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -161,7 +178,7 @@ public class TrialServiceImpl implements ITrialService {
         }
 
         // calculate values
-        Map<String, BigDecimal> calculatedValues = calculateFormulas(dto);
+        Map<String, BigDecimal> calculatedValues = Calculator.calculateFormulas(dto);
 
         List<EvaluationItem> items = new ArrayList<>();
         for (Map.Entry<String, BigDecimal> set : calculatedValues.entrySet()) {
@@ -279,22 +296,20 @@ public class TrialServiceImpl implements ITrialService {
 
         // create advance and animal study
         Advance advance = Advance.builder()
-                .startDate(dto.getStartDate())
-                .endDate(dto.getEndDate())
+                .startDate(dto.getStartDate() != null ? dto.getStartDate(): new Date())
                 .stage(Stage.PRECLINICAL)
                 .animalStudy(GenericStudyParser.fromDto(dto))
-                .startDate(new Date())
                 .createdAt(new Date())
                 .lastUpdatedAt(new Date())
                 .build();
 
         // save trial
         if (dbItem.getAdvances() == null) {
+            LOGGER.info("Initializing advances collection...");
             dbItem.setAdvances(new ArrayList<>());
         }
 
         dbItem.getAdvances().add(advance);
-
 
         return TrialParser.toDto(trialRepository.save(dbItem));
     }
@@ -321,9 +336,8 @@ public class TrialServiceImpl implements ITrialService {
             ));
         }
 
-
         // calculate formulas
-        Map<String, BigDecimal> calculatedValues = calculateFormulas(request);
+        Map<String, BigDecimal> calculatedValues = Calculator.calculateFormulas(request);
 
         animalStudyDb.setEvaluation(GenericStudyEvaluationParser.fromMap(calculatedValues));
 
@@ -332,91 +346,73 @@ public class TrialServiceImpl implements ITrialService {
         return GenericStudyParser.toDto(savedElement);
     }
 
-    private Map<String, BigDecimal> calculateFormulas(AnimalStudyEvaluationRequest request) {
-        LOGGER.info("Calculating formulas...");
-        Map<String, BigDecimal> response = new HashMap<>();
+    @Override
+    public Object saveClinicalStudy(Integer tid, Integer aid, GenericStudyDto dto) {
+        LOGGER.info(String.format("Saving clinical study for trial [%d]...", tid));
 
-        try {
-            response.put(
-                    String.valueOf(EvaluationFormulaEnum.EFFICACY),
-                    calculateEfficacy(request)
-            );
-            response.put(
-                    String.valueOf(EvaluationFormulaEnum.EFFICIENCY),
-                    calculateEfficiency(request)
-            );
-            response.put(
-                    String.valueOf(EvaluationFormulaEnum.SAFETY_INDEX),
-                    calculateSafetyIndex(request)
-            );
-            response.put(
-                    String.valueOf(EvaluationFormulaEnum.INCIDENCE_RATE),
-                    calculateIncidenceRate(request)
-            );
-            response.put(
-                    String.valueOf(EvaluationFormulaEnum.IMMUNOGENICITY),
-                    calculateImmunogenicity(request)
-            );
-        } catch (Exception e) {
-            LOGGER.error(String.format(
-                    "Error calculating formula: %s", e.getMessage()
-            ));
-            throw new FormulaCalculationException(e.getMessage());
+        Trial dbItem = trialRepository.findById(tid)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "Trial [%d] not found.", tid)
+                ));
+
+        if (aid == null) { // there are no advances yet, the first one must be created
+            LOGGER.info("No advances associated, creating first one...");
+            Collection<GenericStudy> studies = new ArrayList<>();
+            studies.add(GenericStudyParser.fromDto(dto));
+
+            Advance advance = Advance.builder()
+                    .startDate(dto.getStartDate() != null ? dto.getStartDate(): new Date())
+                    .stage(Stage.CLINICAL)
+                    .studies(studies)
+                    .createdAt(new Date())
+                    .lastUpdatedAt(new Date())
+                    .build();
+
+            if (dbItem.getAdvances() == null) {
+                LOGGER.info("Initializing advances collection...");
+                dbItem.setAdvances(new ArrayList<>());
+            }
+
+            dbItem.getAdvances().add(advance);
+        } else { // there already exists at least 1 advance
+            LOGGER.info(String.format("Searching advance [%d]...", aid));
+            Advance advance = advanceRepository.findById(aid)
+                    .orElseThrow(() -> new NotFoundException(String.format(
+                            "Advance [%d] not found.", aid)
+                    ));
+
+            if (advance.getStage() != Stage.CLINICAL) {
+                throw new IllegalStateException(String.format("Advance [%d] is a preclinical study. Please input a clinical stage advance.", aid));
+            }
+
+            List<Advance> dbItemAdvances = (List<Advance>) dbItem.getAdvances();
+            Advance advanceToUpdate = new Advance();
+            int indexFound = -1;
+            for (int i = 0; i < dbItemAdvances.size(); i++) {
+                Advance item = dbItemAdvances.get(i);
+                if (item.getId().equals(aid)) {
+                    advanceToUpdate = item;
+                    indexFound = i;
+                    break;
+                }
+            }
+
+            if (indexFound == -1) {
+                throw new IllegalStateException(String.format(
+                        "Advance [%d] does NOT belong to trial [%d]", aid, tid
+                ));
+            }
+
+            Collection<GenericStudy> studies = advanceToUpdate.getStudies();
+
+            studies.add(GenericStudyParser.fromDto(dto));
+            advanceToUpdate.setStudies(studies);
+
+            dbItemAdvances.set(indexFound, advanceToUpdate);
+            dbItem.setAdvances(dbItemAdvances);
         }
 
-        return response;
+        return TrialParser.toDto(trialRepository.save(dbItem));
     }
 
-    private BigDecimal calculateImmunogenicity(AnimalStudyEvaluationRequest request) {
-        return BigDecimal.valueOf(
-                (request.getAnimalsWithDetectableImmuneResponse() / request.getTotalVaccinatedAnimals()) * 100L
-        );
-    }
-
-    private BigDecimal calculateIncidenceRate(AnimalStudyEvaluationRequest request) {
-        if (request.getAdverseEventsVaccinatedGroup().equals(0)) {
-            return new BigDecimal(0);
-        }
-
-        return BigDecimal.valueOf(
-                (request.getAdverseEventsVaccinatedGroup() / request.getTotalVaccinatedAnimals()) * 100L
-        );
-    }
-
-    private BigDecimal calculateSafetyIndex(AnimalStudyEvaluationRequest request) {
-        return BigDecimal.valueOf(
-                request.getLethalDose() / request.getEffectiveDose()
-        );
-    }
-
-    private BigDecimal calculateEfficiency(AnimalStudyEvaluationRequest request) {
-        return BigDecimal.valueOf(
-                (request.getAttackRateUnvaccinatedGroup() - request.getAttackRateVaccinatedGroup())
-                        / request.getAttackRateUnvaccinatedGroup()
-        );
-    }
-
-    private BigDecimal calculateEfficacy(AnimalStudyEvaluationRequest request) {
-        return BigDecimal.valueOf(
-                (request.getAttackRateUnvaccinatedGroup() - request.getAttackRateVaccinatedGroup())
-                        / request.getAttackRateUnvaccinatedGroup()
-        );
-    }
-
-    private Map<String, BigDecimal> calculateFormulas(FormulationEvaluationDto dto) {
-        Map<String, BigDecimal> response = new HashMap<>();
-
-        try {
-            response.put(String.valueOf(EvaluationFormulaEnum.IMMUNOGENICITY), BigDecimal.valueOf(5.1));
-            response.put(String.valueOf(EvaluationFormulaEnum.EFFICACY), BigDecimal.valueOf(2.3));
-            response.put(String.valueOf(EvaluationFormulaEnum.EFFICIENCY), BigDecimal.valueOf(3.4));
-            response.put(String.valueOf(EvaluationFormulaEnum.SAFETY_INDEX), BigDecimal.valueOf(1.2));
-        } catch (Exception e) {
-            LOGGER.error(String.format(
-                    "Error calculating formula: %s", e.getMessage()
-            ));
-        }
-
-        return response;
-    }
 }

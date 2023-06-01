@@ -59,6 +59,8 @@ public class AdvanceDto {
 
     private AnimalStudyDto animalStudy; // will only exist if stage is preclinical
 
+    private Collection<GenericStudyDto> studies;
+
     // the following 2 fields should be moved into animal study
     @Enumerated(EnumType.STRING)
     private SubjectType subjectType;
