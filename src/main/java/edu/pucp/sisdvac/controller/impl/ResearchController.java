@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -162,8 +163,18 @@ public class ResearchController implements IResearchController {
     @Override
     @GetMapping("/user/{document-number}/animal-studies")
     public ResponseEntity<?> findAnimalStudiesByUser(@PathVariable(name = "document-number") final String documentNumber) {
+        Collection<?> response = (Collection<?>) service.findAnimalStudiesByUser(documentNumber);
         return ResponseEntity.ok().body(
-                PayloadObjectBuilder.buildPayloadObject(service.findAnimalStudiesByUser(documentNumber))
+                PayloadObjectBuilder.buildPayloadObject(response, response.size())
+        );
+    }
+
+    @Override
+    @GetMapping("/user/{document-number}/clinical-studies")
+    public ResponseEntity<?> findClinicalStudiesByUser(@PathVariable(name = "document-number") final String documentNumber) {
+        Collection<?> response = (Collection<?>) service.findClinicalStudiesByUser(documentNumber);
+        return ResponseEntity.ok().body(
+                PayloadObjectBuilder.buildPayloadObject(response, response.size())
         );
     }
 

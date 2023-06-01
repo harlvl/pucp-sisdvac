@@ -17,7 +17,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnimalStudyDto {
+public class GenericStudyDto {
     private Integer id;
 
     private Integer researchId;
@@ -38,12 +38,18 @@ public class AnimalStudyDto {
     @Enumerated(EnumType.STRING)
     private AnimalStudyTypeEnum type;
 
-    private AnimalStudyEvaluationDto evaluation;
+    private GenericStudyEvaluationDto evaluation;
 
-    private Integer sampleSize;
-
+    private Integer sampleSize; // subjects Total
+    private Integer subjectsTotal;
+    private Integer subjectsCompleted;
+    private Integer subjectsAbandoned;
+    private Integer subjectsFailed;
+    private Integer maleCount;
+    private Integer femaleCount;
+    private Integer minAge;
+    private Integer maxAge;
     private String ethicalGuidelines;
-
     private String ethicalGuidelinesUri; // should be a URI
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
@@ -52,6 +58,7 @@ public class AnimalStudyDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
     private Date endDate;
 
+    // methods
     public void setParentFields(Integer researchId, Integer trialId, Integer advanceId, String trialTitle, String trialInsNumber, Date advanceStartDate, Date advanceEndDate) {
         this.researchId = researchId;
         this.trialId = trialId;
@@ -61,6 +68,4 @@ public class AnimalStudyDto {
         this.startDate = advanceStartDate;
         this.endDate = advanceEndDate;
     }
-
-    // study endpoints fields
 }

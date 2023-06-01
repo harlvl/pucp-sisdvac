@@ -26,4 +26,5 @@ public interface IResearchController {
     ResponseEntity<?> findAnimalStudiesByUser(String documentNumber);
 
     // CLINICAL STUDIES
+    ResponseEntity<?> findClinicalStudiesByUser(String documentNumber);
 }

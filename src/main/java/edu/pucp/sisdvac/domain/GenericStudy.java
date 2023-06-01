@@ -24,6 +24,11 @@ public class GenericStudy {
     @GeneratedValue
     private Integer id;
 
+    // no need to have advance here since it's a one-to-many relationship
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private GenericStudyEvaluation evaluation;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<AdverseEvent> adverseEvents;
 

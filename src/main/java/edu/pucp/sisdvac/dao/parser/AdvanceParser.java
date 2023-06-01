@@ -14,7 +14,7 @@ public class AdvanceParser {
         AdvanceDto response = BaseParser.parse(input, AdvanceDto.class);
 
         if (input.getAnimalStudy() != null) {
-            response.setAnimalStudy(AnimalStudyParser.toDto(input.getAnimalStudy()));
+            response.setAnimalStudy(GenericStudyParser.toDto(input.getAnimalStudy()));
         }
 
         if (input.getAdverseEvents() != null && !input.getAdverseEvents().isEmpty()) {
@@ -33,7 +33,7 @@ public class AdvanceParser {
         Advance response = BaseParser.parse(input, Advance.class);
 
         if (input.getAnimalStudy() != null) {
-            response.setAnimalStudy(AnimalStudyParser.fromDto(input.getAnimalStudy()));
+            response.setAnimalStudy(GenericStudyParser.fromDto(input.getAnimalStudy()));
         }
 
         if (input.getAdverseEvents() != null && !input.getAdverseEvents().isEmpty()) {

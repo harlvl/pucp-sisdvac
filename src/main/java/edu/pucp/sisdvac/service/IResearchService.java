@@ -23,5 +23,6 @@ public interface IResearchService {
     // TRIAL LEVEL METHODS
     Object findAnimalStudiesByUserAndTrial(String documentNumber, Integer trialId);
     Object findAnimalStudiesByUser(String documentNumber);
+    Object findClinicalStudiesByUser(String documentNumber);
     List<TrialDto> findTrialsByUserDocumentNumber(String key);
 }

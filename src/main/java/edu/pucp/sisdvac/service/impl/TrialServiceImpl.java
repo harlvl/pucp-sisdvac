@@ -282,7 +282,7 @@ public class TrialServiceImpl implements ITrialService {
                 .startDate(dto.getStartDate())
                 .endDate(dto.getEndDate())
                 .stage(Stage.PRECLINICAL)
-                .animalStudy(AnimalStudyParser.fromDto(dto))
+                .animalStudy(GenericStudyParser.fromDto(dto))
                 .startDate(new Date())
                 .createdAt(new Date())
                 .lastUpdatedAt(new Date())
@@ -325,11 +325,11 @@ public class TrialServiceImpl implements ITrialService {
         // calculate formulas
         Map<String, BigDecimal> calculatedValues = calculateFormulas(request);
 
-        animalStudyDb.setEvaluation(AnimalStudyEvaluationParser.fromMap(calculatedValues));
+        animalStudyDb.setEvaluation(GenericStudyEvaluationParser.fromMap(calculatedValues));
 
         LOGGER.info("Saving evaluation...");
         AnimalStudy savedElement = animalStudyRepository.save(animalStudyDb);
-        return AnimalStudyParser.toDto(savedElement);
+        return GenericStudyParser.toDto(savedElement);
     }
 
     private Map<String, BigDecimal> calculateFormulas(AnimalStudyEvaluationRequest request) {

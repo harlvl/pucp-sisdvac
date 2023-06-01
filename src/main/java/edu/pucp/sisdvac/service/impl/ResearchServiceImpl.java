@@ -1,9 +1,6 @@
 package edu.pucp.sisdvac.service.impl;
 
-import edu.pucp.sisdvac.controller.dto.AnimalStudyDto;
-import edu.pucp.sisdvac.controller.dto.ResearchDto;
-import edu.pucp.sisdvac.controller.dto.TrialDto;
-import edu.pucp.sisdvac.controller.dto.UserDto;
+import edu.pucp.sisdvac.controller.dto.*;
 import edu.pucp.sisdvac.controller.exception.NotFoundException;
 import edu.pucp.sisdvac.controller.exception.UserAlreadyAddedException;
 import edu.pucp.sisdvac.controller.request.AddUsersRequest;
@@ -12,6 +9,7 @@ import edu.pucp.sisdvac.dao.TrialRepository;
 import edu.pucp.sisdvac.dao.UserRepository;
 import edu.pucp.sisdvac.dao.parser.*;
 import edu.pucp.sisdvac.domain.Advance;
+import edu.pucp.sisdvac.domain.GenericStudy;
 import edu.pucp.sisdvac.domain.Research;
 import edu.pucp.sisdvac.domain.Trial;
 import edu.pucp.sisdvac.domain.enums.Stage;
@@ -239,7 +237,7 @@ public class ResearchServiceImpl implements IResearchService {
     public Object findAnimalStudiesByUserAndTrial(String documentNumber, Integer tid) {
         List<AnimalStudyDto> response = new ArrayList<>();
 
-        User user = userRepository.findByDocumentNumber(documentNumber)
+        userRepository.findByDocumentNumber(documentNumber)
                 .orElseThrow(() -> new NotFoundException(String.format(
                         "User with document number [%s] not found.", documentNumber)
                 ));
@@ -257,7 +255,7 @@ public class ResearchServiceImpl implements IResearchService {
                     advances) {
                 if (item.getStage().equals(Stage.PRECLINICAL)) {
                     if (item.getAnimalStudy() != null) {
-                        response.add(AnimalStudyParser.toDto(item.getAnimalStudy()));
+                        response.add(GenericStudyParser.toDto(item.getAnimalStudy()));
                     }
                 }
             }
@@ -272,6 +270,7 @@ public class ResearchServiceImpl implements IResearchService {
 
     @Override
     public Object findAnimalStudiesByUser(String documentNumber) {
+        LOGGER.info(String.format("Finding animal studies for user [%s]...", documentNumber));
         List<AnimalStudyDto> response = new ArrayList<>();
 
         userRepository.findByDocumentNumber(documentNumber)
@@ -296,15 +295,51 @@ public class ResearchServiceImpl implements IResearchService {
                 for (Advance advance :
                         trial.getAdvances()) {
                     if (advance.getAnimalStudy() != null) {
-                        AnimalStudyDto element = AnimalStudyParser.toDto(advance.getAnimalStudy());
-                        element.setResearchId(research.getId());
-                        element.setTrialId(trial.getId());
-                        element.setAdvanceId(advance.getId());
-                        element.setTrialTitle(trial.getTitle());
-                        element.setTrialInsNumber(trial.getInsNumber());
-                        element.setStartDate(advance.getStartDate());
-                        element.setEndDate(advance.getEndDate());
+                        AnimalStudyDto element = GenericStudyParser.toDto(advance.getAnimalStudy());
+                        element.setParentFields(research.getId(), trial.getId(), advance.getId(),
+                                trial.getTitle(), trial.getInsNumber(),
+                                advance.getStartDate(), advance.getEndDate());
                         response.add(element);
+                    }
+                }
+            }
+        }
+
+        return response;
+    }
+
+    @Override
+    public Object findClinicalStudiesByUser(String documentNumber) {
+        LOGGER.info(String.format("Finding clinical studies for user [%s]...", documentNumber));
+        Collection<GenericStudyDto> response = new ArrayList<>();
+
+        userRepository.findByDocumentNumber(documentNumber)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "User with document number [%s] not found.", documentNumber)
+                ));
+
+        List<Research> userResearches = this.findByUserDocumentNumberInternal(documentNumber);
+
+        for (Research research : userResearches) {
+            if (research.getTrials() == null || research.getTrials().isEmpty()) {
+                continue;
+            }
+
+            for (Trial trial : research.getTrials()) {
+                if (trial.getAdvances() == null || trial.getAdvances().isEmpty()) {
+                    continue;
+                }
+
+                for (Advance advance : trial.getAdvances()) {
+                    if (advance.getStudies() != null && advance.getStage().equals(Stage.CLINICAL)) {
+                        Collection<GenericStudy> studies = advance.getStudies();
+                        for (GenericStudy study : studies) {
+                            GenericStudyDto element = GenericStudyParser.toDto(study);
+                            element.setParentFields(research.getId(), trial.getId(), advance.getId(),
+                                    trial.getTitle(), trial.getInsNumber(),
+                                    advance.getStartDate(), advance.getEndDate());
+                            response.add(element);
+                        }
                     }
                 }
             }
