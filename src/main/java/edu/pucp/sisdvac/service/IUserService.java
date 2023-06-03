@@ -2,6 +2,7 @@ package edu.pucp.sisdvac.service;
 
 import edu.pucp.sisdvac.controller.dto.UserDto;
 import edu.pucp.sisdvac.domain.user.Role;
+import edu.pucp.sisdvac.security.auth.RegisterRequest;
 
 import java.util.List;
 
@@ -12,6 +13,6 @@ public interface IUserService {
     UserDto findByEmail(String key);
     List<UserDto> findByDocumentNumber(String key);
     List<UserDto> findByName(String key);
-    UserDto save(UserDto dto);
+    UserDto save(RegisterRequest dto);
     UserDto update(Integer id, UserDto dto);
 }

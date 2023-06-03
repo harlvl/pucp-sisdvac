@@ -1,6 +1,7 @@
 package edu.pucp.sisdvac.controller.exception;
 
 import edu.pucp.sisdvac.controller.response.RestResponse;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.hibernate.PropertyValueException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,12 @@ public class RestExceptionHandler {
     protected ResponseEntity<?> handleGenericException(GenericException exception) {
         printErrorMessage(exception);
         return buildGenericResponse(exception, HttpStatus.FAILED_DEPENDENCY);
+    }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    protected ResponseEntity<?> handleTokenExpiredException(TokenExpiredException exception) {
+        printErrorMessage(exception);
+        return buildGenericResponse(exception, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(NotFoundException.class)

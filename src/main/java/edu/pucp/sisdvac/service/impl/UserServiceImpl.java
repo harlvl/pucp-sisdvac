@@ -7,10 +7,12 @@ import edu.pucp.sisdvac.dao.parser.BaseParser;
 import edu.pucp.sisdvac.dao.parser.UserParser;
 import edu.pucp.sisdvac.domain.user.Role;
 import edu.pucp.sisdvac.domain.user.User;
+import edu.pucp.sisdvac.security.auth.RegisterRequest;
 import edu.pucp.sisdvac.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.List;
 public class UserServiceImpl implements IUserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserDto> findAll() {
@@ -114,12 +117,19 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserDto save(UserDto dto) {
+    public UserDto save(RegisterRequest request) {
         LOGGER.info("Creating new user...");
+        var user = User.builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(request.getRole())
+                .documentType(request.getDocumentType())
+                .documentNumber(request.getDocumentNumber())
+                .build();
         return UserParser.toDto(
-                repository.save(
-                        UserParser.fromDto(dto)
-                )
+                repository.save(user)
         );
     }
 

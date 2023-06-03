@@ -1,7 +1,9 @@
 package edu.pucp.sisdvac.security.auth;
 
 import edu.pucp.sisdvac.controller.dto.UserDto;
+import edu.pucp.sisdvac.controller.response.PayloadObjectBuilder;
 import edu.pucp.sisdvac.controller.response.RestResponse;
+import edu.pucp.sisdvac.security.config.JwtService;
 import edu.pucp.sisdvac.security.config.LogoutService;
 import edu.pucp.sisdvac.service.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +25,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final LogoutService logoutService;
     private final IUserService userService;
+    private final JwtService jwtService;
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody @Valid RegisterRequest request) {
         return ResponseEntity.ok(authenticationService.register(request));
@@ -33,8 +36,14 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
+    @PostMapping("/check")
+    public ResponseEntity<?> checkToken(@RequestHeader("access_token") String accessToken) {
+        return ResponseEntity.ok().body(PayloadObjectBuilder.buildPayloadObject(jwtService.isTokenExpired(accessToken)));
+    }
+
     @GetMapping("/user")
     public ResponseEntity<?> findAll() {
+
         List<?> output = userService.findAll();
         return ResponseEntity.ok().body(
                 RestResponse.builder()

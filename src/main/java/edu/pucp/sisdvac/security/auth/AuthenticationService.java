@@ -82,6 +82,7 @@ public class AuthenticationService {
     }
 
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        LOGGER.info("START refreshToken");
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userEmail;

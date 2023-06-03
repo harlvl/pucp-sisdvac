@@ -131,7 +131,7 @@ public class SisdvacApplication {
             trialService.save(preclinicalTrial2);
 
             // register admin user
-            authenticationService.register(
+            userService.save(
                     RegisterRequest.builder()
                             .email("luis.viguria@pucp.pe")
                             .password("1234")
@@ -144,7 +144,7 @@ public class SisdvacApplication {
             );
 
             //register doctor main user
-            authenticationService.register(
+            userService.save(
                     RegisterRequest.builder()
                             .email("francisco.bolognesi@pucp.pe")
                             .password("1234")
@@ -157,7 +157,7 @@ public class SisdvacApplication {
             );
 
             //register doctor main user
-            authenticationService.register(
+            userService.save(
                     RegisterRequest.builder()
                             .email("abe.qui@pucp.pe")
                             .password("1234")
@@ -170,7 +170,7 @@ public class SisdvacApplication {
             );
 
             //register doctor member user
-            authenticationService.register(
+            userService.save(
                     RegisterRequest.builder()
                             .email("jose.olaya@pucp.pe")
                             .password("1234")
@@ -183,7 +183,7 @@ public class SisdvacApplication {
             );
 
             //register doctor member user
-            authenticationService.register(
+            userService.save(
                     RegisterRequest.builder()
                             .email("miguel.grau@pucp.pe")
                             .password("1234")
@@ -196,7 +196,7 @@ public class SisdvacApplication {
             );
 
             //register doctor member user
-            authenticationService.register(
+            userService.save(
                     RegisterRequest.builder()
                             .email("hip.una@pucp.pe")
                             .password("1234")
@@ -209,7 +209,7 @@ public class SisdvacApplication {
             );
 
             //register assistant user
-            authenticationService.register(
+            userService.save(
                     RegisterRequest.builder()
                             .email("luis.miguel@pucp.pe")
                             .password("1234")
@@ -222,7 +222,7 @@ public class SisdvacApplication {
             );
 
             //register assistant user
-            authenticationService.register(
+            userService.save(
                     RegisterRequest.builder()
                             .email("mic.bas@pucp.pe")
                             .password("1234")
@@ -235,7 +235,7 @@ public class SisdvacApplication {
             );
 
             //register assistant user
-            authenticationService.register(
+            userService.save(
                     RegisterRequest.builder()
                             .email("bri.sil@pucp.pe")
                             .password("1234")
@@ -248,7 +248,7 @@ public class SisdvacApplication {
             );
 
             //register assistant user
-            authenticationService.register(
+            userService.save(
                     RegisterRequest.builder()
                             .email("ma.pa@pucp.pe")
                             .password("1234")

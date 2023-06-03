@@ -4,6 +4,7 @@ import edu.pucp.sisdvac.controller.IUserController;
 import edu.pucp.sisdvac.controller.dto.UserDto;
 import edu.pucp.sisdvac.controller.response.PayloadObjectBuilder;
 import edu.pucp.sisdvac.domain.user.Role;
+import edu.pucp.sisdvac.security.auth.RegisterRequest;
 import edu.pucp.sisdvac.service.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -71,7 +72,7 @@ public class UserController implements IUserController {
 
     @Override
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody @Valid UserDto dto) {
+    public ResponseEntity<?> save(@RequestBody @Valid RegisterRequest dto) {
         return ResponseEntity.ok().body(
                 PayloadObjectBuilder.buildPayloadObject(
                         service.save(dto)
