@@ -131,6 +131,22 @@ public class ResearchServiceImpl implements IResearchService {
         return output;
     }
 
+    @Override
+    public Collection<?> findResearchUsers(Integer id) {
+        Collection<UserDto> output = new ArrayList<>();
+
+        Research dbItem = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "Research [%d] not found", id
+                )));
+        Collection<User> dbUsers = dbItem.getUsers();
+        for (User item : dbUsers) {
+            output.add(UserParser.toDto(item));
+        }
+
+        return output;
+    }
+
 
     @Override
     public ResearchDto save(ResearchDto dto) {
@@ -361,6 +377,26 @@ public class ResearchServiceImpl implements IResearchService {
                     TrialDto dto = TrialParser.toDto(t);
                     dto.setResearchId(r.getId());
                     response.add(dto);
+                }
+            }
+        }
+
+        return response;
+    }
+
+    @Override
+    public Collection<TrialDto> findClinicalTrialsByUserDocumentNumber(String key) {
+        List<Research> researches = findByUserDocumentNumberInternal(key);
+        Collection<TrialDto> response = new ArrayList<>();
+
+        for (Research r : researches) {
+            if (r.getTrials() != null && !r.getTrials().isEmpty()) {
+                for (Trial t : r.getTrials()) {
+                    if (t.getStage().equals(Stage.CLINICAL)) {
+                        TrialDto dto = TrialParser.toDto(t);
+                        dto.setResearchId(r.getId());
+                        response.add(dto);
+                    }
                 }
             }
         }

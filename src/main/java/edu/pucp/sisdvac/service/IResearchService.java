@@ -6,6 +6,7 @@ import edu.pucp.sisdvac.controller.dto.UserDto;
 import edu.pucp.sisdvac.controller.request.AddUsersRequest;
 import edu.pucp.sisdvac.domain.user.Role;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface IResearchService {
@@ -15,6 +16,7 @@ public interface IResearchService {
     List<ResearchDto> findByUserId(Integer id);
     List<ResearchDto> findByUserDocumentNumber(String key);
     List<?> findUsersByRole(Integer id, Role role);
+    Collection<?> findResearchUsers(Integer id);
     ResearchDto save(ResearchDto dto);
     ResearchDto update(Integer id, ResearchDto dto);
     ResearchDto addUser(Integer id, UserDto dto);
@@ -25,4 +27,5 @@ public interface IResearchService {
     Object findAnimalStudiesByUser(String documentNumber);
     Object findClinicalStudiesByUser(String documentNumber);
     List<TrialDto> findTrialsByUserDocumentNumber(String key);
+    Collection<TrialDto> findClinicalTrialsByUserDocumentNumber(String key);
 }

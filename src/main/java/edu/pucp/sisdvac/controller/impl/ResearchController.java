@@ -100,6 +100,13 @@ public class ResearchController implements IResearchController {
     }
 
     @Override
+    @GetMapping("/{id}/users")
+    public ResponseEntity<?> findResearchUsers(@PathVariable(name = "id") final Integer rid) {
+        Collection<?> response = service.findResearchUsers(rid);
+        return ResponseEntity.ok().body(PayloadObjectBuilder.buildPayloadObject(response, response.size()));
+    }
+
+    @Override
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody ResearchDto dto) {
         return ResponseEntity.ok().body(
@@ -147,6 +154,15 @@ public class ResearchController implements IResearchController {
     @GetMapping("/user/document-number/{documentNumber}/trials")
     public ResponseEntity<?> findTrialsByUserDocumentNumber(@PathVariable(name = "documentNumber") final String key) {
         List<TrialDto> response = service.findTrialsByUserDocumentNumber(key);
+        return ResponseEntity.ok().body(
+                PayloadObjectBuilder.buildPayloadObject(response, response.size())
+        );
+    }
+
+    @Override
+    @GetMapping("/user/document-number/{documentNumber}/clinical-trials")
+    public ResponseEntity<?> findClinicalTrialsByUserDocumentNumber(@PathVariable(name = "documentNumber") final String key) {
+        Collection<TrialDto> response = service.findClinicalTrialsByUserDocumentNumber(key);
         return ResponseEntity.ok().body(
                 PayloadObjectBuilder.buildPayloadObject(response, response.size())
         );

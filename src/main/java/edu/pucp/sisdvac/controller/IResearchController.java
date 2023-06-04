@@ -13,6 +13,7 @@ public interface IResearchController {
     ResponseEntity<?> findByUserDocumentNumber(String key);
     ResponseEntity<?> findByInsNumber(String key);
     ResponseEntity<?> findUsersByRole(Integer id, Role key);
+    ResponseEntity<?> findResearchUsers(Integer rid);
     ResponseEntity<?> save(ResearchDto dto);
     ResponseEntity<?> update(Integer id, ResearchDto dto);
     ResponseEntity<?> addUser(Integer id, UserDto dto);
@@ -20,6 +21,7 @@ public interface IResearchController {
 
     // TRIALS
     ResponseEntity<?> findTrialsByUserDocumentNumber(String key);
+    ResponseEntity<?> findClinicalTrialsByUserDocumentNumber(String key);
 
     // ANIMAL STUDIES
     ResponseEntity<?> findAnimalStudiesByUserAndTrial(String documentNumber, Integer trialId);
