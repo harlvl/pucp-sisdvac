@@ -22,7 +22,7 @@ public class GenericStudyEvaluationParser {
         GenericStudyEvaluationDto response = BaseParser.parse(input, GenericStudyEvaluationDto.class);
 
         response.setId(input.getId());
-        response.setItems(GenericParser.convertItemCollectionToMap(input.getItems()));
+        response.setItems(GenericParser.convertGenericItemCollectionToMap(input.getItems()));
 
         return response;
     }
@@ -40,7 +40,7 @@ public class GenericStudyEvaluationParser {
         GenericStudyEvaluation response = BaseParser.parse(input, GenericStudyEvaluation.class);
 
         response.setId(input.getId());
-        response.setItems(GenericParser.convertMapToItemCollection(input.getItems()));
+        response.setItems(GenericParser.convertMapToGenericItemCollection(input.getItems()));
 
         return response;
     }

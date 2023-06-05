@@ -27,5 +27,6 @@ public interface IResearchService {
     Object findAnimalStudiesByUser(String documentNumber);
     Object findClinicalStudiesByUser(String documentNumber);
     List<TrialDto> findTrialsByUserDocumentNumber(String key);
+    Collection<TrialDto> findPreclinicalTrialsByUserDocumentNumber(String key);
     Collection<TrialDto> findClinicalTrialsByUserDocumentNumber(String key);
 }

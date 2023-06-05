@@ -160,6 +160,15 @@ public class ResearchController implements IResearchController {
     }
 
     @Override
+    @GetMapping("/user/document-number/{documentNumber}/preclinical-trials")
+    public ResponseEntity<?> findPreclinicalTrialsByUserDocumentNumber(@PathVariable(name = "documentNumber") final String key) {
+        Collection<TrialDto> response = service.findPreclinicalTrialsByUserDocumentNumber(key);
+        return ResponseEntity.ok().body(
+                PayloadObjectBuilder.buildPayloadObject(response, response.size())
+        );
+    }
+
+    @Override
     @GetMapping("/user/document-number/{documentNumber}/clinical-trials")
     public ResponseEntity<?> findClinicalTrialsByUserDocumentNumber(@PathVariable(name = "documentNumber") final String key) {
         Collection<TrialDto> response = service.findClinicalTrialsByUserDocumentNumber(key);

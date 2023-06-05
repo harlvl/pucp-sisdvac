@@ -15,6 +15,7 @@ public interface ITrialService {
     Object evaluateFormulation(Integer id, Integer formulationId, FormulationEvaluationDto formulationEvaluation);
     Object findFormulationEvaluation(Integer tid, Integer fid);
     Object saveAdvance(Integer trialId, AdvanceDto dto);
+    Object findAnimalStudyEvaluation(Integer tid, Integer aid);
     Object saveAnimalStudy(Integer tid, AnimalStudyDto dto);
     Object evaluateAnimalStudy(Integer tid, Integer aid, AnimalStudyEvaluationRequest dto);
     Object saveClinicalStudy(Integer tid, Integer aid, GenericStudyDto dto);

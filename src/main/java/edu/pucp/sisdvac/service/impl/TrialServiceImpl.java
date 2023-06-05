@@ -1,11 +1,6 @@
 package edu.pucp.sisdvac.service.impl;
 
-import edu.pucp.sisdvac.controller.dto.AdvanceDto;
-import edu.pucp.sisdvac.controller.dto.AnimalStudyDto;
-import edu.pucp.sisdvac.controller.dto.FormulationDto;
-import edu.pucp.sisdvac.controller.dto.FormulationEvaluationDto;
-import edu.pucp.sisdvac.controller.dto.GenericStudyDto;
-import edu.pucp.sisdvac.controller.dto.TrialDto;
+import edu.pucp.sisdvac.controller.dto.*;
 import edu.pucp.sisdvac.controller.exception.NotFoundException;
 import edu.pucp.sisdvac.controller.request.AnimalStudyEvaluationRequest;
 import edu.pucp.sisdvac.dao.AdvanceRepository;
@@ -283,6 +278,28 @@ public class TrialServiceImpl implements ITrialService {
         dbItem.getAdvances().add(advanceToCreate);
 
         return TrialParser.toDto(trialRepository.save(dbItem));
+    }
+
+    @Override
+    public Object findAnimalStudyEvaluation(Integer tid, Integer aid) {
+        LOGGER.info("Finding animal study evaluation...");
+        AnimalStudyEvaluationDto response = new AnimalStudyEvaluationDto();
+
+        Trial dbItem = trialRepository.findById(tid)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "Trial [%d] not found.", tid)
+                ));
+
+        Advance advanceDb = advanceRepository.findById(aid)
+                .orElseThrow(() -> new NotFoundException(String.format(
+                        "Advance [%d] not found.", aid)
+                ));
+
+        if (advanceDb.getAnimalStudy() != null && advanceDb.getAnimalStudy().getEvaluation() != null) {
+            response = GenericStudyEvaluationParser.toDto(advanceDb.getAnimalStudy().getEvaluation());
+        }
+
+        return response;
     }
 
     @Override

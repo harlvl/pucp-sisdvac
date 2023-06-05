@@ -121,6 +121,15 @@ public class TrialControllerImpl implements ITrialController {
     }
 
     @Override
+    @GetMapping("/{tid}/advance/{aid}")
+    public ResponseEntity<?> findAnimalStudyEvaluation(@PathVariable(name = "tid") final Integer tid,
+                                                       @PathVariable(name = "aid") final Integer  aid) {
+        return ResponseEntity.ok().body(
+                PayloadObjectBuilder.buildPayloadObject(service.findAnimalStudyEvaluation(tid, aid))
+        );
+    }
+
+    @Override
     @PostMapping("/{tid}/animal-study")
     public ResponseEntity<?> saveAnimalStudy(@PathVariable(name = "tid") final Integer tid, @RequestBody AnimalStudyDto dto) {
         return ResponseEntity.ok().body(

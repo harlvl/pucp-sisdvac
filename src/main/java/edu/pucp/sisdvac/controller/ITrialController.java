@@ -24,7 +24,8 @@ public interface ITrialController {
 
     //    ADVANCES HANDLING
     // ANIMAL STUDIES METHODS
-    ResponseEntity<?> saveAdvance(Integer trialId, AdvanceDto dto); // also used for saving animal study
+    ResponseEntity<?> saveAdvance(Integer trialId, AdvanceDto dto); // also used for saving animal study... not used
+    ResponseEntity<?> findAnimalStudyEvaluation(Integer tid, Integer aid);
     ResponseEntity<?> saveAnimalStudy(Integer tid, AnimalStudyDto dto);
     ResponseEntity<?> evaluateAnimalStudy(Integer tid, Integer aid, AnimalStudyEvaluationRequest request);
 

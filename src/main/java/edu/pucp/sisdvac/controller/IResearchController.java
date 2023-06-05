@@ -21,6 +21,7 @@ public interface IResearchController {
 
     // TRIALS
     ResponseEntity<?> findTrialsByUserDocumentNumber(String key);
+    ResponseEntity<?> findPreclinicalTrialsByUserDocumentNumber(String key);
     ResponseEntity<?> findClinicalTrialsByUserDocumentNumber(String key);
 
     // ANIMAL STUDIES

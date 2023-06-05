@@ -385,6 +385,26 @@ public class ResearchServiceImpl implements IResearchService {
     }
 
     @Override
+    public Collection<TrialDto> findPreclinicalTrialsByUserDocumentNumber(String key) {
+        List<Research> researches = findByUserDocumentNumberInternal(key);
+        Collection<TrialDto> response = new ArrayList<>();
+
+        for (Research r : researches) {
+            if (r.getTrials() != null && !r.getTrials().isEmpty()) {
+                for (Trial t : r.getTrials()) {
+                    if (t.getStage().equals(Stage.PRECLINICAL)) {
+                        TrialDto dto = TrialParser.toDto(t);
+                        dto.setResearchId(r.getId());
+                        response.add(dto);
+                    }
+                }
+            }
+        }
+
+        return response;
+    }
+
+    @Override
     public Collection<TrialDto> findClinicalTrialsByUserDocumentNumber(String key) {
         List<Research> researches = findByUserDocumentNumberInternal(key);
         Collection<TrialDto> response = new ArrayList<>();

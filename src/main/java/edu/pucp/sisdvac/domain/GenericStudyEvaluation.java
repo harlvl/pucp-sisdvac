@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "animal_study_evaluation")
+@Table(name = "generic_study_evaluation")
 public class GenericStudyEvaluation {
     @Id
     @GeneratedValue
@@ -26,7 +26,7 @@ public class GenericStudyEvaluation {
     private GenericStudy study;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Collection<EvaluationItem> items;
+    private Collection<GenericEvaluationItem> items;
 
     // START audit fields
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_INPUT_FORMAT)
